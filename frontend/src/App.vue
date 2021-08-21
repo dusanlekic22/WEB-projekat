@@ -1,10 +1,7 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <the-header></the-header>
+    <router-view />
   </div>
 </template>
 
@@ -17,10 +14,6 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
 #nav a {
   font-weight: bold;
   color: #2c3e50;
@@ -30,3 +23,13 @@
   color: #42b983;
 }
 </style>
+
+<script>
+import TheHeader from "@/components/Header.vue";
+
+export default {
+  components: {
+    TheHeader,
+  },
+};
+</script>
