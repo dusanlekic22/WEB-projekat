@@ -4,11 +4,16 @@ import router from "./router";
 import store from "./store";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import VueMeta from "vue-meta";
 
 Vue.config.productionTip = false;
 
 import { BootstrapVue } from "bootstrap-vue";
 Vue.use(BootstrapVue);
+
+Vue.use(VueMeta, {
+  refreshOnceOnNavigation: true,
+});
 
 new Vue({
   router,

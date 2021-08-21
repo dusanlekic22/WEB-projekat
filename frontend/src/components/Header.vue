@@ -2,14 +2,20 @@
   <header class="header-area overlay">
     <nav class="shadow-sm navbar navbar-expand-md navbar-dark">
       <div class="container">
-        <a href="#" class="navbar-brand">MFood</a>
-        <button
-          class="navbar-toggler"
-          data-toggle="collapse"
-          data-target="#main-nav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="col-lg-1">
+          <a href="/" class="navbar-brand">MFood</a>
+        </div>
+        <div class="col-lg-4"></div>
+        <div class="col-lg-1" v-if="productPage"><input type="text" /></div>
+        <div class="col-lg-1">
+          <button
+            class="navbar-toggler"
+            data-toggle="collapse"
+            data-target="#main-nav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
         <div id="main-nav" class="collapse navbar-collapse">
           <ul class="navbar-nav ms-auto">
             <li>
@@ -27,10 +33,22 @@
   </header>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      productPage: false,
+    };
+  },
+};
+</script>
+
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700,800");
 @import url("https://fonts.googleapis.com/css?family=Lobster");
-
+input {
+  width: 200px;
+}
 .header-area {
   position: relative;
   height: 68px;
@@ -63,6 +81,7 @@
   border: none;
   cursor: pointer;
   outline: none;
+  background: black;
 }
 .navbar-dark .navbar-nav .nav-link {
   position: relative;
@@ -91,6 +110,9 @@
   .navbar.fixed-top .navbar-nav {
     background: transparent;
   }
+  input {
+    width: 160px;
+  }
 }
 @media screen and (min-width: 767px) {
   .navbar-dark .navbar-nav .nav-link {
@@ -113,6 +135,16 @@
     -webkit-transform: scaleX(1);
     -ms-transform: scaleX(1);
     transform: scaleX(1);
+  }
+}
+@media screen and (max-width: 370px) {
+  input {
+    width: 120px;
+  }
+}
+@media screen and (max-width: 280px) {
+  input {
+    width: 85px;
   }
 }
 </style>
