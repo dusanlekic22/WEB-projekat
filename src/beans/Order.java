@@ -7,7 +7,7 @@ import java.util.Dictionary;
 import beans.enums.OrderStatus;
 
 public class Order {
-	private String id;
+	private int id;
 	private ArrayList<Article> articles;
 	private Restaurant restaurant;
 	private LocalDateTime dateAndTime;
@@ -20,7 +20,7 @@ public class Order {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Order(String id, ArrayList<Article> articles, Restaurant restaurant, LocalDateTime dateAndTime, float price,
+	public Order(int id, ArrayList<Article> articles, Restaurant restaurant, LocalDateTime dateAndTime, float price,
 			Dictionary<String, String> customer, OrderStatus status) {
 		super();
 		this.id = id;
@@ -31,10 +31,10 @@ public class Order {
 		this.customer = customer;
 		this.status = status;
 	}
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public ArrayList<Article> getArticles() {

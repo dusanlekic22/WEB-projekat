@@ -26,8 +26,8 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String username, String password, String name, String surname, Gender gender, LocalDate dateOfBirth,
-			UserRole role, ArrayList<Order> customerOrders, Cart cart, Restaurant restaurant,
+	public User(String username, String password, String name, String surname, Gender gender,
+			LocalDate dateOfBirth, UserRole role, ArrayList<Order> customerOrders, Cart cart, Restaurant restaurant,
 			ArrayList<Order> deliveryOrders, int points, CustomerType type) {
 		super();
 		this.username = username;
