@@ -11,7 +11,6 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/WebProject/WebContent/WEB-INF/lib/jackson-databind-2.5.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aopalliance-repackaged-2.4.0-b31.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/asm-debug-all-5.0.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/gson-2.8.6.jar"/>

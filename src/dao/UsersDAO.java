@@ -24,9 +24,9 @@ public class UsersDAO {
 		this.users = new HashMap<String, User>();
 
 	}
-	
+
 	public UsersDAO(String contextPath) {
-		
+
 		loadUsers(contextPath);
 
 	}
@@ -104,6 +104,19 @@ public class UsersDAO {
 		}
 
 		return null;
+	}
+
+	public User getUserByUsername(String username) {
+		if (users.containsKey(username)) {
+			return users.get(username);
+		}
+
+		return null;
+	}
+
+	public boolean isBlocked(String username) {
+
+		return (getUserByUsername(username).isBlocked()) ? true : false;
 	}
 
 }

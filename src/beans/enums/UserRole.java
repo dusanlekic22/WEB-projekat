@@ -1,5 +1,5 @@
 package beans.enums;
 
 public enum UserRole {
-	ADMINISTRATOR, MENAGER, DELIVERY, CUSTOMER
+	ADMINISTRATOR, MANAGER, DELIVERY, CUSTOMER
 }

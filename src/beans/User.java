@@ -21,14 +21,16 @@ public class User {
 	private int points;
 	private CustomerType type;
 
+	private boolean blocked;
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String username, String password, String name, String surname, Gender gender,
-			LocalDate dateOfBirth, UserRole role, ArrayList<Order> customerOrders, Cart cart, Restaurant restaurant,
-			ArrayList<Order> deliveryOrders, int points, CustomerType type) {
+	public User(String username, String password, String name, String surname, Gender gender, LocalDate dateOfBirth,
+			UserRole role, ArrayList<Order> customerOrders, Cart cart, Restaurant restaurant,
+			ArrayList<Order> deliveryOrders, int points, CustomerType type, boolean blocked) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -43,6 +45,7 @@ public class User {
 		this.deliveryOrders = deliveryOrders;
 		this.points = points;
 		this.type = type;
+		this.blocked = blocked;
 	}
 
 	public String getUsername() {
@@ -147,6 +150,14 @@ public class User {
 
 	public void setType(CustomerType type) {
 		this.type = type;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
 	}
 
 }
