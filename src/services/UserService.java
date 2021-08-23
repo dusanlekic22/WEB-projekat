@@ -16,7 +16,7 @@ import beans.User;
 import beans.enums.UserRole;
 import dao.UsersDAO;
 
-@Path("/Users")
+@Path("/users")
 public class UserService {
 
 	public UserService() {
@@ -34,12 +34,13 @@ public class UserService {
 
 		if (ctx.getAttribute("usersDAO") == null) {
 			String contextPath = ctx.getRealPath("");
+			System.out.println(contextPath);
 			ctx.setAttribute("usersDAO", new UsersDAO(contextPath));
 		}
 	}
 
 	@GET
-	@Path("/users")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers(@Context HttpServletRequest request) {
 

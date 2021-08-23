@@ -13,7 +13,7 @@ import beans.User;
 
 public class UsersDAO {
 	private HashMap<String, User> users = new HashMap<String, User>();
-	private String path;
+	private String path = "C:/Users/Admin/Desktop/web/WEB-projekat";;
 
 	public UsersDAO() {
 		this.path = "C:/Users/Admin/Desktop/web/WEB-projekat";
