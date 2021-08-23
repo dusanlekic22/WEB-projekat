@@ -1,20 +1,3 @@
-// import Vue from "./vue.js";
-// import App from "./App.vue";
-// import router from "../js/vue-router.js";
-// import store from "./store";
-// import "bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import VueMeta from "vue-meta";
-
-// Vue.config.productionTip = false;
-
-// import { BootstrapVue } from "bootstrap-vue";
-// Vue.use(BootstrapVue);
-
-// Vue.use(VueMeta, {
-//   refreshOnceOnNavigation: true,
-// });
-
 const HomeComponent = { template: '<home></home>'}
 
 const router = new VueRouter({
@@ -33,12 +16,58 @@ const router = new VueRouter({
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
-		
-		  
+
+
 	  ]
 });
 
+const store = new Vuex.Store({
+  state: {
+      registrationActive: false,
+  },
+  mutations: {
+    openRegistration(state) {
+      state.registrationActive = true;
+    },
+    closeRegistration(state) {
+       state.registrationActive = false;
+    }
+  },
+  actions: {
+    openRegistration(context) {
+      context.openRegistration();
+    },
+     closeRegistration(context) {
+      context. closeRegistration();
+    }
+  },
+  getters: {
+  isActive(state) {
+      return state.registrationActive;
+    }
+  },
+  modules: {},
+})
+
 const app = new Vue({
+  store,
   router,
   el: '#app',
+  data()
+  {
+    return{
+      registration: false
+    };
+  },
+  methods: {
+    openSignIn() {
+      this.registration = true;
+    }
+  },
+  provide: {
+    registr: this.registration
+  }
 });
+
+
+Vue.use(store);

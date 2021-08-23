@@ -50,7 +50,7 @@ Vue.component("the-header", {
   },
     mounted() {
         let style = document.createElement('link');
-      style.type = "text/css";
+        style.type = "text/css";
         style.rel = "stylesheet";
         style.href = 'css/header.css';
         document.head.appendChild(style);
