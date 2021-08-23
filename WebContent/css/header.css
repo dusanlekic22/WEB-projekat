@@ -1,51 +1,7 @@
-<template>
-  <header class="header-area overlay">
-    <nav class="shadow-sm navbar navbar-expand-md navbar-dark">
-      <div class="container">
-        <div class="col-lg-1">
-          <a href="/" class="navbar-brand">MFood</a>
-        </div>
-        <div class="col-lg-4"></div>
-        <div class="col-lg-1" v-if="productPage"><input type="text" /></div>
-        <div class="col-lg-1">
-          <button
-            class="navbar-toggler"
-            data-toggle="collapse"
-            data-target="#main-nav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
-        <div id="main-nav" class="collapse navbar-collapse">
-          <ul class="navbar-nav ms-auto">
-            <li>
-              <router-link class="nav-link" to="/Prijava">Prijava</router-link>
-            </li>
-            <li>
-              <router-link class="nav-link" to="/Registrovanje"
-                >Registrovanje</router-link
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      productPage: false,
-    };
-  },
-};
-</script>
-
-<style scoped>
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700,800");
 @import url("https://fonts.googleapis.com/css?family=Lobster");
+
+
 input {
   width: 200px;
 }
@@ -147,4 +103,3 @@ input {
     width: 85px;
   }
 }
-</style>

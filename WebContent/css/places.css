@@ -1,16 +1,3 @@
-<template>
-  <div>
-    <input type="text" />
-    <button class="btn1">Pretraži</button>
-    <ul>
-      <li v-for="(result, i) in searchResults" :key="i">
-        {{ result }} // list of all places
-      </li>
-    </ul>
-  </div>
-</template>
-
-<style scoped>
 .btn1 {
   height: 51px;
   width: 17%;
@@ -27,5 +14,9 @@ input {
   width: 300px;
   border-radius: 10px;
   border: none;
+  outline: none;
 }
-</style>
+input:hover,
+input:focus{
+  outline: none;
+}

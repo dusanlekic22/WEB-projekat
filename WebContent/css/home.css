@@ -1,0 +1,28 @@
+#searchSection {
+  display: flex;
+  height: 800px;
+  width: 100%;
+  background: url("../app/img/lily-banse--YHSwy6uqvk-unsplash.jpg") no-repeat;
+  background-size: cover;
+}
+#searchSection h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: left;
+  color: white;
+}
+
+h2 {
+  font-weight: 800;
+  color: black;
+}
+
+.container-fluid {
+  padding: 0%;
+}
+.showCountries {
+  background: white;
+  border: 0;
+  font-size: 17px;
+  color: rgb(25, 153, 238);
+}
