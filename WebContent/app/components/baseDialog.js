@@ -1,9 +1,8 @@
-
 Vue.component('base-dialog', {
 template:
 `
 <div id= "baseDialogOverlay">
-  <div class="modal fade" id="baseDialogForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" @click="check"  @hide="check" >
+  <div class="modal" id="baseDialogForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop='none' @click="check"  >
   <div class="modal-dialog modal-dialog-centered" role="document">
    <div class="modal-dialog">
     <div class="modal-content">
@@ -29,7 +28,7 @@ template:
       lastname: '',
       email: '',
       password: '',
-      storedData: '',  
+          storedData: '',
         };
     },
     mounted() {
@@ -44,11 +43,11 @@ template:
         closeRegistration() {
             this.$store.commit("closeRegistration");
         },
-        check(evt) {
-            console.log(evt.srcElement.id);
-            if (evt.srcElement.id === "baseDialogForm") {    
+      check(evt) {
+        if (evt.srcElement.id === "baseDialogForm") {
                 this.closeRegistration();
-      }
+        }
+       
             }
     },
 });
