@@ -13,10 +13,10 @@ import beans.User;
 
 public class UsersDAO {
 	private HashMap<String, User> users = new HashMap<String, User>();
-	private String path = "C:/Users/Admin/Desktop/web/WEB-projekat";;
+	private String path = "C:/Users/Admin/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
 
 	public UsersDAO() {
-		this.path = "C:/Users/Admin/Desktop/web/WEB-projekat";
+		this.path = "C:/Users/Admin/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
 		File dataDir = new File(this.path + File.separator + "data");
 		if (!dataDir.exists()) {
 			dataDir.mkdir();
@@ -100,6 +100,7 @@ public class UsersDAO {
 		if (!users.containsKey(user.getUsername())) {
 			users.put(user.getUsername(), user);
 			saveUsers();
+			System.out.println("Sacuvao"+user.getUsername());
 			return users.get(user.getUsername());
 		}
 

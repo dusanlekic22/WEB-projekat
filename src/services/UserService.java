@@ -77,8 +77,8 @@ public class UserService {
 
 		users.addUser(user);
 
-		return Response.status(Response.Status.ACCEPTED).entity("/").build(); // redirect to login
-																				// when is registration // accepted
+		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); // redirect to login
+																					// when is registration // accepted
 	}
 
 	@POST
@@ -112,6 +112,7 @@ public class UserService {
 
 		// We know this, because in users we have 3 types of instances[Administrator,
 		// Guest, Host]
+		
 		if (userForLogin.getRole().equals(UserRole.ADMINISTRATOR)) {
 			return Response.status(Response.Status.ACCEPTED).entity("/Delivery/administratorDashboard.html").build();
 
@@ -127,8 +128,8 @@ public class UserService {
 		}
 
 		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); // redirect to login
-																									// when is login
-																									// accepted
+																					// when is login
+																					// accepted
 		// return Response.ok().build();
 
 	}
