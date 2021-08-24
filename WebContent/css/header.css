@@ -21,7 +21,6 @@ input {
   padding: 0;
   width: 100%;
   transition: background 0.6s ease-in;
-  z-index: 99999;
   height: 68px;
 }
 .navbar .navbar-brand {
