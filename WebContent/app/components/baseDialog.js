@@ -22,15 +22,7 @@ template:
   
   
 `,
-    data() {
-        return {
-          firstname: '',
-      lastname: '',
-      email: '',
-      password: '',
-          storedData: '',
-        };
-    },
+   
     mounted() {
         $('#baseDialogForm').modal('show');
         let style = document.createElement('link');

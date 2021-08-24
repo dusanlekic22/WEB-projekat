@@ -5,7 +5,7 @@ Vue.component("the-header", {
     <nav class="shadow-sm navbar navbar-expand-md navbar-dark">
       <div class="container">
         <div class="col-lg-1">
-          <a href="/" class="navbar-brand">MFood</a>
+          <a href="" class="navbar-brand"><router-link to="/" class="navbar-brand">MFood</router-link></a>
         </div>
         <div class="col-lg-4"></div>
         <div class="col-lg-1" v-if="productPage"><input type="text" /></div>

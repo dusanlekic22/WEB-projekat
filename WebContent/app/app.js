@@ -1,4 +1,4 @@
-const HomeComponent = { template: '<home></home>'}
+const HomeComponent = { template: '<home></home>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -22,6 +22,9 @@ const router = new VueRouter({
 });
 
 const store = new Vuex.Store({
+  modules: {
+    registrationModule:registrationStore
+  },
   state: {
       registrationActive: false,
   },
@@ -46,27 +49,12 @@ const store = new Vuex.Store({
       return state.registrationActive;
     }
   },
-  modules: {},
 })
 
 const app = new Vue({
   store,
   router,
   el: '#app',
-  data()
-  {
-    return{
-      registration: false
-    };
-  },
-  methods: {
-    openSignIn() {
-      this.registration = true;
-    }
-  },
-  provide: {
-    registr: this.registration
-  }
 });
 
 

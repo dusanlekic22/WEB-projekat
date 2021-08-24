@@ -47,26 +47,43 @@ Vue.component('home', {
         </button>
            </template>
       <template v-slot:body>
+      <keep-alive>
        <form>
         <div class="modal-body">
+         <div class="form-group">
+            <label for="username">Username</label>
+            <input type="username" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username" v-model="username">
+            <small id="usernameHelp" class="form-text text-muted">Your information is safe with us.</small>
+          </div>
+            <div class="form-group">
+            <label for="password1">Password {{ password }}</label>
+            <input type="password" class="form-control" id="password1" placeholder="Password" v-model="password">
+          </div>
+          <div class="form-group">
+            <label for="password1">Confirm Password</label>
+            <input type="password" class="form-control" id="password2" placeholder="Confirm Password" v-model="confirmPassword">
+          </div>
           <div class="form-group">
             <label for="email1">Email address</label>
             <input type="email" class="form-control" id="email1" aria-describedby="emailHelp" placeholder="Enter email">
             <small id="emailHelp" class="form-text text-muted">Your information is safe with us.</small>
           </div>
           <div class="form-group">
-            <label for="password1">Password</label>
-            <input type="password" class="form-control" id="password1" placeholder="Password">
+           <label for="gender">Pol</label>
+           <input class="radioRegistration" type="radio" v-model="gender" value="man"/>man
+           <input class="radioRegistration" type="radio" v-model="gender" value="woman"/>woman
+           <br />
           </div>
           <div class="form-group">
-            <label for="password1">Confirm Password</label>
-            <input type="password" class="form-control" id="password2" placeholder="Confirm Password">
+           <label for="dateofbirth">Datum rodjenja </label><br/>
+          <input type="date" name="dateofbirth" id="dateofbirth" v-model="dateofbirth">
           </div>
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
-          <button type="submit" class="btn btn-success">Submit</button>
+          <button type="submit" class="btn btn-success" @click.prevent="submit">Submit</button>
         </div>
       </form>
+      </keep-alive>
       </template>
       </base-dialog>
   </div>
@@ -74,6 +91,14 @@ Vue.component('home', {
   name: "Home",
   data() {
     return {
+      username: '',
+      password: '',
+      confirmPassword: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      gender: '',
+      dateofbirth: '',
       cities: [
         {
           id: 12,
@@ -117,7 +142,25 @@ Vue.component('home', {
   methods: {
     closeRegistration() {
       this.$store.commit('closeRegistration');
+    },
+    submit() {
+      console.log( this.$store.getters['registrationModule/module'])
+      this.$store.dispatch(
+       'registrationModule/register',
+        {
+          username: this.username,
+          password: this.password,
+          confirmPassword: this.confirmPassword,
+          firstname:  this.firstname,
+          lastname: this.lastname,
+          email: this.email,
+          gender: this.gender,
+          dateofbirth: this.dateofbirth,
+        }
+      );
+     
     }
+    
   },
 
 });
