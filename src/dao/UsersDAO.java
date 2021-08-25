@@ -26,9 +26,10 @@ public class UsersDAO {
 	}
 
 	public UsersDAO(String contextPath) {
-
-		loadUsers(contextPath);
+		
 		this.path = contextPath;
+		loadUsers(contextPath);
+		
 
 	}
 
