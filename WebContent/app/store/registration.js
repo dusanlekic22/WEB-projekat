@@ -17,7 +17,7 @@ var registrationStore = {
             axios.post('rest/users/registration', {
                         "username": payload.username,
                         "password": payload.password,
-                        "role": "User"
+                        "role": "CUSTOMER"
                     })
                     .then(response => {
                         this.message = response.data;
