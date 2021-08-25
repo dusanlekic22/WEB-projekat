@@ -21,7 +21,11 @@ Vue.component("the-header", {
         <div id="main-nav" class="collapse navbar-collapse">
           <ul class="navbar-nav ms-auto">
             <li>
-              <router-link class="nav-link" to="/Prijava">Prijava</router-link>
+              <router-link
+                class="nav-link"
+                to="/"
+                @click.native="openLogin"
+                >Prijava</router-link>
             </li>
             <li>
               <router-link
@@ -47,6 +51,9 @@ Vue.component("the-header", {
     openRegistration() {
       this.$store.commit("openRegistration");
     },
+     openLogin() {
+      this.$store.commit('loginModule/openLogin');
+    }
   },
     mounted() {
         let style = document.createElement('link');

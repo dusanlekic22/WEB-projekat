@@ -86,6 +86,35 @@ Vue.component('home', {
       </keep-alive>
       </template>
       </base-dialog>
+
+    <base-dialog v-if="isLogin">
+    <template v-slot:header>
+        <h5 class="modal-title" id="exampleModalLabel">Login </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeLogin">
+        X
+        </button>
+           </template>
+      <template v-slot:body>
+      <keep-alive>
+       <form>
+        <div class="modal-body">
+         <div class="form-group">
+            <label for="loginUsername">Username</label>
+            <input type="username" class="form-control" id="loginUsername" aria-describedby="loginUsernameHelp" placeholder="Enter username" v-model="loginUsername">
+            <small id="loginUsernameHelp" class="form-text text-muted">Your information is safe with us.</small>
+          </div>
+            <div class="form-group">
+            <label for="loginPassword">Password {{ loginPassword }}</label>
+            <input type="loginPassword" class="form-control" id="loginPassword" placeholder="Password" v-model="loginPassword">
+          </div>
+        <div class="modal-footer border-top-0 d-flex justify-content-center">
+          <button type="submit" class="btn btn-success" @click.prevent="login">Login</button>
+          </div>
+        </div>
+      </form>
+      </keep-alive>
+      </template>
+      </base-dialog>
   </div>
   `,
   name: "Home",
@@ -99,6 +128,8 @@ Vue.component('home', {
       email: '',
       gender: '',
       dateofbirth: '',
+      loginUsername: '',
+      loginPassword: '',   
       cities: [
         {
           id: 12,
@@ -137,11 +168,17 @@ Vue.component('home', {
   computed: {
     isRegistration() {
      return this.$store.getters.isActive;
-     }
+    },
+    isLogin() {
+       return this.$store.getters['loginModule/isLoginActive'];
+    }
   },
   methods: {
     closeRegistration() {
       this.$store.commit('closeRegistration');
+    },
+    closeLogin() {
+      this.$store.commit('loginModule/closeLogin');
     },
     submit() {
       console.log( this.$store.getters['registrationModule/module'])
@@ -158,8 +195,16 @@ Vue.component('home', {
           dateofbirth: this.dateofbirth,
         }
       );
-     
-    }
+    },
+    login() {
+        this.$store.dispatch(
+       'loginModule/login',
+        {
+          loginUsername: this.loginUsername,
+          loginPassword: this.loginPassword
+        }
+      );
+   }
     
   },
 

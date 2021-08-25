@@ -34,11 +34,16 @@ template:
     methods: {
         closeRegistration() {
             this.$store.commit("closeRegistration");
-        },
+      },
+      closeLogin() {
+      this.$store.commit('loginModule/closeLogin');
+     },
       check(evt) {
         if (evt.srcElement.id === "baseDialogForm") {
-                this.closeRegistration();
+          this.closeRegistration();
+          this.closeLogin();
         }
+        
        
             }
     },
