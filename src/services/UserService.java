@@ -12,6 +12,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import beans.User;
 import beans.enums.UserRole;
 import dao.UsersDAO;
@@ -81,13 +84,13 @@ public class UserService {
 																					// when is registration // accepted
 	}
 
-	/*@POST
+	@POST
 	@Path("/login")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response login(User user) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-
+		ObjectMapper objectMapper = new ObjectMapper();
 		User userForLogin = users.getUserByUsername(user.getUsername());
 
 		if (userForLogin == null) {
@@ -120,23 +123,35 @@ public class UserService {
 			return Response.status(Response.Status.ACCEPTED).entity("/Delivery/deliveryDashboard.html").build();
 
 		} else if (userForLogin.getRole().equals(UserRole.CUSTOMER)) {
-			return Response.status(Response.Status.ACCEPTED).entity("/Delivery/customerDashboard.html").build();
+			try {
+				return Response.status(Response.Status.ACCEPTED).entity(objectMapper.writeValueAsString(userForLogin)).build();
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
 
 		}
 
-		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); 
+		try {
+			return Response.status(Response.Status.ACCEPTED).entity(objectMapper.writeValueAsString(userForLogin)).build();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
 
-	}*/
+	}
 	
-	@POST
+	/*@POST
 	@Path("/login")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public User login(User user) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-
+		System.out.println(users.getValues());
 		User userForLogin = users.getUserByUsername(user.getUsername());
-
+		System.err.println(userForLogin.getUsername());
+		
 		if (userForLogin == null) {
 			System.out.println("Nema takvog usera");
 			return null;
@@ -156,7 +171,7 @@ public class UserService {
 		
 		return userForLogin;
 
-	}
+	}*/
 
 	private boolean isUserManager() {
 		User user = (User) request.getSession().getAttribute("loginUser");

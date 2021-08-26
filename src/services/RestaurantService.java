@@ -69,7 +69,7 @@ public class RestaurantService {
 		return Response.status(200).entity(restaurants.find(name)).build();
 	}
 
-	@POST
+	/*@POST
 	@Path("/addRestaurant")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -112,7 +112,7 @@ public class RestaurantService {
 
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
-	}
+	}*/
 
 	@GET
 	@Path("/search")
