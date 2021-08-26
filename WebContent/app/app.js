@@ -13,7 +13,8 @@ const router = new VueRouter({
 
 const store = new Vuex.Store({
   modules: {
-    registrationModule:registrationStore
+    registrationModule: registrationStore,
+		loginModule: loginStore
   },
   state: {
       registrationActive: false,

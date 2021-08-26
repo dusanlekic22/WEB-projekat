@@ -2,26 +2,20 @@ Vue.component("the-header", {
 
   template: `
   <header class="header-area overlay">
-    <nav class="shadow-sm navbar navbar-expand-md navbar-dark">
-      <div class="container">
-        <div class="col-lg-1">
-          <a href="" class="navbar-brand"><router-link to="/" class="navbar-brand">MFood</router-link></a>
-        </div>
-        <div class="col-lg-4"></div>
-        <div class="col-lg-1" v-if="productPage"><input type="text" /></div>
-        <div class="col-lg-1">
-          <button
-            class="navbar-toggler"
-            data-toggle="collapse"
-            data-target="#main-nav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </div>
-        <div id="main-nav" class="collapse navbar-collapse">
-          <ul class="navbar-nav ms-auto">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
+    <div class="container">
+      <router-link to="/" class="navbar-brand">MFood</router-link>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto w-100 justify-content-end">
             <li>
-              <router-link class="nav-link" to="/Prijava">Prijava</router-link>
+              <router-link
+                class="nav-link"
+                to="/"
+                @click.native="openLogin"
+                >Prijava</router-link>
             </li>
             <li>
               <router-link
@@ -31,10 +25,12 @@ Vue.component("the-header", {
                 >Registrovanje</router-link
               >
             </li>
-          </ul>
-        </div>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
+
+
   </header>
 `,
 
@@ -47,6 +43,9 @@ Vue.component("the-header", {
     openRegistration() {
       this.$store.commit("openRegistration");
     },
+     openLogin() {
+      this.$store.commit('loginModule/openLogin');
+    }
   },
     mounted() {
         let style = document.createElement('link');
