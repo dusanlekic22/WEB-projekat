@@ -81,7 +81,7 @@ public class UserService {
 																					// when is registration // accepted
 	}
 
-	@POST
+	/*@POST
 	@Path("/login")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -125,6 +125,36 @@ public class UserService {
 		}
 
 		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); 
+
+	}*/
+	
+	@POST
+	@Path("/login")
+	@Produces(MediaType.TEXT_HTML)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User login(User user) {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+
+		User userForLogin = users.getUserByUsername(user.getUsername());
+
+		if (userForLogin == null) {
+			System.out.println("Nema takvog usera");
+			return null;
+		}
+
+		if (!userForLogin.getPassword().equals(user.getPassword())) {
+			System.out.println("SIFRE NISU JEDNAKE");
+			return null;
+		}
+
+		if (users.isBlocked(user.getUsername())) {
+			System.out.println("blokiran je");
+			return null;
+		}
+
+		request.getSession().setAttribute("loginUser", userForLogin); 
+		
+		return userForLogin;
 
 	}
 
