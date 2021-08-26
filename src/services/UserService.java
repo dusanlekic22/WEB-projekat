@@ -108,10 +108,7 @@ public class UserService {
 					.build();
 		}
 
-		request.getSession().setAttribute("loginUser", userForLogin); // we give him a session
-
-		// We know this, because in users we have 3 types of instances[Administrator,
-		// Guest, Host]
+		request.getSession().setAttribute("loginUser", userForLogin); 
 		
 		if (userForLogin.getRole().equals(UserRole.ADMINISTRATOR)) {
 			return Response.status(Response.Status.ACCEPTED).entity("/Delivery/administratorDashboard.html").build();
@@ -127,25 +124,11 @@ public class UserService {
 
 		}
 
-		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); // redirect to login
-																					// when is login
-																					// accepted
-		// return Response.ok().build();
+		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); 
 
 	}
 
 	private boolean isUserManager() {
-		User user = (User) request.getSession().getAttribute("loginUser");
-
-		if (user != null) {
-			if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isUserDelivery() {
 		User user = (User) request.getSession().getAttribute("loginUser");
 
 		if (user != null) {
@@ -156,7 +139,7 @@ public class UserService {
 		return false;
 	}
 
-	private boolean isUserCustomer() {
+	private boolean isUserDelivery() {
 		User user = (User) request.getSession().getAttribute("loginUser");
 
 		if (user != null) {
@@ -167,11 +150,22 @@ public class UserService {
 		return false;
 	}
 
-	private boolean isUserAdmin() {
+	private boolean isUserCustomer() {
 		User user = (User) request.getSession().getAttribute("loginUser");
 
 		if (user != null) {
 			if (user.getRole().equals(UserRole.CUSTOMER)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isUserAdmin() {
+		User user = (User) request.getSession().getAttribute("loginUser");
+
+		if (user != null) {
+			if (user.getRole().equals(UserRole.ADMINISTRATOR)) {
 				return true;
 			}
 		}

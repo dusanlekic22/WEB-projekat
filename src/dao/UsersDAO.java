@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.Restaurant;
 import beans.User;
 
 public class UsersDAO {
@@ -29,7 +30,6 @@ public class UsersDAO {
 		
 		this.path = contextPath;
 		loadUsers(contextPath);
-		
 
 	}
 
@@ -107,6 +107,20 @@ public class UsersDAO {
 		}
 
 		return null;
+	}
+	
+	public void addRestaurant(User updatedUser,Restaurant restaurant) {
+		
+		for (User user : users.values()) {
+			if (user.getUsername().equals(updatedUser.getUsername())) {
+				
+				if(!user.getRestaurant().equals(restaurant))
+					user.setRestaurant(restaurant);
+				
+				saveUsers();
+				return;
+			}
+		}
 	}
 
 	public User getUserByUsername(String username) {
