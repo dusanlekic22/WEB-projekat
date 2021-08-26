@@ -2,20 +2,7 @@ Vue.component('home', {
   template:
   `
   <div class="container-fluid">
-    <section>
-      <div id="searchSection">
-        <div class="container py-5">
-          <div class="row py-4">
-            <div class="col-lg-7 pt-5 text-center">
-              <h1 class="pt-5">
-                Želiš da isprobaš nešto novo?
-              </h1>
-              <places></places>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <online-restaurants></online-restaurants>
     <section class="mt-5 cards-section">
     <div class="container">
       <h2>Istraži gradove u kojima ćeš naći MFOOD</h2>
@@ -129,7 +116,7 @@ Vue.component('home', {
       gender: '',
       dateofbirth: '',
       loginUsername: '',
-      loginPassword: '',   
+      loginPassword: '',
       cities: [
         {
           id: 12,
@@ -205,7 +192,7 @@ Vue.component('home', {
         }
       );
    }
-    
+
   },
 
 });
