@@ -3,7 +3,8 @@ var loginStore = {
     state() {
         return {
             module: 'logovanje',
-            loginActive: false
+            loginActive: false,
+            user: {}
         };
     },
     mutations: {
@@ -24,6 +25,8 @@ var loginStore = {
                     this.message = response.data;
                     console.log("\n\n ------- PODACI -------\n");
                     console.log(response.data);
+                    this.user = response.data;
+                    context.commit('userModule/setUser', this.user, { root: true })
                     console.log("\n\n ----------------------\n\n");
                     
                 })
@@ -32,6 +35,9 @@ var loginStore = {
                     console.log(err);
                     console.log("\n\n ----------------------\n\n");
                 });
+                // this.$store.commit('userModule/setUser', this.user);
+            //console.log(context.mutations['userModule/setUser']);
+         
         }
     },
         getters: {

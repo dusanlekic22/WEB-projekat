@@ -1,4 +1,5 @@
 const HomeComponent = { template: '<home></home>' }
+const ProfileComponent = { template: '<profile></profile>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -7,14 +8,20 @@ const router = new VueRouter({
     path: '/',
     name: 'Home',
     component: HomeComponent
-  }
+      },
+      {
+        path: '/Profil',
+        name: 'Profil',
+        component: ProfileComponent
+      }
 	  ]
 });
 
 const store = new Vuex.Store({
   modules: {
     registrationModule: registrationStore,
-		loginModule: loginStore
+    loginModule: loginStore,
+    userModule: userStore
   },
   state: {
       registrationActive: false,

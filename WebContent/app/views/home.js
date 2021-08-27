@@ -50,15 +50,19 @@ Vue.component('home', {
             <label for="password1">Confirm Password</label>
             <input type="password" class="form-control" id="password2" placeholder="Confirm Password" v-model="confirmPassword">
           </div>
+           <div class="form-group">
+            <label for="firstname">Name</label>
+            <input type="firstname" class="form-control" id="firstname" aria-describedby="firstnameHelp" placeholder="Enter name" v-model="firstname">
+            <small id="firstnameHelp" class="form-text text-muted">Your information is safe with us.</small>
+          </div>
           <div class="form-group">
-            <label for="email1">Email address</label>
-            <input type="email" class="form-control" id="email1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">Your information is safe with us.</small>
+            <label for="surname">Surname </label>
+            <input type="surname" class="form-control" id="surname" placeholder="Enter surname" v-model="surname">
           </div>
           <div class="form-group">
            <label for="gender">Pol</label>
-           <input class="radioRegistration" type="radio" v-model="gender" value="man"/>man
-           <input class="radioRegistration" type="radio" v-model="gender" value="woman"/>woman
+           <input class="radioRegistration" type="radio" v-model="gender" value="MALE"/>MALE
+           <input class="radioRegistration" type="radio" v-model="gender" value="FEMALE"/>FEMALE
            <br />
           </div>
           <div class="form-group">
@@ -111,8 +115,7 @@ Vue.component('home', {
       password: '',
       confirmPassword: '',
       firstname: '',
-      lastname: '',
-      email: '',
+      surname: '',
       gender: '',
       dateofbirth: '',
       loginUsername: '',
@@ -175,11 +178,10 @@ Vue.component('home', {
           username: this.username,
           password: this.password,
           confirmPassword: this.confirmPassword,
-          firstname:  this.firstname,
-          lastname: this.lastname,
-          email: this.email,
+          name:  this.firstname,
+          surname: this.surname,
           gender: this.gender,
-          dateofbirth: this.dateofbirth,
+          dateOfBirth: this.dateofbirth,
         }
       );
     },

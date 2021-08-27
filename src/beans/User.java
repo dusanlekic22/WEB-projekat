@@ -1,6 +1,6 @@
 package beans;
 
-import java.time.LocalDate;
+import java.time.String;
 import java.util.ArrayList;
 
 import beans.enums.Gender;
@@ -12,7 +12,7 @@ public class User {
 	private String name;
 	private String surname;
 	private Gender gender;
-	private LocalDate dateOfBirth;
+	private String dateOfBirth;
 	private UserRole role;
 	private ArrayList<Order> customerOrders;
 	private Cart cart;
@@ -28,7 +28,7 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String username, String password, String name, String surname, Gender gender, LocalDate dateOfBirth,
+	public User(String username, String password, String name, String surname, Gender gender, String dateOfBirth,
 			UserRole role, ArrayList<Order> customerOrders, Cart cart, Restaurant restaurant,
 			ArrayList<Order> deliveryOrders, int points, CustomerType type, boolean blocked) {
 		super();
@@ -88,11 +88,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public LocalDate getDateOfBirth() {
+	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(LocalDate dateOfBirth) {
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

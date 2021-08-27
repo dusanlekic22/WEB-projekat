@@ -25,6 +25,20 @@ Vue.component("the-header", {
                 >Registrovanje</router-link
               >
             </li>
+            <li v-if="isLogged">
+              <router-link
+                class="nav-link"
+                to="/Profil"
+                >Profil</router-link
+              >
+            </li>
+            <li v-if="isAdmin">
+              <router-link
+                class="nav-link"
+                to="/CRUD"
+                >CRUD</router-link
+              >
+            </li>
         </ul>
       </div>
     </div>
@@ -55,6 +69,14 @@ Vue.component("the-header", {
         document.head.appendChild(style);
     }
   ,
+  computed: {
+    isLogged() {
+      return this.$store.getters['userModule/logged'];
+    },
+    isAdmin() {
+      return this.$store.getters['userModule/isAdmin'];
+      }
+    }
 
 
 
