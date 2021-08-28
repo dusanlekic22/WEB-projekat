@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Restaurant;
 import beans.User;
+import beans.enums.UserRole;
 
 public class UsersDAO {
 	private HashMap<String, User> users = new HashMap<String, User>();
@@ -48,8 +51,14 @@ public class UsersDAO {
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			System.out.println("Ne postoje podaci za korisnike.");
+			try {
+				objectMapper.writeValue(new File(this.path + "/users.json"), null);
+			} catch (IOException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+		} 
 
 	}
 
@@ -102,7 +111,6 @@ public class UsersDAO {
 		if (!users.containsKey(user.getUsername())) {
 			users.put(user.getUsername(), user);
 			saveUsers();
-			System.out.println("Sacuvao"+user.getUsername());
 			return users.get(user.getUsername());
 		}
 
@@ -134,6 +142,17 @@ public class UsersDAO {
 	public boolean isBlocked(String username) {
 
 		return (getUserByUsername(username).isBlocked()) ? true : false;
+	}
+	
+	public boolean checkUserRole(HttpServletRequest request, UserRole role) {
+		User user = (User) request.getSession().getAttribute("loginUser");
+
+		if (user != null) {
+			if (user.getRole().equals(role)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
