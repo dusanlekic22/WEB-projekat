@@ -39,7 +39,6 @@ public class UsersDAO {
 		File file = new File(contextPath + "/users.json");
 
 		try {
-
 			users = objectMapper.readValue(file, new TypeReference<HashMap<String, User>>() {
 			});
 

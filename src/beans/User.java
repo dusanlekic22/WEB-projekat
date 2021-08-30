@@ -1,6 +1,5 @@
 package beans;
 
-import java.time.String;
 import java.util.ArrayList;
 
 import beans.enums.Gender;

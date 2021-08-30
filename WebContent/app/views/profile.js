@@ -12,20 +12,20 @@ Vue.component('profile', {
           </div>
             <div class="form-group">
             <label for="password1">Password {{ password }}</label>
-            <input type="password" class="form-control" id="password1" placeholder="Password" v-model="password">
+            <input type="password" class="form-control" id="password1" :placeholder="password" v-model="password">
           </div>
           <div class="form-group">
-            <label for="password1">Confirm Password</label>
-            <input type="password" class="form-control" id="password2" placeholder="Confirm Password" v-model="confirmPassword">
+            <label for="password1">Confirm Password {{ confirmPassword }}</label>
+            <input type="password" class="form-control" id="password2" :placeholder="confirmPassword" v-model="confirmPassword">
           </div>
            <div class="form-group">
-            <label for="firstname">Name</label>
-            <input type="firstname" class="form-control" id="firstname" aria-describedby="firstnameHelp" placeholder="Enter name" v-model="firstname">
+            <label for="firstname">Name {{ firstname }}</label>
+            <input type="firstname" class="form-control" id="firstname" aria-describedby="firstnameHelp" :placeholder="firstname" v-model="firstname">
             <small id="firstnameHelp" class="form-text text-muted">Your information is safe with us.</small>
           </div>
           <div class="form-group">
-            <label for="surname">Surname </label>
-            <input type="surname" class="form-control" id="surname" placeholder="Enter surname" v-model="surname">
+            <label for="surname">Surname {{ surname }}</label>
+            <input type="surname" class="form-control" id="surname" :placeholder="surname" v-model="surname">
           </div>
           <div class="form-group">
            <label for="gender">Pol</label>
@@ -34,7 +34,7 @@ Vue.component('profile', {
            <br />
           </div>
           <div class="form-group">
-           <label for="dateofbirth">Datum rodjenja </label><br/>
+           <label for="dateofbirth">Datum rodjenja {{ dateofbirth }} </label><br/>
           <input type="date" name="dateofbirth" id="dateofbirth" v-model="dateofbirth">
           </div>
         </div>
@@ -67,6 +67,12 @@ Vue.component('profile', {
        document.head.appendChild(style);
        
        this.username = this.$store.getters['userModule/user'].username;
+       this.password = this.$store.getters['userModule/user'].password;
+       this.confirmPassword = this.$store.getters['userModule/user'].confirmPassword;
+       this.dateofbirth = this.$store.getters['userModule/user'].dateofbirth;
+       this.firstname = this.$store.getters['userModule/user'].first;
+       this.surname = this.$store.getters['userModule/user'].surname;
+       this.gender = this.$store.getters['userModule/user'].gender;
 
   },
   computed: {

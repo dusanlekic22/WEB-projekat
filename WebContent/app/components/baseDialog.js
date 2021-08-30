@@ -1,8 +1,8 @@
 Vue.component('base-dialog', {
 template:
 `
-<div id= "baseDialogOverlay">
-  <div class="modal" id="baseDialogForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop='none' @click="check"  >
+<div id= "baseDialogOverlay"> 
+  <div class="modal" id="baseDialogForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop='static' data-keyboard="false" >
   <div class="modal-dialog modal-dialog-centered" role="document">
    <div class="modal-dialog">
     <div class="modal-content">
@@ -12,7 +12,7 @@ template:
        <slot name="body"></slot>
     </div>
       <div class="modal-footer">
-            <slot name="footer"></slot>
+        <slot name="footer"></slot>
      </div>
     </div>
   </div>
@@ -39,12 +39,16 @@ template:
       this.$store.commit('loginModule/closeLogin');
      },
       check(evt) {
+        console.log("zatvaranje")
+        console.log(evt);
         if (evt.srcElement.id === "baseDialogForm") {
+          $("#baseDialogForm").mousedown(function(){
+        console.log("Mouse button released.");
+}); 
           this.closeRegistration();
           this.closeLogin();
+         
         }
-        
-       
-            }
+      },
     },
 });
