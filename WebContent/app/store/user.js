@@ -22,7 +22,26 @@ var userStore = {
             console.log(state.user);
         },
     },
-    actions: {},
+    actions: {
+   setCurrentUser(context, payload) {
+             axios
+                .get('rest/edit/profileUser')
+                .then(response => {
+                    console.log("\n\n ------- Ulogovani -------\n");
+                    console.log(response.data);
+                    context.state.user = response.data;
+                    context.commit('setUser', context.state.user);
+                    console.log("\n\n ----------------------\n\n");
+                    
+                })
+                .catch(err => {
+                    console.log("\n\n ------- ERROR -------\n");
+                    console.log(err);
+                    console.log("\n\n ----------------------\n\n");
+                });
+        }
+
+    },
     getters: {
         module(state) {
             return state.module;

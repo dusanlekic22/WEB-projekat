@@ -67,6 +67,7 @@ Vue.component("the-header", {
         style.rel = "stylesheet";
         style.href = 'css/header.css';
         document.head.appendChild(style);
+        return this.$store.dispatch('userModule/setCurrentUser');
     }
   ,
   computed: {
