@@ -1,5 +1,7 @@
 const HomeComponent = { template: '<home></home>' }
-const ProfileComponent = { template: '<profile></profile>'}
+const ProfileComponent = { template: '<profile></profile>' }
+const AdministratorCrudComponent = { template: '<administrator-crud></administrator-crud>' }
+const CreateRestaurantComponent = { template: '<create-restaurant></create-restaurant>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -13,6 +15,19 @@ const router = new VueRouter({
         path: '/Profil',
         name: 'Profil',
         component: ProfileComponent
+      },
+       {
+        path: '/AdministratorCrud',
+        name: 'AdministratorCrud',
+        component: AdministratorCrudComponent
+      },
+        {
+        path: '/CreateRestaurant',
+        name: 'CreateRestaurant',
+          component: CreateRestaurantComponent,
+          children: [
+          { name:'create-manager-for-restaurant', path: 'manager', component: AdministratorCrudComponent}
+        ]
       }
 	  ]
 });
