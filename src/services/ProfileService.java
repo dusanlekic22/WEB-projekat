@@ -12,6 +12,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import beans.User;
 import beans.enums.UserRole;
 import dao.UsersDAO;
@@ -54,14 +57,20 @@ public class ProfileService {
 	@Path("/saveUserChanges")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveProileChanges(User updatedUser) {
+	public Response saveProfileChanges(User updatedUser) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-
+		ObjectMapper objectMapper = new ObjectMapper();
 		if (users.checkUserRole(request, UserRole.ADMINISTRATOR) || users.checkUserRole(request, UserRole.MANAGER)
 				|| users.checkUserRole(request, UserRole.CUSTOMER) || users.checkUserRole(request, UserRole.DELIVERY)) {
-
-			users.updateUser(updatedUser);
-			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").build();
+			User user = (User) request.getSession().getAttribute("loginUser");
+			users.updateUser(updatedUser,user);
+			request.getSession().setAttribute("loginUser",updatedUser);
+			try {
+				return Response.status(Response.Status.ACCEPTED).entity(objectMapper.writeValueAsString(updatedUser)).build();
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 

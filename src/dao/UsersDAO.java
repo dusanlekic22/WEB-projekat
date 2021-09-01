@@ -17,7 +17,8 @@ import beans.enums.UserRole;
 
 public class UsersDAO {
 	private HashMap<String, User> users = new HashMap<String, User>();
-	private String path ;//= "C:/Users/papov/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
+	private String path;// =
+						// "C:/Users/papov/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
 
 	public UsersDAO() {
 //		this.path = "C:/Users/papov/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
@@ -30,7 +31,7 @@ public class UsersDAO {
 	}
 
 	public UsersDAO(String contextPath) {
-		
+
 		this.path = contextPath;
 		loadUsers(contextPath);
 
@@ -57,7 +58,7 @@ public class UsersDAO {
 				// TODO Auto-generated catch block
 				ex.printStackTrace();
 			}
-		} 
+		}
 
 	}
 
@@ -75,19 +76,12 @@ public class UsersDAO {
 		return users;
 	}
 
-	public Boolean updateUser(User updatedItem) {
+	public Boolean updateUser(User updatedItem, User loggedUser) {
 
-		for (User item : users.values()) {
-			System.out.println("UPOREDJUJEM I MENJAM " + item.getUsername() + " I " + updatedItem.getUsername());
-			if (item.getUsername() == updatedItem.getUsername()) {
-				users.remove(item.getUsername());
-				users.put(updatedItem.getUsername(), updatedItem);
-				saveUsers();
-				return true;
-			}
-		}
-
-		return false;
+		users.remove(loggedUser.getUsername());
+		users.put(updatedItem.getUsername(), updatedItem);
+		saveUsers();
+		return true;
 
 	}
 
@@ -115,15 +109,15 @@ public class UsersDAO {
 
 		return null;
 	}
-	
-	public void addRestaurant(User updatedUser,Restaurant restaurant) {
-		
+
+	public void addRestaurant(User updatedUser, Restaurant restaurant) {
+
 		for (User user : users.values()) {
 			if (user.getUsername().equals(updatedUser.getUsername())) {
-				
-				if(!user.getRestaurant().equals(restaurant))
+
+				if (!user.getRestaurant().equals(restaurant))
 					user.setRestaurant(restaurant);
-				
+
 				saveUsers();
 				return;
 			}
@@ -142,7 +136,7 @@ public class UsersDAO {
 
 		return (getUserByUsername(username).isBlocked()) ? true : false;
 	}
-	
+
 	public boolean checkUserRole(HttpServletRequest request, UserRole role) {
 		User user = (User) request.getSession().getAttribute("loginUser");
 

@@ -57,6 +57,7 @@ Vue.component('profile', {
       dateofbirth: '',
       loginUsername: '',
       loginPassword: '',
+      role: ''
     };
   },
    mounted() {
@@ -65,7 +66,6 @@ Vue.component('profile', {
         style.rel = "stylesheet";
         style.href = 'css/profile.css';
        document.head.appendChild(style);
-       
        this.username = this.$store.getters['userModule/user'].username;
        this.password = this.$store.getters['userModule/user'].password;
        this.confirmPassword = this.$store.getters['userModule/user'].confirmPassword;
@@ -73,11 +73,27 @@ Vue.component('profile', {
        this.firstname = this.$store.getters['userModule/user'].first;
        this.surname = this.$store.getters['userModule/user'].surname;
        this.gender = this.$store.getters['userModule/user'].gender;
+       this.role = this.$store.getters['userModule/user'].role;
 
   },
   computed: {
   },
   methods: {
+    submit() {
+       this.$store.dispatch(
+       'userModule/editUser',
+        {
+          username: this.username,
+          password: this.password,
+          confirmPassword: this.confirmPassword,
+          name:  this.firstname,
+          surname: this.surname,
+          gender: this.gender,
+          dateOfBirth: this.dateofbirth,
+          role: this.role
+        }
+      );
+    }
   },
 
 });
