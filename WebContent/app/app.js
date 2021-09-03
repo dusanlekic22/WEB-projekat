@@ -36,7 +36,8 @@ const store = new Vuex.Store({
   modules: {
     registrationModule: registrationStore,
     loginModule: loginStore,
-    userModule: userStore
+    userModule: userStore,
+		managerModule: managerStore
   },
   state: {
       registrationActive: false,

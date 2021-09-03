@@ -66,6 +66,7 @@ public class UsersDAO {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			objectMapper.writeValue(new File(this.path + "/users.json"), this.users);
+			objectMapper.writeValue(new File(this.path + "../../../../../../Web-projekat/WebContent/users.json"), this.users);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -130,6 +131,17 @@ public class UsersDAO {
 		}
 
 		return null;
+	}
+	
+	public HashMap<String, User> getManagers() {
+		HashMap<String, User> managers = new HashMap<String, User>();
+				users.forEach((k, v) -> {
+		            if( v.getRole().equals(UserRole.MANAGER)) {
+		            	managers.put(k,v);
+		            }
+		        });
+
+		return managers;
 	}
 
 	public boolean isBlocked(String username) {

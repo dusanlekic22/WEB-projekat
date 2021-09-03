@@ -26,10 +26,14 @@ Vue.component('create-restaurant', {
           <div class="imageRestaurant">
             <img :src="restaurantImage" >
           </div>
-           <input type="file"  @change=uploadImage id="file-input" v-model="restaurantImage">
-           <br />
+           <input type="file"  @change=uploadImage id="file-input" >
+          <br />
           </div>
-
+          <div class="form-group">
+          <select>
+            <option v-for="m in freeManagers" value="0"> Menadzer </option>
+          </select>
+          </div>
 
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
@@ -48,6 +52,7 @@ Vue.component('create-restaurant', {
       restaurantLocation: '',
       restaurantImage: null,
       restaurantManager: null,
+      freeManagers: []
     };
   },
    mounted() {
@@ -56,8 +61,7 @@ Vue.component('create-restaurant', {
         style.rel = "stylesheet";
         style.href = 'css/createRestaurant.css';
        document.head.appendChild(style);
-  },
-  computed: {
+       this.getFreeManagers();
   },
     methods: {
       submit() {
@@ -85,7 +89,15 @@ Vue.component('create-restaurant', {
                     this.restaurantImage = e.target.result;
                     console.log(this.restaurantImage);
                 };
-            }
+            },
+        getFreeManagers(){
+         this.$store.dispatch('managerModule/getFreeManagers');
+        }
   },
-
+  computed: {
+    freeManager(){
+      return this.$store.getters['managerModule/freeManagers'];
+      console.log('pozvan sam');
+    }
+  }
 });

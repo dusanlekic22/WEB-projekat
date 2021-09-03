@@ -10,15 +10,15 @@ Vue.component("the-header", {
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto w-100 justify-content-end">
-            <li>
+            <li v-if="!isLogged">
               <router-link
                 class="nav-link"
                 to="/"
                 @click.native="openLogin"
                 >Prijava</router-link>
             </li>
-            <li>
-              <router-link
+            <li v-if="!isLogged">
+              <router-link 
                 class="nav-link"
                 to="/"
                 @click.native="openRegistration"
