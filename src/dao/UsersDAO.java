@@ -115,8 +115,10 @@ public class UsersDAO {
 		for (User user : users.values()) {
 			if (user.getUsername().equals(updatedUser.getUsername())) {
 
-				if (!user.getRestaurant().equals(restaurant))
-					user.setRestaurant(restaurant);
+				if (user.getRestaurant() != null)
+					if (user.getRestaurant().equals(restaurant))
+						return;
+				user.setRestaurant(restaurant);
 
 				saveUsers();
 				return;

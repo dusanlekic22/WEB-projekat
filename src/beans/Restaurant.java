@@ -1,13 +1,14 @@
 package beans;
 
 import java.awt.Image;
+import java.util.ArrayList;
 
 import beans.enums.RestaurantStatus;
 
 public class Restaurant {
 	private String name;
 	private String type;
-	private String articles;
+	private ArrayList<Article> articles;
 	private RestaurantStatus status;
 	private Location location;
 	private Image image;
@@ -17,7 +18,7 @@ public class Restaurant {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Restaurant(String name, String type, String articles, RestaurantStatus status, Location location,
+	public Restaurant(String name, String type, ArrayList<Article> articles, RestaurantStatus status, Location location,
 			Image image) {
 		super();
 		this.name = name;
@@ -44,11 +45,11 @@ public class Restaurant {
 		this.type = type;
 	}
 
-	public String getArticles() {
+	public ArrayList<Article> getArticles() {
 		return articles;
 	}
 
-	public void setArticles(String articles) {
+	public void setArticles(ArrayList<Article> articles) {
 		this.articles = articles;
 	}
 

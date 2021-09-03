@@ -28,7 +28,6 @@ public class RestaurantService {
 	@Context
 	ServletContext ctx;
 
-	
 	@PostConstruct
 	public void init() {
 
@@ -39,7 +38,7 @@ public class RestaurantService {
 
 		if (ctx.getAttribute("usersDAO") == null) {
 			String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("usersDAO", new RestaurantsDAO(contextPath));
+			ctx.setAttribute("usersDAO", new UsersDAO(contextPath));
 		}
 	}
 
@@ -62,7 +61,7 @@ public class RestaurantService {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		if (restaurants == null) {
-			return Response.status(400).entity("Lista restorana nije pronadjena").build();
+			return Response.status(400).entity("Restoran nije pronadjen").build();
 		}
 
 		return Response.status(200).entity(restaurants.find(name)).build();
@@ -79,7 +78,7 @@ public class RestaurantService {
 			RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 			restaurants.addRestaurant(restaurant);
 
-			users.addRestaurant(users.getUserByUsername(managerName),restaurant);
+			users.addRestaurant(users.getUserByUsername(managerName), restaurant);
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())
 					.build();
@@ -88,47 +87,51 @@ public class RestaurantService {
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 	}
 
-	/*@POST
-	@Path("/addRestaurantWithManager/{name}")
+	/*
+	 * @POST
+	 * 
+	 * @Path("/addRestaurantWithManager/{name}")
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON)
+	 * 
+	 * @Consumes(MediaType.APPLICATION_JSON) public Response
+	 * addRestaurantWithManager(Restaurant restaurant, User manager) { UsersDAO
+	 * users = (UsersDAO) ctx.getAttribute("usersDAO");
+	 * 
+	 * if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+	 * 
+	 * RestaurantsDAO restaurants = (RestaurantsDAO)
+	 * ctx.getAttribute("restaurantsDAO"); restaurants.addRestaurant(restaurant);
+	 * 
+	 * users.addUser(manager); users.addRestaurant(manager, restaurant);
+	 * 
+	 * return
+	 * Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(
+	 * restaurants.getValues()) .build();
+	 * 
+	 * } return Response.status(403).type("text/plain").
+	 * entity("You do not have permission to access!").build(); }
+	 */
+
+	@GET
+
+	@Path("/search")
+
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addRestaurantWithManager(Restaurant restaurant, User manager) {
-		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+	public HashMap<String, Restaurant> search(@QueryParam("name") String name, @QueryParam("type") String type,
 
-		if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+			@QueryParam("city") String city, @QueryParam("country") String country,
+			@QueryParam("average") String average) {
 
-			RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
-			restaurants.addRestaurant(restaurant);
+		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
+		HashMap<String, Restaurant> restaurantsResult = new HashMap<String, Restaurant>();
 
-			users.addUser(manager);
-			users.addRestaurant(manager, restaurant);
-
-			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())
-					.build();
-
+		for (Restaurant item : restaurants.getValues().values()) {
+			if (item.getName().contains(name) || item.getType().contains(type)) {
+				restaurantsResult.put(item.getName(), item);
+			}
 		}
-		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
-	}*/
+		return restaurantsResult;
+	}
 
-	
-	  @GET
-	  
-	  @Path("/search")
-	  
-	  @Produces(MediaType.APPLICATION_JSON) public HashMap<String, Restaurant>
-	  search(@QueryParam("name") String name, @QueryParam("type") String type,
-	  
-	  @QueryParam("city") String city, @QueryParam("country") String
-	  country, @QueryParam("average") String average) {
-	  
-	  RestaurantsDAO restaurants = (RestaurantsDAO)
-	  ctx.getAttribute("restaurantDAO"); HashMap<String, Restaurant>
-	  restaurantsResult = new HashMap<String, Restaurant>();
-	  
-	  for (Restaurant item : restaurants.getValues().values()) {
-	  System.out.println("UPOREDJUJEM I MENJAM " + item.getName() + " I " + name);
-	  if (item.getName().equals(name) || item.getType().equals(type) ||
-	  item.getLocation().equals(city)) { restaurantsResult.put(item.getName(),
-	  item); } } return restaurantsResult; }
-	 
 }

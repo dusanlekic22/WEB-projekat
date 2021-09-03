@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beans.Article;
 import beans.Restaurant;
 
 public class RestaurantsDAO {
@@ -16,12 +17,6 @@ public class RestaurantsDAO {
 	private String path;
 
 	public RestaurantsDAO() {
-		this.path = "C:/Restaurants/Admin/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
-		File dataDir = new File(this.path + File.separator + "data");
-		if (!dataDir.exists()) {
-			dataDir.mkdir();
-		}
-		this.restaurants = new HashMap<String, Restaurant>();
 
 	}
 
@@ -69,7 +64,7 @@ public class RestaurantsDAO {
 
 		for (Restaurant item : restaurants.values()) {
 			System.out.println("UPOREDJUJEM I MENJAM " + item.getName() + " I " + updatedItem.getName());
-			if (item.getName() == updatedItem.getName()) {
+			if (item.getName().equals(updatedItem.getName())) {
 				restaurants.remove(item.getName());
 				restaurants.put(updatedItem.getName(), updatedItem);
 				saveRestaurants();
@@ -80,11 +75,11 @@ public class RestaurantsDAO {
 		return false;
 
 	}
-	
+
 	public Restaurant find(String name) {
 
 		for (Restaurant item : restaurants.values()) {
-			if (item.getName() == name) {
+			if (item.getName().contains(name)) {
 				return item;
 			}
 		}
@@ -97,7 +92,7 @@ public class RestaurantsDAO {
 
 		for (Restaurant RestaurantsItem : restaurants.values()) {
 
-			if (RestaurantsItem.getName() == restaurantname) {
+			if (RestaurantsItem.getName().equals(restaurantname)) {
 				restaurants.remove(RestaurantsItem.getName());
 				saveRestaurants();
 				return;
@@ -112,11 +107,38 @@ public class RestaurantsDAO {
 		if (!restaurants.containsKey(restaurant.getName())) {
 			restaurants.put(restaurant.getName(), restaurant);
 			saveRestaurants();
-			System.out.println("Sacuvao"+restaurant.getName());
+			System.out.println("Sacuvao" + restaurant.getName());
 			return restaurants.get(restaurant.getName());
 		}
 
 		return null;
+	}
+
+	public Boolean addArticleToRestaurant(Article article, Restaurant restaurant) {
+
+		if (!restaurant.getArticles().contains(article)) {
+			restaurant.getArticles().add(article);
+			updateRestaurant(restaurant);
+			return true;
+		}
+
+		return false;
+	}
+
+	public Boolean updateArticleOfRestaurant(Article newArticle, Article oldArticle, Restaurant restaurant) {
+
+		for (Article a : restaurant.getArticles()) {
+
+			if (a.getName().equals(oldArticle.getName())) {
+				restaurant.getArticles().remove(a);
+				restaurant.getArticles().add(newArticle);
+				saveRestaurants();
+				return true;
+			}
+		}
+
+		return false;
+
 	}
 
 }
