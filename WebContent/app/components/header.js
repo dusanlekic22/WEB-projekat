@@ -35,8 +35,15 @@ Vue.component("the-header", {
             <li v-if="isAdmin">
               <router-link
                 class="nav-link"
-                to="/CRUD"
+                to="/AdministratorCrud"
                 >CRUD</router-link
+              >
+            </li>
+               <li v-if="isAdmin">
+              <router-link
+                class="nav-link"
+                to="/createRestaurant"
+                >Add Restaurant</router-link
               >
             </li>
         </ul>

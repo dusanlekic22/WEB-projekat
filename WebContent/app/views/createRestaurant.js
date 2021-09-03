@@ -2,7 +2,6 @@ Vue.component('create-restaurant', {
   template:
   `
   <div class="container-fluid">
-  <router-view></router-view>
    <div class="container">
    <keep-alive>
        <form>
@@ -21,6 +20,15 @@ Vue.component('create-restaurant', {
             <input type="restaurantLocation" class="form-control" id="restaurantLocation" placeholder="Unesite lokaciju restorana" v-model="restaurantLocation">
            <br />
           </div>
+            <div class="form-group"  v-if="freeManager.length !== 0">
+          <select>
+            <option v-for="m in freeManagers" value="0"> {{ m.name }} {{ m.surname }} </option>
+          </select>
+          </div>
+          <div class="form-group" v-else>
+          	<button @click="dodajMenadzera" v-if="!needManager">Dodaj menadzera</button>  
+          	<router-view></router-view>
+          </div>
             <div class="form-group">
           <label for="restaurantImage">Slika restorana </label>
           <div class="imageRestaurant">
@@ -29,14 +37,8 @@ Vue.component('create-restaurant', {
            <input type="file"  @change=uploadImage id="file-input" >
           <br />
           </div>
-          <div class="form-group">
-          <select>
-            <option v-for="m in freeManagers" value="0"> Menadzer </option>
-          </select>
-          </div>
-
         </div>
-        <div class="modal-footer border-top-0 d-flex justify-content-center">
+        <div class="modal-footer border-top-0 d-flex justify-content-center"  v-if="!needManager">
           <button type="submit" class="btn btn-success" @click.prevent="submit">Submit</button>
         </div>
       </form>
@@ -52,7 +54,8 @@ Vue.component('create-restaurant', {
       restaurantLocation: '',
       restaurantImage: null,
       restaurantManager: null,
-      freeManagers: []
+      freeManagers: [],
+      needManager: false
     };
   },
    mounted() {
@@ -90,14 +93,17 @@ Vue.component('create-restaurant', {
                     console.log(this.restaurantImage);
                 };
             },
-        getFreeManagers(){
+         getFreeManagers(){
          this.$store.dispatch('managerModule/getFreeManagers');
+        },
+        dodajMenadzera(){
+        this.needManager = true;
+        this.$router.push('/createRestaurant/manager');
         }
   },
   computed: {
     freeManager(){
-      return this.$store.getters['managerModule/freeManagers'];
-      console.log('pozvan sam');
+      return this.freeManagers = this.$store.getters['managerModule/freeManagers'];
     }
   }
 });

@@ -15,7 +15,7 @@ var managerStore = {
     actions: {
    getFreeManagers(context, payload) {
              axios
-                .get('rest/manager')
+                .get('rest/manager/free')
                 .then(response => {
                     console.log("\n\n ------- Slobodni menadzeri -------\n");
                     console.log(response.data);

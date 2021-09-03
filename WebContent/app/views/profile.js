@@ -68,9 +68,9 @@ Vue.component('profile', {
        document.head.appendChild(style);
        this.username = this.$store.getters['userModule/user'].username;
        this.password = this.$store.getters['userModule/user'].password;
-       this.confirmPassword = this.$store.getters['userModule/user'].confirmPassword;
+       this.confirmPassword = this.$store.getters['userModule/user'].password;
        this.dateofbirth = this.$store.getters['userModule/user'].dateofbirth;
-       this.firstname = this.$store.getters['userModule/user'].first;
+       this.firstname = this.$store.getters['userModule/user'].name;
        this.surname = this.$store.getters['userModule/user'].surname;
        this.gender = this.$store.getters['userModule/user'].gender;
        this.role = this.$store.getters['userModule/user'].role;

@@ -61,7 +61,6 @@ public class ManagerService {
 		HashMap<String, User> freeManagers =  new HashMap<String, User>();
 		HashMap<String, User> managers = users.getManagers();
 		managers.forEach((k, v) -> {
-            System.out.format("key: %s, value: %d%n", k, v);
             if( v.getRole().equals(UserRole.MANAGER) && v.getRestaurant() == null) {
             	freeManagers.put(k,v);
             }
