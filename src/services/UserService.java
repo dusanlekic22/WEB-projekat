@@ -1,12 +1,12 @@
 package services;
 
-import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,7 +15,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,7 +54,7 @@ public class UserService {
 		if (users == null) {
 			return Response.status(400).entity("Lista korisnika nije pronadjena").build();
 		}
-		if(!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+		if (!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
 			return Response.status(400).entity("Nemate dozvolu da pristupate listi korisnika.").build();
 		}
 
@@ -68,7 +67,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addUser(User user) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-		if(!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+		if (!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
 			return Response.status(400).entity("Nemate dozvolu da dodajete korisnike.").build();
 		}
 		users.addUser(user);
@@ -90,26 +89,27 @@ public class UserService {
 
 		users.addUser(user);
 
-		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); 
+		return Response.status(Response.Status.ACCEPTED).entity("/login").build();
 	}
-	
+
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchUsers(@QueryParam("name") String name,
-			@QueryParam("surname") String surname, @QueryParam("username") String username) {
-		
+	public Response searchUsers(@DefaultValue("~") @QueryParam("name") String name,
+			@DefaultValue("~") @QueryParam("surname") String surname,
+			@DefaultValue("~") @QueryParam("username") String username) {
+
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-		
-		if(!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+
+		if (!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
 			return Response.status(400).entity("Nemate dozvolu da pregledate korisnike.").build();
 		}
-		
+
 		HashMap<String, User> usersResult = new HashMap<String, User>();
-		
+
 		for (User item : users.getValues().values()) {
-			if (item.getName().contains(name) || item.getSurname().contains(surname)
-					|| item.getUsername().equals(username)) {
+			if (item.getName().toLowerCase().contains(name.toLowerCase()) || item.getSurname().toLowerCase().contains(surname.toLowerCase())
+					|| item.getUsername().toLowerCase().contains(username.toLowerCase())) {
 				usersResult.put(item.getName(), item);
 			}
 		}
@@ -143,17 +143,17 @@ public class UserService {
 					.build();
 		}
 
-		request.getSession().setAttribute("loginUser", userForLogin); 
+		request.getSession().setAttribute("loginUser", userForLogin);
 
 		try {
-			return Response.status(Response.Status.ACCEPTED).entity(objectMapper.writeValueAsString(userForLogin)).build();
+			return Response.status(Response.Status.ACCEPTED).entity(objectMapper.writeValueAsString(userForLogin))
+					.build();
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		return null;
 
-	}	
-	
-	
+	}
+
 }

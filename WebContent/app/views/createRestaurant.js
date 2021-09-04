@@ -1,6 +1,6 @@
 Vue.component('create-restaurant', {
   template:
-  `
+    `
   <div class="container-fluid">
    <div class="container">
    <keep-alive>
@@ -22,7 +22,7 @@ Vue.component('create-restaurant', {
           </div>
             <div class="form-group"  v-if="freeManager.length !== 0">
           <select v-model="manager" >
-            <option v-for="m in freeManagers" value="m"> {{ m.name }} {{ m.surname }} </option>
+            <option v-for="m in freeManagers" :value="m.username"> {{ m.name }} {{ m.surname }} </option>
           </select>
           </div>
           <div class="form-group" v-else>
@@ -48,7 +48,7 @@ Vue.component('create-restaurant', {
   `,
   name: "Home",
   data() {
-      return {
+    return {
       restaurantName: '',
       restaurantType: '',
       restaurantLocation: '',
@@ -59,59 +59,63 @@ Vue.component('create-restaurant', {
       manager: ''
     };
   },
-   mounted() {
-        let style = document.createElement('link');
-        style.type = "text/css";
-        style.rel = "stylesheet";
-        style.href = 'css/createRestaurant.css';
-       document.head.appendChild(style);
-       this.getFreeManagers();
+  mounted() {
+    let style = document.createElement('link');
+    style.type = "text/css";
+    style.rel = "stylesheet";
+    style.href = 'css/createRestaurant.css';
+    document.head.appendChild(style);
+    this.getFreeManagers();
   },
-    methods: {
-      submit() {
+  methods: {
+    submit() {
       this.$store.dispatch(
-       'registrationModule/addManagerDeliver',
+        'registrationModule/addManagerDeliver',
         {
           username: this.username,
           password: this.password,
           confirmPassword: this.confirmPassword,
-          name:  this.firstname,
+          name: this.firstname,
           surname: this.surname,
           gender: this.gender,
           dateOfBirth: this.dateofbirth,
           role: this.role
         }
       );
-      },
-      uploadImage(e) {
-           this.restaurantImage = '';
-           const image = e.target.files[0];
-            console.log(e.target.files[0]);
-                const reader = new FileReader();
-                reader.readAsDataURL(image);
-                reader.onload = e =>{
-                    this.restaurantImage = e.target.result;
-                    console.log(this.restaurantImage);
-        };
-        this.file = this.$refs.file.files[0];
-        console.log('>>>> 1st element in files array >>>> ', this.file);
-            },
-         getFreeManagers(){
-         this.$store.dispatch('managerModule/getFreeManagers');
+    },
+    uploadImage(e) {
+      this.restaurantImage = '';
+      const image = e.target.files[0];
+      console.log(e.target.files[0]);
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = e => {
+        this.restaurantImage = e.target.result;
+        console.log(this.restaurantImage);
+      };
+      this.file = this.$refs.file.files[0];
+      console.log('>>>> 1st element in files array >>>> ', this.file);
+    },
+    getFreeManagers() {
+      this.$store.dispatch('managerModule/getFreeManagers');
+    },
+    dodajMenadzera() {
+      this.needManager = true;
+      this.$router.push('/createRestaurant/manager');
+    },
+    dodajRestoran() {
+      console.log(this.restaurantName);
+      this.$store.dispatch('restaurantModule/addRestaurantUpdateManager', {
+        "name": this.restaurantName,
+        "type": this.restaurantType,
+        "location": {
+          "latitude": 0, "longitude": 0,
+          "address": { "streetName": "Lol", "houseNumber": 2, "city": this.restaurantLocation, "postalCode": 360000 }
         },
-        dodajMenadzera(){
-        this.needManager = true;
-        this.$router.push('/createRestaurant/manager');
-      },
-      dodajRestoran() {
-        this.$store.dispatch('restaurantModule/addRestaurantUpdateManager', {
-          "name": this.name,
-          "type": this.type,
-          "location": this.location,
-          "image": this.restaurantImage,
-          "manager": 1
-        });
-        
+        "logo": this.restaurantImage,
+        "manager": this.manager
+      });
+
       // let formData = new FormData();
       // formData.append('file', this.file);
       // console.log('>> formData >> ', formData);
@@ -128,10 +132,10 @@ Vue.component('create-restaurant', {
       //   .catch(function () {
       //     console.log('FAILURE!!');
       //   });
-        }
+    }
   },
   computed: {
-    freeManager(){
+    freeManager() {
       return this.freeManagers = this.$store.getters['managerModule/freeManagers'];
     }
   }

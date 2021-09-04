@@ -3,9 +3,9 @@
     	"id" : "1",
         "name": "BOOM BOOM",
         "type": "cinke",
-        "articlesIds": null,
+        "articlesIds": [],
         "status": "OPEN",
         "location": null,
-        "image": null
+        "logo": null
     }
 }

@@ -60,7 +60,7 @@ public class ArticleService {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getArticle(@PathParam("id") String id) {
+	public Response getArticle(@PathParam("id") Integer id) {
 
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 		if (articles == null) {

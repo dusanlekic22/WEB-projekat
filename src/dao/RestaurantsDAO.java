@@ -1,12 +1,8 @@
 package dao;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -41,7 +37,7 @@ public class RestaurantsDAO {
 		try {
 			for (Restaurant item : restaurants.values()) {
 				File outputfile = new File(this.path + "/img/" + item.getId() + ".jpg");
-				ImageIO.write(item.getImage(), "jpg", outputfile);
+				ImageIO.read(outputfile);
 			}
 			restaurants = objectMapper.readValue(file, new TypeReference<HashMap<String, Restaurant>>() {
 			});
@@ -59,12 +55,6 @@ public class RestaurantsDAO {
 	public void saveRestaurants() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			for (Restaurant item : restaurants.values()) {
-				File outputfile = new File(this.path + "/img/" + item.getId() + ".jpg");
-				if (item.getImage() != null)
-					ImageIO.write(item.getImage(), "jpg", outputfile);
-			}
-
 			objectMapper.writeValue(new File(this.path + "/restaurants.json"), this.restaurants);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -92,7 +82,7 @@ public class RestaurantsDAO {
 
 	}
 
-	public Restaurant find(String id) {
+	public Restaurant find(Integer id) {
 
 		for (Restaurant item : restaurants.values()) {
 			if (item.getId().equals(id)) {
@@ -104,7 +94,7 @@ public class RestaurantsDAO {
 
 	}
 
-	public void deleteRestaurant(String id) {
+	public void deleteRestaurant(Integer id) {
 
 		for (Restaurant RestaurantsItem : restaurants.values()) {
 
@@ -122,6 +112,7 @@ public class RestaurantsDAO {
 
 		if (!restaurants.containsKey(restaurant.getId())) {
 			restaurant.setId(restaurants.size() + 1);
+			restaurant.setArticlesIds(new ArrayList<Integer>());
 			restaurants.put(restaurants.size() + 1, restaurant);
 			saveRestaurants();
 			System.out.println("Sacuvao" + restaurant.getName());
@@ -134,7 +125,7 @@ public class RestaurantsDAO {
 	public HashMap<Integer, Restaurant> filterByType(String type) {
 		HashMap<Integer, Restaurant> restaurantsResult = new HashMap<Integer, Restaurant>();
 		for (Restaurant item : getValues().values()) {
-			if (item.getType().contains(type)) {
+			if (item.getType().toLowerCase().contains(type.toLowerCase())) {
 				restaurantsResult.put(item.getId(), item);
 			}
 		}

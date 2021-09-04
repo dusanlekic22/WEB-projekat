@@ -1,7 +1,5 @@
 package beans;
 
-import java.awt.Image;
-
 import beans.enums.ArticleType;
 
 public class Article {
@@ -11,8 +9,8 @@ public class Article {
 	private ArticleType type;
 	private Integer restaurantId;
 	private int quantity;
-	private String descriptionString;
-	private Image image;
+	private String description;
+	private String image;
 
 	public Article() {
 		super();
@@ -20,7 +18,7 @@ public class Article {
 	}
 
 	public Article(Integer id, String name, float price, ArticleType type, Integer restaurantId, int quantity,
-			String descriptionString, Image image) {
+			String description, String image) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -28,7 +26,7 @@ public class Article {
 		this.type = type;
 		this.restaurantId = restaurantId;
 		this.quantity = quantity;
-		this.descriptionString = descriptionString;
+		this.description = description;
 		this.image = image;
 	}
 
@@ -80,19 +78,19 @@ public class Article {
 		this.quantity = quantity;
 	}
 
-	public String getDescriptionString() {
-		return descriptionString;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescriptionString(String descriptionString) {
-		this.descriptionString = descriptionString;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public Image getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 

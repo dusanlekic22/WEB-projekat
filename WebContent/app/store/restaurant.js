@@ -8,12 +8,12 @@ var restaurantStore = {
                 "name": payload.name,
                 "type": payload.type,
                 "location": payload.location,
-                "image": payload.image,
+                "logo": payload.logo,
                 })
                     .then(response => {
                         this.message = response.data;
                         console.log("\n\n -------Izmenjeni PODACI -------\n");
-                        context.dispatch('managerModule/getFreeManagers', { root: true })
+                        context.dispatch('managerModule/getFreeManagers',{}, { root: true })
                         console.log("\n\n ----------------------\n\n");
                     })
                     .catch(err => {

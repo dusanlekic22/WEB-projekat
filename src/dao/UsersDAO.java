@@ -105,7 +105,7 @@ public class UsersDAO {
 		if (!users.containsKey(user.getUsername())) {
 			
 			if(user.getRole().equals(UserRole.MANAGER)){
-				user.setRestaurant(new Restaurant());
+				user.setRestaurantId(-1);
 			}
 			
 			users.put(user.getUsername(), user);

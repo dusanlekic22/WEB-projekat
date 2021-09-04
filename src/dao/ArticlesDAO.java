@@ -76,7 +76,7 @@ public class ArticlesDAO {
 
 	}
 
-	public Article find(String id) {
+	public Article find(Integer id) {
 
 		for (Article item : articles.values()) {
 			if (item.getId().equals(id)) {
@@ -88,7 +88,7 @@ public class ArticlesDAO {
 
 	}
 
-	public void deleteArticle(String id) {
+	public void deleteArticle(Integer id) {
 
 		for (Article ArticlesItem : articles.values()) {
 

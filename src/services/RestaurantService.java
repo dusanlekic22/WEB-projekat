@@ -1,13 +1,12 @@
 package services;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -60,7 +59,7 @@ public class RestaurantService {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRestaurant(@PathParam("id") String id) {
+	public Response getRestaurant(@PathParam("id") Integer id) {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		if (restaurants == null) {
@@ -93,28 +92,25 @@ public class RestaurantService {
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchRestaurants(@QueryParam("name") String name, @QueryParam("type") String type,
-			@QueryParam("city") String city, @QueryParam("country") String country,
-			@QueryParam("average") String average) {
+	public Response searchRestaurants(@DefaultValue("~") @QueryParam("name") String name,@DefaultValue("~") @QueryParam("type") String type,
+			@DefaultValue("~") @QueryParam("city") String city,@DefaultValue("~") @QueryParam("country") String country,
+			@DefaultValue("~") @QueryParam("average") String average) {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		HashMap<Integer, Restaurant> restaurantsResult = new HashMap<Integer, Restaurant>();
 
 		for (Restaurant item : restaurants.getValues().values()) {
-			if(name!=null)
-				if (item.getName().contains(name)) 
-					restaurantsResult.put(item.getId(), item);
-			if(type!=null)
-				if (item.getType().contains(type)) 
+			
+				if (item.getName().toLowerCase().contains(name.toLowerCase()) || item.getType().toLowerCase().contains(type.toLowerCase())) 
 					restaurantsResult.put(item.getId(), item);
 		}
 		return Response.status(200).entity(restaurantsResult.values()).build();
 	}
 
 	@GET
-	@Path("/filterByType")
+	@Path("/filterByType/{type}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response filterRestaurantsByType(@QueryParam("type") String type) {
+	public Response filterRestaurantsByType(@PathParam("type") String type) {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		HashMap<Integer, Restaurant> filtered = restaurants.filterByType(type);
@@ -122,9 +118,9 @@ public class RestaurantService {
 	}
 
 	@GET
-	@Path("/filterByStatus")
+	@Path("/filterByStatus/{status}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response filterRestaurantsByStatus(@QueryParam("status") RestaurantStatus status) {
+	public Response filterRestaurantsByStatus(@PathParam("status") RestaurantStatus status) {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		HashMap<Integer, Restaurant> filtered = restaurants.filterByStatus(status);

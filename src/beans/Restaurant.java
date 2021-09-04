@@ -1,6 +1,5 @@
 package beans;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import beans.enums.RestaurantStatus;
@@ -12,15 +11,15 @@ public class Restaurant {
 	private ArrayList<Integer> articlesIds;
 	private RestaurantStatus status;
 	private Location location;
-	private String image;
+	private String logo;
 
 	public Restaurant() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Restaurant(String name, String type, String articles, RestaurantStatus status, Location location,
-			String image) {
+	public Restaurant(Integer id,String name, String type, ArrayList<Integer> articlesIds, RestaurantStatus status, Location location,
+			String logo) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -47,13 +46,7 @@ public class Restaurant {
 		this.articlesIds = articlesIds;
 	}
 
-	public BufferedImage getLogo() {
-		return logo;
-	}
-
-	public void setLogo(BufferedImage logo) {
-		this.logo = logo;
-	}
+	
 
 	public String getName() {
 		return name;
@@ -87,12 +80,14 @@ public class Restaurant {
 		this.location = location;
 	}
 
-	public String getImage() {
-		return image;
+	public String getLogo() {
+		return logo;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
+
+	
 
 }

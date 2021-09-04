@@ -5,17 +5,12 @@ import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.User;
 import beans.enums.UserRole;
@@ -61,7 +56,7 @@ public class ManagerService {
 		HashMap<String, User> freeManagers =  new HashMap<String, User>();
 		HashMap<String, User> managers = users.getManagers();
 		managers.forEach((k, v) -> {
-            if( v.getRole().equals(UserRole.MANAGER) && v.getRestaurant() == null) {
+            if( v.getRole().equals(UserRole.MANAGER) && v.getRestaurantId() == -1) {
             	freeManagers.put(k,v);
             }
         });
