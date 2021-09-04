@@ -1,0 +1,11 @@
+{
+    "1": {
+    	"id" : "1",
+        "name": "BOOM BOOM",
+        "type": "cinke",
+        "articlesIds": null,
+        "status": "OPEN",
+        "location": null,
+        "image": null
+    }
+}

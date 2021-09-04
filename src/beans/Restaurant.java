@@ -1,13 +1,15 @@
 package beans;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import beans.enums.RestaurantStatus;
 
 public class Restaurant {
+	private Integer id;
 	private String name;
 	private String type;
-	private String articles;
+	private ArrayList<Integer> articlesIds;
 	private RestaurantStatus status;
 	private Location location;
 	private String image;
@@ -20,12 +22,37 @@ public class Restaurant {
 	public Restaurant(String name, String type, String articles, RestaurantStatus status, Location location,
 			String image) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.type = type;
-		this.articles = articles;
+		this.articlesIds = articlesIds;
 		this.status = status;
 		this.location = location;
-		this.image = image;
+		this.logo = logo;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public ArrayList<Integer> getArticlesIds() {
+		return articlesIds;
+	}
+
+	public void setArticlesIds(ArrayList<Integer> articlesIds) {
+		this.articlesIds = articlesIds;
+	}
+
+	public BufferedImage getLogo() {
+		return logo;
+	}
+
+	public void setLogo(BufferedImage logo) {
+		this.logo = logo;
 	}
 
 	public String getName() {
@@ -42,14 +69,6 @@ public class Restaurant {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getArticles() {
-		return articles;
-	}
-
-	public void setArticles(String articles) {
-		this.articles = articles;
 	}
 
 	public RestaurantStatus getStatus() {

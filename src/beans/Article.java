@@ -5,10 +5,11 @@ import java.awt.Image;
 import beans.enums.ArticleType;
 
 public class Article {
+	private Integer id;
 	private String name;
 	private float price;
 	private ArticleType type;
-	private Restaurant restaurant;
+	private Integer restaurantId;
 	private int quantity;
 	private String descriptionString;
 	private Image image;
@@ -18,13 +19,14 @@ public class Article {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Article(String name, float price, ArticleType type, Restaurant restaurant, int quantity,
+	public Article(Integer id, String name, float price, ArticleType type, Integer restaurantId, int quantity,
 			String descriptionString, Image image) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.type = type;
-		this.restaurant = restaurant;
+		this.restaurantId = restaurantId;
 		this.quantity = quantity;
 		this.descriptionString = descriptionString;
 		this.image = image;
@@ -32,6 +34,14 @@ public class Article {
 
 	public String getName() {
 		return name;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
@@ -54,12 +64,12 @@ public class Article {
 		this.type = type;
 	}
 
-	public Restaurant getRestaurant() {
-		return restaurant;
+	public Integer getRestaurantId() {
+		return restaurantId;
 	}
 
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
+	public void setRestaurantId(Integer restaurantId) {
+		this.restaurantId = restaurantId;
 	}
 
 	public int getQuantity() {
