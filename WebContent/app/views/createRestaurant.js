@@ -21,8 +21,8 @@ Vue.component('create-restaurant', {
            <br />
           </div>
             <div class="form-group"  v-if="freeManager.length !== 0">
-          <select>
-            <option v-for="m in freeManagers" value="0"> {{ m.name }} {{ m.surname }} </option>
+          <select v-model="manager" >
+            <option v-for="m in freeManagers" value="m"> {{ m.name }} {{ m.surname }} </option>
           </select>
           </div>
           <div class="form-group" v-else>
@@ -34,12 +34,12 @@ Vue.component('create-restaurant', {
           <div class="imageRestaurant">
             <img :src="restaurantImage" >
           </div>
-           <input type="file"  @change=uploadImage id="file-input" >
+           <input type="file"  @change=uploadImage id="file-input" ref="file" >
           <br />
           </div>
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center"  v-if="!needManager">
-          <button type="submit" class="btn btn-success" @click.prevent="submit">Submit</button>
+          <button type="submit" class="btn btn-success" @click.prevent="dodajRestoran">Submit</button>
         </div>
       </form>
     </keep-alive>
@@ -55,7 +55,8 @@ Vue.component('create-restaurant', {
       restaurantImage: null,
       restaurantManager: null,
       freeManagers: [],
-      needManager: false
+      needManager: false,
+      manager: ''
     };
   },
    mounted() {
@@ -91,7 +92,9 @@ Vue.component('create-restaurant', {
                 reader.onload = e =>{
                     this.restaurantImage = e.target.result;
                     console.log(this.restaurantImage);
-                };
+        };
+        this.file = this.$refs.file.files[0];
+        console.log('>>>> 1st element in files array >>>> ', this.file);
             },
          getFreeManagers(){
          this.$store.dispatch('managerModule/getFreeManagers');
@@ -99,6 +102,32 @@ Vue.component('create-restaurant', {
         dodajMenadzera(){
         this.needManager = true;
         this.$router.push('/createRestaurant/manager');
+      },
+      dodajRestoran() {
+        this.$store.dispatch('restaurantModule/addRestaurantUpdateManager', {
+          "name": this.name,
+          "type": this.type,
+          "location": this.location,
+          "image": this.restaurantImage,
+          "manager": 1
+        });
+        
+      // let formData = new FormData();
+      // formData.append('file', this.file);
+      // console.log('>> formData >> ', formData);
+
+      // axios.post('/rest/users/fileupload',
+      //     formData, {
+      //       headers: {
+      //         'Content-Type': 'multipart/form-data'
+      //       }
+      //     }
+      //   ).then(function () {
+      //     console.log('SUCCESS!!');
+      //   })
+      //   .catch(function () {
+      //     console.log('FAILURE!!');
+      //   });
         }
   },
   computed: {

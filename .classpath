@@ -42,5 +42,7 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/papov/Desktop/projekatt/WEB-projekat/WebContent/WEB-INF/lib/jersey-multipart.jar"/>
+	<classpathentry kind="lib" path="C:/Users/papov/Desktop/projekatt/WEB-projekat/WebContent/WEB-INF/lib/jersey-media-multipart-2.27.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

@@ -10,7 +10,7 @@ public class Restaurant {
 	private String articles;
 	private RestaurantStatus status;
 	private Location location;
-	private Image image;
+	private String image;
 
 	public Restaurant() {
 		super();
@@ -18,7 +18,7 @@ public class Restaurant {
 	}
 
 	public Restaurant(String name, String type, String articles, RestaurantStatus status, Location location,
-			Image image) {
+			String image) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -68,11 +68,11 @@ public class Restaurant {
 		this.location = location;
 	}
 
-	public Image getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 

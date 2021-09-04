@@ -103,6 +103,11 @@ public class UsersDAO {
 	public User addUser(User user) {
 
 		if (!users.containsKey(user.getUsername())) {
+			
+			if(user.getRole().equals(UserRole.MANAGER)){
+				user.setRestaurant(new Restaurant());
+			}
+			
 			users.put(user.getUsername(), user);
 			saveUsers();
 			return users.get(user.getUsername());

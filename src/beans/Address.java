@@ -9,4 +9,6 @@ public class Address {
 	private String city;
 	@SuppressWarnings("unused")
 	private int postalCode;
+	
+	public Address() {}
 }
