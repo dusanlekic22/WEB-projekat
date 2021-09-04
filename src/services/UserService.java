@@ -1,5 +1,7 @@
 package services;
 
+import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -50,6 +53,9 @@ public class UserService {
 		if (users == null) {
 			return Response.status(400).entity("Lista korisnika nije pronadjena").build();
 		}
+		if(!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+			return Response.status(400).entity("Nemate dozvolu da pristupate listi korisnika.").build();
+		}
 
 		return Response.status(200).entity(users.getValues().values()).build();
 	}
@@ -83,6 +89,29 @@ public class UserService {
 		users.addUser(user);
 
 		return Response.status(Response.Status.ACCEPTED).entity("/login").build(); 
+	}
+	
+	@GET
+	@Path("/search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchUsers(@QueryParam("name") String name,
+			@QueryParam("surname") String surname, @QueryParam("username") String username) {
+		
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+		
+		if(!users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+			return Response.status(400).entity("Nemate dozvolu da pregledate korisnike.").build();
+		}
+		
+		HashMap<String, User> usersResult = new HashMap<String, User>();
+		
+		for (User item : users.getValues().values()) {
+			if (item.getName().contains(name) || item.getSurname().contains(surname)
+					|| item.getUsername().equals(username)) {
+				usersResult.put(item.getName(), item);
+			}
+		}
+		return Response.status(200).entity(usersResult.values()).build();
 	}
 
 	@POST

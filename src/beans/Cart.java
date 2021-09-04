@@ -3,7 +3,7 @@ package beans;
 import java.util.ArrayList;
 
 public class Cart {
-	private ArrayList<Article> articles;
+	private ArrayList<Integer> articlesIds;
 	private User user;
 	private float price;
 
@@ -12,19 +12,19 @@ public class Cart {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cart(ArrayList<Article> articles, User user, float price) {
+	public Cart(ArrayList<Integer> articlesIds, User user, float price) {
 		super();
-		this.articles = articles;
+		this.articlesIds = articlesIds;
 		this.user = user;
 		this.price = price;
 	}
 
-	public ArrayList<Article> getArticles() {
-		return articles;
+	public ArrayList<Integer> getArticlesIds() {
+		return articlesIds;
 	}
 
-	public void setArticles(ArrayList<Article> articles) {
-		this.articles = articles;
+	public void setArticlesIds(ArrayList<Integer> articlesIds) {
+		this.articlesIds = articlesIds;
 	}
 
 	public User getUser() {

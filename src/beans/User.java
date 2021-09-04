@@ -13,10 +13,10 @@ public class User {
 	private Gender gender;
 	private String dateOfBirth;
 	private UserRole role;
-	private ArrayList<Order> customerOrders;
+	private ArrayList<Integer> customerOrdersIds;
 	private Cart cart;
-	private Restaurant restaurant;
-	private ArrayList<Order> deliveryOrders;
+	private Integer restaurantId;
+	private ArrayList<Integer> deliveryOrdersIds;
 	private int points;
 	private CustomerType type;
 
@@ -28,8 +28,8 @@ public class User {
 	}
 
 	public User(String username, String password, String name, String surname, Gender gender, String dateOfBirth,
-			UserRole role, ArrayList<Order> customerOrders, Cart cart, Restaurant restaurant,
-			ArrayList<Order> deliveryOrders, int points, CustomerType type, boolean blocked) {
+			UserRole role, ArrayList<Integer> customerOrdersIds, Cart cart, Integer restaurantId,
+			ArrayList<Integer> deliveryOrdersIds, int points, CustomerType type, boolean blocked) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -38,10 +38,10 @@ public class User {
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.role = role;
-		this.customerOrders = customerOrders;
+		this.customerOrdersIds = customerOrdersIds;
 		this.cart = cart;
-		this.restaurant = restaurant;
-		this.deliveryOrders = deliveryOrders;
+		this.restaurantId = restaurantId;
+		this.deliveryOrdersIds = deliveryOrdersIds;
 		this.points = points;
 		this.type = type;
 		this.blocked = blocked;
@@ -103,12 +103,12 @@ public class User {
 		this.role = role;
 	}
 
-	public ArrayList<Order> getCustomerOrders() {
-		return customerOrders;
+	public ArrayList<Integer> getCustomerOrdersIds() {
+		return customerOrdersIds;
 	}
 
-	public void setCustomerOrders(ArrayList<Order> customerOrders) {
-		this.customerOrders = customerOrders;
+	public void setCustomerOrdersIds(ArrayList<Integer> customerOrdersIds) {
+		this.customerOrdersIds = customerOrdersIds;
 	}
 
 	public Cart getCart() {
@@ -119,20 +119,20 @@ public class User {
 		this.cart = cart;
 	}
 
-	public Restaurant getRestaurant() {
-		return restaurant;
+	public Integer getRestaurantId() {
+		return restaurantId;
 	}
 
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
+	public void setRestaurantId(Integer restaurantId) {
+		this.restaurantId = restaurantId;
 	}
 
-	public ArrayList<Order> getDeliveryOrders() {
-		return deliveryOrders;
+	public ArrayList<Integer> getDeliveryOrdersIds() {
+		return deliveryOrdersIds;
 	}
 
-	public void setDeliveryOrders(ArrayList<Order> deliveryOrders) {
-		this.deliveryOrders = deliveryOrders;
+	public void setDeliveryOrdersIds(ArrayList<Integer> deliveryOrdersIds) {
+		this.deliveryOrdersIds = deliveryOrdersIds;
 	}
 
 	public int getPoints() {

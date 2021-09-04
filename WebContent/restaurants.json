@@ -1,8 +1,9 @@
 {
-    "BOOM BOOM": {
+    "1": {
+    	"id" : "1",
         "name": "BOOM BOOM",
         "type": "cinke",
-        "articles": null,
+        "articlesIds": null,
         "status": "OPEN",
         "location": null,
         "image": null

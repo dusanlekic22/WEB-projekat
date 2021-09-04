@@ -1,32 +1,58 @@
 package beans;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import beans.enums.RestaurantStatus;
 
 public class Restaurant {
+	private Integer id;
 	private String name;
 	private String type;
-	private ArrayList<Article> articles;
+	private ArrayList<Integer> articlesIds;
 	private RestaurantStatus status;
 	private Location location;
-	private Image image;
+	private BufferedImage logo;
 
 	public Restaurant() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Restaurant(String name, String type, ArrayList<Article> articles, RestaurantStatus status, Location location,
-			Image image) {
+	public Restaurant(Integer id, String name, String type, ArrayList<Integer> articlesIds, RestaurantStatus status,
+			Location location, BufferedImage logo) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.type = type;
-		this.articles = articles;
+		this.articlesIds = articlesIds;
 		this.status = status;
 		this.location = location;
-		this.image = image;
+		this.logo = logo;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public ArrayList<Integer> getArticlesIds() {
+		return articlesIds;
+	}
+
+	public void setArticlesIds(ArrayList<Integer> articlesIds) {
+		this.articlesIds = articlesIds;
+	}
+
+	public BufferedImage getLogo() {
+		return logo;
+	}
+
+	public void setLogo(BufferedImage logo) {
+		this.logo = logo;
 	}
 
 	public String getName() {
@@ -45,14 +71,6 @@ public class Restaurant {
 		this.type = type;
 	}
 
-	public ArrayList<Article> getArticles() {
-		return articles;
-	}
-
-	public void setArticles(ArrayList<Article> articles) {
-		this.articles = articles;
-	}
-
 	public RestaurantStatus getStatus() {
 		return status;
 	}
@@ -69,12 +87,12 @@ public class Restaurant {
 		this.location = location;
 	}
 
-	public Image getImage() {
-		return image;
+	public BufferedImage getImage() {
+		return logo;
 	}
 
-	public void setImage(Image image) {
-		this.image = image;
+	public void setImage(BufferedImage logo) {
+		this.logo = logo;
 	}
 
 }

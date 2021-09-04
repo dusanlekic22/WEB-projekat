@@ -4,16 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import beans.Article;
 import beans.Restaurant;
+import beans.enums.RestaurantStatus;
 
 public class RestaurantsDAO {
-	private HashMap<String, Restaurant> restaurants = new HashMap<String, Restaurant>();
+	private HashMap<Integer, Restaurant> restaurants = new HashMap<Integer, Restaurant>();
 	private String path;
 
 	public RestaurantsDAO() {
@@ -32,7 +34,10 @@ public class RestaurantsDAO {
 		File file = new File(contextPath + "/restaurants.json");
 
 		try {
-
+			for (Restaurant item : restaurants.values()) {
+				File outputfile = new File(this.path + "/img/" + item.getId() + ".jpg");
+				ImageIO.write(item.getImage(), "jpg", outputfile);
+			}
 			restaurants = objectMapper.readValue(file, new TypeReference<HashMap<String, Restaurant>>() {
 			});
 
@@ -49,6 +54,12 @@ public class RestaurantsDAO {
 	public void saveRestaurants() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
+			for (Restaurant item : restaurants.values()) {
+				File outputfile = new File(this.path + "/img/" + item.getId() + ".jpg");
+				if (item.getImage() != null)
+					ImageIO.write(item.getImage(), "jpg", outputfile);
+			}
+
 			objectMapper.writeValue(new File(this.path + "/restaurants.json"), this.restaurants);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -56,17 +67,17 @@ public class RestaurantsDAO {
 		}
 	}
 
-	public HashMap<String, Restaurant> getValues() {
+	public HashMap<Integer, Restaurant> getValues() {
 		return restaurants;
 	}
 
 	public Boolean updateRestaurant(Restaurant updatedItem) {
 
 		for (Restaurant item : restaurants.values()) {
-			System.out.println("UPOREDJUJEM I MENJAM " + item.getName() + " I " + updatedItem.getName());
-			if (item.getName().equals(updatedItem.getName())) {
-				restaurants.remove(item.getName());
-				restaurants.put(updatedItem.getName(), updatedItem);
+			System.out.println("UPOREDJUJEM I MENJAM " + item.getName() + " I " + updatedItem.getId());
+			if (item.getId().equals(updatedItem.getId())) {
+				restaurants.remove(item.getId());
+				restaurants.put(updatedItem.getId(), updatedItem);
 				saveRestaurants();
 				return true;
 			}
@@ -76,10 +87,10 @@ public class RestaurantsDAO {
 
 	}
 
-	public Restaurant find(String name) {
+	public Restaurant find(String id) {
 
 		for (Restaurant item : restaurants.values()) {
-			if (item.getName().contains(name)) {
+			if (item.getId().equals(id)) {
 				return item;
 			}
 		}
@@ -88,12 +99,12 @@ public class RestaurantsDAO {
 
 	}
 
-	public void deleteRestaurant(String restaurantname) {
+	public void deleteRestaurant(String id) {
 
 		for (Restaurant RestaurantsItem : restaurants.values()) {
 
-			if (RestaurantsItem.getName().equals(restaurantname)) {
-				restaurants.remove(RestaurantsItem.getName());
+			if (RestaurantsItem.getId().equals(id)) {
+				restaurants.remove(RestaurantsItem.getId());
 				saveRestaurants();
 				return;
 			}
@@ -104,41 +115,34 @@ public class RestaurantsDAO {
 
 	public Restaurant addRestaurant(Restaurant restaurant) {
 
-		if (!restaurants.containsKey(restaurant.getName())) {
-			restaurants.put(restaurant.getName(), restaurant);
+		if (!restaurants.containsKey(restaurant.getId())) {
+			restaurant.setId(restaurants.size() + 1);
+			restaurants.put(restaurants.size() + 1, restaurant);
 			saveRestaurants();
 			System.out.println("Sacuvao" + restaurant.getName());
-			return restaurants.get(restaurant.getName());
+			return restaurants.get(restaurant.getId());
 		}
 
 		return null;
 	}
 
-	public Boolean addArticleToRestaurant(Article article, Restaurant restaurant) {
-
-		if (!restaurant.getArticles().contains(article)) {
-			restaurant.getArticles().add(article);
-			updateRestaurant(restaurant);
-			return true;
-		}
-
-		return false;
-	}
-
-	public Boolean updateArticleOfRestaurant(Article newArticle, Article oldArticle, Restaurant restaurant) {
-
-		for (Article a : restaurant.getArticles()) {
-
-			if (a.getName().equals(oldArticle.getName())) {
-				restaurant.getArticles().remove(a);
-				restaurant.getArticles().add(newArticle);
-				saveRestaurants();
-				return true;
+	public HashMap<Integer, Restaurant> filterByType(String type) {
+		HashMap<Integer, Restaurant> restaurantsResult = new HashMap<Integer, Restaurant>();
+		for (Restaurant item : getValues().values()) {
+			if (item.getType().contains(type)) {
+				restaurantsResult.put(item.getId(), item);
 			}
 		}
-
-		return false;
-
+		return restaurantsResult;
 	}
 
+	public HashMap<Integer, Restaurant> filterByStatus(RestaurantStatus status) {
+		HashMap<Integer, Restaurant> restaurantsResult = new HashMap<Integer, Restaurant>();
+		for (Restaurant item : getValues().values()) {
+			if (item.getStatus().equals(status)) {
+				restaurantsResult.put(item.getId(), item);
+			}
+		}
+		return restaurantsResult;
+	}
 }
