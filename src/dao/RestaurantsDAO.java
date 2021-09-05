@@ -60,18 +60,13 @@ public class RestaurantsDAO {
 		return restaurants;
 	}
 
-	public Boolean updateRestaurant(Restaurant updatedItem) {
+	public Boolean updateRestaurant(Restaurant updatedItem, Restaurant oldItem) {
 
-		for (Restaurant item : restaurants.values()) {
-			if (item.getId().equals(updatedItem.getId())) {
-				restaurants.remove(item.getId());
-				restaurants.put(updatedItem.getId(), updatedItem);
-				saveRestaurants();
-				return true;
-			}
-		}
-
-		return false;
+		restaurants.remove(oldItem.getId());
+		updatedItem.setId(oldItem.getId());
+		restaurants.put(updatedItem.getId(), updatedItem);
+		saveRestaurants();
+		return true;
 
 	}
 
@@ -90,17 +85,14 @@ public class RestaurantsDAO {
 
 	public Restaurant addRestaurant(Restaurant restaurant) {
 
-		if (!restaurants.containsKey(restaurant.getId())) {
-			restaurant.setId(restaurants.size() + 1);
-			restaurant.setArticlesIds(new ArrayList<Integer>());
-			restaurant.setLogoId(restaurants.size() + 1);;
-			restaurants.put(restaurants.size() + 1, restaurant);
-			saveRestaurants();
-			System.out.println("Sacuvao" + restaurant.getName());
-			return restaurants.get(restaurant.getId());
-		}
+		restaurant.setId(restaurants.size() + 1);
+		restaurant.setArticlesIds(new ArrayList<Integer>());
+		restaurant.setLogoId(restaurants.size() + 1);
+		restaurants.put(restaurants.size() + 1, restaurant);
+		saveRestaurants();
+		System.out.println("Sacuvao" + restaurant.getName());
+		return restaurants.get(restaurant.getId());
 
-		return null;
 	}
 
 	public HashMap<Integer, Restaurant> filterByType(String type) {

@@ -4,31 +4,36 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Order;
+import beans.User;
+import beans.enums.OrderStatus;
+import beans.enums.UserRole;
 
 public class OrdersDAO {
-	private HashMap<Integer, Order> orders;
+	private HashMap<Integer, Order> orders = new HashMap<Integer, Order>();
 	private String path;
 
 	public OrdersDAO() {
-		this.path = "C:/Orders/Admin/Desktop/web/WEB-projekat";
-		File dataDir = new File(this.path + File.separator + "data");
-		if (!dataDir.exists()) {
-			dataDir.mkdir();
-		}
-		orders = new HashMap<Integer, Order>();
 
 	}
 
-	public void loadOrders() {
+	public OrdersDAO(String contextPath) {
+		this.path = contextPath;
+		loadOrders(contextPath);
+
+	}
+
+	public void loadOrders(String contextPath) {
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		File file = new File(this.path + "/orders.json");
+		File file = new File(contextPath + "/orders.json");
 
 		try {
 
@@ -59,19 +64,13 @@ public class OrdersDAO {
 		return orders;
 	}
 
-	public Boolean updateOrder(Order updatedItem) {
+	public Boolean updateOrder(Order updatedItem, Order oldItem) {
 
-		for (Order item : orders.values()) {
-			System.out.println("UPOREDJUJEM I MENJAM " + item.getId() + " I " + updatedItem.getId());
-			if (item.getId() == updatedItem.getId()) {
-				orders.remove(item.getId());
-				orders.put(updatedItem.getId(), updatedItem);
-				saveOrders();
-				return true;
-			}
-		}
-
-		return false;
+		orders.remove(oldItem.getId());
+		updatedItem.setId(oldItem.getId());
+		orders.put(updatedItem.getId(), updatedItem);
+		saveOrders();
+		return true;
 
 	}
 
@@ -84,12 +83,67 @@ public class OrdersDAO {
 
 	public Order addOrder(Order order) {
 
-		if (!orders.containsKey(order.getId())) {
-			orders.put(order.getId(), order);
-			saveOrders();
-			return orders.get(order.getId());
+		order.setId(orders.size() + 1);
+		orders.put(orders.size() + 1, order);
+		saveOrders();
+		return orders.get(order.getId());
+
+	}
+
+	public Order find(Integer id) {
+
+		return orders.get(id);
+
+	}
+
+	public HashMap<Integer, Order> getOrdersByStatus(OrderStatus status) {
+		HashMap<Integer, Order> filteredOrders = new HashMap<Integer, Order>();
+		orders.forEach((k, v) -> {
+			if (v.getStatus().equals(status)) {
+				filteredOrders.put(k, v);
+			}
+		});
+		return filteredOrders;
+	}
+
+	public HashMap<Integer, Order> getUserOrders(HttpServletRequest request) {
+		HashMap<Integer, Order> userOrders = new HashMap<Integer, Order>();
+		User user = (User) request.getSession().getAttribute("loginUser");
+		Order order = new Order();
+		
+		if (checkUserRole(user, UserRole.CUSTOMER)) {
+			for (Integer id : user.getCustomerOrdersIds()) {
+				order = find(id);
+				userOrders.put(order.getId(), order);
+			}
+		}
+		else if (checkUserRole(user, UserRole.DELIVERY)) {
+			for (Integer id : user.getDeliveryOrdersIds()) {
+				order = find(id);
+				userOrders.put(order.getId(), order);
+			}
+		}
+		else if (checkUserRole(user, UserRole.MANAGER)) {
+			orders.forEach((k, v) -> {
+				if (v.getRestaurantId().equals(user.getRestaurantId())) {
+					userOrders.put(k, v);
+				}
+			});
+		}
+		else {
+			return null;
 		}
 
-		return null;
+		return userOrders;
+	}
+
+	public boolean checkUserRole(User user, UserRole role) {
+
+		if (user != null) {
+			if (user.getRole().equals(role)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

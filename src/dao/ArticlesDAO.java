@@ -60,18 +60,13 @@ public class ArticlesDAO {
 		return articles;
 	}
 
-	public Boolean updateArticle(Article updatedItem) {
+	public Boolean updateArticle(Article updatedItem, Article oldItem) {
 
-		for (Article item : articles.values()) {
-			if (item.getId().equals(updatedItem.getId())) {
-				articles.remove(item.getId());
-				articles.put(updatedItem.getId(), updatedItem);
-				saveArticles();
-				return true;
-			}
-		}
-
-		return false;
+		articles.remove(oldItem.getId());
+		updatedItem.setId(oldItem.getId());
+		articles.put(updatedItem.getId(), updatedItem);
+		saveArticles();
+		return true;
 
 	}
 
@@ -90,46 +85,26 @@ public class ArticlesDAO {
 
 	public Article addArticle(Article article) {
 
-		if (!articles.containsKey(article.getId())) {
-			article.setId(articles.size() + 1);
-			articles.put(article.getId(), article);
-			saveArticles();
-			System.out.println("Sacuvao" + article.getName());
-			return articles.get(article.getId());
-		}
+		article.setId(articles.size() + 1);
+		articles.put(articles.size()+1, article);
+		saveArticles();
+		return articles.get(article.getId());
 
-		return null;
 	}
 
 	public Boolean addArticleToRestaurant(RestaurantsDAO dao, Article article) {
-		for (Restaurant restaurant : dao.getValues().values()) {
-			if (article.getRestaurantId().equals(restaurant.getId())
-					&& !restaurant.getArticlesIds().contains(article.getId())) {
-				addArticle(article);
-				restaurant.getArticlesIds().add(article.getId());
-				dao.updateRestaurant(restaurant);
-				return true;
-			}
+		Restaurant oldRestaurant = dao.getValues().get(article.getRestaurantId());
+		for (Article item : articles.values()) {
+			if (item.getName().equals(oldRestaurant.getName())) 
+				return false;
 		}
-
-		return false;
+		
+		addArticle(article);
+		Restaurant newRestaurant = new Restaurant(oldRestaurant);
+		newRestaurant.getArticlesIds().add(article.getId());
+		dao.updateRestaurant(newRestaurant,oldRestaurant);
+		return true;
 	}
 
-	public Boolean updateArticleOfRestaurant(RestaurantsDAO dao, Article newArticle, Article oldArticle,
-			Restaurant restaurant) {
-
-		for (Integer articleId : restaurant.getArticlesIds()) {
-
-			if (articleId.equals(oldArticle.getId())) {
-				updateArticle(newArticle);
-				restaurant.getArticlesIds().remove(oldArticle.getId());
-				restaurant.getArticlesIds().add(newArticle.getId());
-				dao.saveRestaurants();
-				return true;
-			}
-		}
-
-		return false;
-
-	}
 }
+	

@@ -11,7 +11,7 @@ public class Order {
 
 	private Integer id;
 	private ArrayList<Integer> articlesIds;
-	private Restaurant restaurant;
+	private Integer restaurantId;
 	private LocalDateTime dateAndTime;
 	// TODO:FORMAT
 	private float price;
@@ -25,12 +25,12 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(Integer logicalDeleted, Integer id, ArrayList<Integer> articlesIds, Restaurant restaurant,
-			LocalDateTime dateAndTime, float price, Pair<String, String> customer, OrderStatus status) {
+	public Order(Integer id, ArrayList<Integer> articlesIds, Integer restaurantId, LocalDateTime dateAndTime,
+			float price, Pair<String, String> customer, OrderStatus status, Integer logicalDeleted) {
 		super();
 		this.id = id;
 		this.articlesIds = articlesIds;
-		this.restaurant = restaurant;
+		this.restaurantId = restaurantId;
 		this.dateAndTime = dateAndTime;
 		this.price = price;
 		this.customer = customer;
@@ -46,12 +46,12 @@ public class Order {
 		this.id = id;
 	}
 
-	public Restaurant getRestaurant() {
-		return restaurant;
+	public Integer getRestaurantId() {
+		return restaurantId;
 	}
 
-	public void setRestaurant(Restaurant restaurant) {
-		this.restaurant = restaurant;
+	public void setRestaurantId(Integer restaurantId) {
+		this.restaurantId = restaurantId;
 	}
 
 	public LocalDateTime getDateAndTime() {

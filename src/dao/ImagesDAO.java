@@ -58,9 +58,10 @@ public class ImagesDAO {
 		return images;
 	}
 
-	public Boolean updateImage(Logo updatedItem) {
+	public Boolean updateImage(Logo updatedItem,Logo oldItem) {
 
 		images.remove(updatedItem.getId());
+		updatedItem.setId(oldItem.getId());
 		images.put(updatedItem.getId(), updatedItem);
 		saveImages();
 		return true;
