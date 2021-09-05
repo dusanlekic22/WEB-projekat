@@ -6,3 +6,47 @@ height: 300px;
 background: #00000080;
 float: left;
 }
+
+.card{
+  border: 0px;
+  -webkit-box-shadow:  0px 0px 20px 2px black!important;
+   -moz-box-shadow:  0px 0px 20px 2px black!important;
+        box-shadow:  0px 0px 20px 2px black!important;
+  overflow: hidden; /* Removing this will break the effects */
+}
+
+.cardOverlay {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  height: 100%;
+  transition: .5s ease;
+  opacity:0;
+  color: white;
+  font-size: 20px;
+  padding: 50px;
+  text-align: center;
+}
+.cardOverlay:hover {
+opacity: 1;
+}
+
+.img-hover-zoom {
+  max-height: 150px;
+  overflow: hidden; /* Removing this will break the effects */
+}
+
+.img-hover-zoom img {
+transform-origin: 65% 75%;
+transition: transform 1s, filter .5s ease-out;
+}
+
+.img-hover-zoom:hover img {
+ transform: scale(1.15);
+}
+
+.starcolor {
+    color: #b51414;
+}

@@ -5,15 +5,8 @@ template:
       <div id="onlineRestaurantsSection">
         <div class="container py-5">
           <div class="row py-4">
-            <div class="col-lg-12 pt-5 text-center">
-            <base-online-restaurant></base-online-restaurant>
-            <base-online-restaurant></base-online-restaurant>
-            <base-online-restaurant></base-online-restaurant>
-            <base-online-restaurant></base-online-restaurant>
-            <base-online-restaurant></base-online-restaurant>
-            <base-online-restaurant></base-online-restaurant>
+            <base-online-restaurant v-for="r in this.restaurants" :key="r.id" :name="r.name"></base-online-restaurant>
             </div>
-          </div>
         </div>
       </div>
     </section>  
@@ -24,11 +17,18 @@ data() {
     message: null,
     contains: false,
     restaurants: [
-      "Beograd, Srbija",
-      "Novi Sad, Srbija",
-      "Novi Bečej, Srbija",
-      "Novi Pazar, Srbija",
-      "Kraljevo, Srbija",
+      {
+        id: 1,
+        name: "Boom Boom"
+      },
+        {
+        id: 2,
+        name: "Ciao Ciao"
+      },
+          {
+        id: 3,
+        name: "Zar Mance"
+      }
     ],
     onlineRestaurants: [],
   };
