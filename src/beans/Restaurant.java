@@ -5,21 +5,23 @@ import java.util.ArrayList;
 import beans.enums.RestaurantStatus;
 
 public class Restaurant {
+
 	private Integer id;
 	private String name;
 	private String type;
 	private ArrayList<Integer> articlesIds;
 	private RestaurantStatus status;
 	private Location location;
-	private String logo;
+	private Integer logoId;
+	private Integer logicalDeleted;
 
 	public Restaurant() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Restaurant(Integer id,String name, String type, ArrayList<Integer> articlesIds, RestaurantStatus status, Location location,
-			String logo) {
+	public Restaurant(Integer id, String name, String type, ArrayList<Integer> articlesIds, RestaurantStatus status,
+			Location location, Integer logoId, Integer logicalDeleted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -27,7 +29,8 @@ public class Restaurant {
 		this.articlesIds = articlesIds;
 		this.status = status;
 		this.location = location;
-		this.logo = logo;
+		this.logoId = logoId;
+		this.logicalDeleted = logicalDeleted;
 	}
 
 	public Integer getId() {
@@ -45,8 +48,6 @@ public class Restaurant {
 	public void setArticlesIds(ArrayList<Integer> articlesIds) {
 		this.articlesIds = articlesIds;
 	}
-
-	
 
 	public String getName() {
 		return name;
@@ -80,14 +81,20 @@ public class Restaurant {
 		this.location = location;
 	}
 
-	public String getLogo() {
-		return logo;
+	public Integer getLogoId() {
+		return logoId;
 	}
 
-	public void setLogo(String logo) {
-		this.logo = logo;
+	public void setLogoId(Integer logoId) {
+		this.logoId = logoId;
 	}
 
-	
+	public Integer getLogicalDeleted() {
+		return logicalDeleted;
+	}
+
+	public void setLogicalDeleted(Integer logicalDeleted) {
+		this.logicalDeleted = logicalDeleted;
+	}
 
 }

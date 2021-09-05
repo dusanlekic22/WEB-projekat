@@ -5,18 +5,20 @@ public class Comment {
 	private Integer restaurantId;
 	private String text;
 	private int rating;
+	private Integer logicalDeleted;
 
 	public Comment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Comment(User user, Integer restaurantId, String text, int rating) {
+	public Comment(User user, Integer restaurantId, String text, int rating, Integer logicalDeleted) {
 		super();
 		this.user = user;
 		this.restaurantId = restaurantId;
 		this.text = text;
 		this.rating = rating;
+		this.logicalDeleted = logicalDeleted;
 	}
 
 	public User getUser() {
@@ -49,6 +51,14 @@ public class Comment {
 
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+
+	public Integer getLogicalDeleted() {
+		return logicalDeleted;
+	}
+
+	public void setLogicalDeleted(Integer logicalDeleted) {
+		this.logicalDeleted = logicalDeleted;
 	}
 
 }

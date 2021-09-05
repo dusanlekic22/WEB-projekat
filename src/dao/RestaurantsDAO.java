@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -35,11 +33,7 @@ public class RestaurantsDAO {
 		File file = new File(contextPath + "/restaurants.json");
 
 		try {
-			for (Restaurant item : restaurants.values()) {
-				File outputfile = new File(this.path + "/img/" + item.getId() + ".jpg");
-				ImageIO.read(outputfile);
-			}
-			restaurants = objectMapper.readValue(file, new TypeReference<HashMap<String, Restaurant>>() {
+			restaurants = objectMapper.readValue(file, new TypeReference<HashMap<Integer, Restaurant>>() {
 			});
 
 		} catch (JsonParseException e) {
@@ -69,7 +63,6 @@ public class RestaurantsDAO {
 	public Boolean updateRestaurant(Restaurant updatedItem) {
 
 		for (Restaurant item : restaurants.values()) {
-			System.out.println("UPOREDJUJEM I MENJAM " + item.getName() + " I " + updatedItem.getId());
 			if (item.getId().equals(updatedItem.getId())) {
 				restaurants.remove(item.getId());
 				restaurants.put(updatedItem.getId(), updatedItem);
@@ -84,27 +77,14 @@ public class RestaurantsDAO {
 
 	public Restaurant find(Integer id) {
 
-		for (Restaurant item : restaurants.values()) {
-			if (item.getId().equals(id)) {
-				return item;
-			}
-		}
-
-		return null;
+		return restaurants.get(id);
 
 	}
 
 	public void deleteRestaurant(Integer id) {
 
-		for (Restaurant RestaurantsItem : restaurants.values()) {
-
-			if (RestaurantsItem.getId().equals(id)) {
-				restaurants.remove(RestaurantsItem.getId());
-				saveRestaurants();
-				return;
-			}
-		}
-		return;
+		restaurants.get(id).setLogicalDeleted(1);
+		saveRestaurants();
 
 	}
 
@@ -113,6 +93,7 @@ public class RestaurantsDAO {
 		if (!restaurants.containsKey(restaurant.getId())) {
 			restaurant.setId(restaurants.size() + 1);
 			restaurant.setArticlesIds(new ArrayList<Integer>());
+			restaurant.setLogoId(restaurants.size() + 1);;
 			restaurants.put(restaurants.size() + 1, restaurant);
 			saveRestaurants();
 			System.out.println("Sacuvao" + restaurant.getName());

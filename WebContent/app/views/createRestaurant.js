@@ -112,7 +112,7 @@ Vue.component('create-restaurant', {
           "latitude": 0, "longitude": 0,
           "address": { "streetName": "Lol", "houseNumber": 2, "city": this.restaurantLocation, "postalCode": 360000 }
         },
-        "logo": this.restaurantImage,
+        "logoId": this.restaurantImage,
         "manager": this.manager
       });
 

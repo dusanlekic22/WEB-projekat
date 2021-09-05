@@ -6,6 +6,7 @@
         "articlesIds": [],
         "status": "OPEN",
         "location": null,
-        "logo": null
+        "logoId": null,
+        "logicalDeleted":null
     }
 }

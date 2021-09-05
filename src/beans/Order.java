@@ -8,6 +8,7 @@ import com.sun.tools.javac.util.Pair;
 import beans.enums.OrderStatus;
 
 public class Order {
+
 	private Integer id;
 	private ArrayList<Integer> articlesIds;
 	private Restaurant restaurant;
@@ -17,14 +18,15 @@ public class Order {
 	private Pair<String, String> customer;
 	// TODO:Proveri
 	private OrderStatus status;
+	private Integer logicalDeleted;
 
 	public Order() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(Integer id, ArrayList<Integer> articlesIds, Restaurant restaurant, LocalDateTime dateAndTime, float price,
-			Pair<String, String> customer, OrderStatus status) {
+	public Order(Integer logicalDeleted, Integer id, ArrayList<Integer> articlesIds, Restaurant restaurant,
+			LocalDateTime dateAndTime, float price, Pair<String, String> customer, OrderStatus status) {
 		super();
 		this.id = id;
 		this.articlesIds = articlesIds;
@@ -33,6 +35,7 @@ public class Order {
 		this.price = price;
 		this.customer = customer;
 		this.status = status;
+		this.logicalDeleted = logicalDeleted;
 	}
 
 	public Integer getId() {
@@ -89,6 +92,14 @@ public class Order {
 
 	public void setStatus(OrderStatus status) {
 		this.status = status;
+	}
+
+	public Integer getLogicalDeleted() {
+		return logicalDeleted;
+	}
+
+	public void setLogicalDeleted(Integer logicalDeleted) {
+		this.logicalDeleted = logicalDeleted;
 	}
 
 }

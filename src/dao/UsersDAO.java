@@ -17,9 +17,7 @@ import beans.enums.UserRole;
 
 public class UsersDAO {
 	private HashMap<String, User> users = new HashMap<String, User>();
-	private String path;// =
-						// "C:/Users/papov/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
-
+	private String path;
 	public UsersDAO() {
 //		this.path = "C:/Users/papov/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
 		File dataDir = new File(this.path + File.separator + "data");
@@ -88,15 +86,8 @@ public class UsersDAO {
 
 	public void deleteUser(String username) {
 
-		for (User UsersItem : users.values()) {
-
-			if (UsersItem.getUsername() == username) {
-				users.remove(UsersItem.getUsername());
-				saveUsers();
-				return;
-			}
-		}
-		return;
+		users.get(username).setLogicalDeleted(1);
+		saveUsers();
 
 	}
 
@@ -133,11 +124,7 @@ public class UsersDAO {
 	}
 
 	public User getUserByUsername(String username) {
-		if (users.containsKey(username)) {
-			return users.get(username);
-		}
-
-		return null;
+		return users.get(username);
 	}
 	
 	public HashMap<String, User> getManagers() {

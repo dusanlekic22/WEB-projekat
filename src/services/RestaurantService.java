@@ -17,11 +17,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Logo;
 import beans.Restaurant;
 import beans.enums.RestaurantStatus;
 import beans.enums.UserRole;
+import dao.ImagesDAO;
 import dao.RestaurantsDAO;
 import dao.UsersDAO;
+import dto.RestaurantWithImageDTO;
 
 @Path("/restaurants")
 public class RestaurantService {
@@ -41,6 +44,11 @@ public class RestaurantService {
 		if (ctx.getAttribute("usersDAO") == null) {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("usersDAO", new UsersDAO(contextPath));
+		}
+		
+		if (ctx.getAttribute("imagesDAO") == null) {
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("imagesDAO", new ImagesDAO(contextPath));
 		}
 	}
 
@@ -73,16 +81,40 @@ public class RestaurantService {
 	@Path("/addRestaurant/{username}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addRestaurant(@PathParam("username") String managerUsername, Restaurant restaurant) {
+	public Response addRestaurant(@PathParam("username") String managerUsername, RestaurantWithImageDTO restaurantWithImage) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
 		if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
-
+			
+			ImagesDAO images = (ImagesDAO) ctx.getAttribute("imagesDAO");
+			Logo logo = new Logo();
+			logo.setImage(restaurantWithImage.getImage());
+			images.addImage(logo);
+			
 			RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
-			restaurants.addRestaurant(restaurant);
-			System.out.println(users.getUserByUsername(managerUsername).getName());
-			users.addRestaurant(users.getUserByUsername(managerUsername), restaurant);
+			restaurantWithImage.getRestaurant().setLogoId(logo.getId());
+			restaurants.addRestaurant(restaurantWithImage.getRestaurant());
+			
+			users.addRestaurant(users.getUserByUsername(managerUsername), restaurantWithImage.getRestaurant());
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())
+					.build();
+
+		}
+		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+	}
+	
+	@POST
+	@Path("/addImage/{logoId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addRestaurantImage(@PathParam("logoId") Integer logoId, String image) {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+		if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+			
+			ImagesDAO images = (ImagesDAO) ctx.getAttribute("imagesDAO");
+			images.addImage(new Logo(logoId,image));
+			
+			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(images.getValues())
 					.build();
 
 		}

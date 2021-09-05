@@ -6,17 +6,19 @@ public class Cart {
 	private ArrayList<Integer> articlesIds;
 	private User user;
 	private float price;
+	private Integer logicalDeleted;
 
 	public Cart() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cart(ArrayList<Integer> articlesIds, User user, float price) {
+	public Cart(Integer logicalDeleted, ArrayList<Integer> articlesIds, User user, float price) {
 		super();
 		this.articlesIds = articlesIds;
 		this.user = user;
 		this.price = price;
+		this.logicalDeleted = logicalDeleted;
 	}
 
 	public ArrayList<Integer> getArticlesIds() {
@@ -41,6 +43,14 @@ public class Cart {
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public Integer getLogicalDeleted() {
+		return logicalDeleted;
+	}
+
+	public void setLogicalDeleted(Integer logicalDeleted) {
+		this.logicalDeleted = logicalDeleted;
 	}
 
 }

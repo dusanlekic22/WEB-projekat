@@ -32,7 +32,7 @@ public class OrdersDAO {
 
 		try {
 
-			orders = objectMapper.readValue(file, new TypeReference<HashMap<String, Order>>() {
+			orders = objectMapper.readValue(file, new TypeReference<HashMap<Integer, Order>>() {
 			});
 
 		} catch (JsonParseException e) {
@@ -77,15 +77,8 @@ public class OrdersDAO {
 
 	public void deleteOrder(int id) {
 
-		for (Order ordersItem : orders.values()) {
-
-			if (ordersItem.getId() == id) {
-				orders.remove(ordersItem.getId());
-				saveOrders();
-				return;
-			}
-		}
-		return;
+		orders.get(id).setLogicalDeleted(1);
+		saveOrders();
 
 	}
 

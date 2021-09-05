@@ -11,14 +11,15 @@ public class Article {
 	private int quantity;
 	private String description;
 	private String image;
+	private Integer logicalDeleted;
 
 	public Article() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Article(Integer id, String name, float price, ArticleType type, Integer restaurantId, int quantity,
-			String description, String image) {
+	public Article(Integer logicalDeleted, Integer id, String name, float price, ArticleType type, Integer restaurantId,
+			int quantity, String description, String image) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -28,6 +29,7 @@ public class Article {
 		this.quantity = quantity;
 		this.description = description;
 		this.image = image;
+		this.logicalDeleted = logicalDeleted;
 	}
 
 	public String getName() {
@@ -92,6 +94,14 @@ public class Article {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public Integer getLogicalDeleted() {
+		return logicalDeleted;
+	}
+
+	public void setLogicalDeleted(Integer logicalDeleted) {
+		this.logicalDeleted = logicalDeleted;
 	}
 
 }

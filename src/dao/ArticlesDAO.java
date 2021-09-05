@@ -33,7 +33,7 @@ public class ArticlesDAO {
 		File file = new File(contextPath + "/articles.json");
 
 		try {
-			articles = objectMapper.readValue(file, new TypeReference<HashMap<String, Article>>() {
+			articles = objectMapper.readValue(file, new TypeReference<HashMap<Integer, Article>>() {
 			});
 
 		} catch (JsonParseException e) {
@@ -63,7 +63,6 @@ public class ArticlesDAO {
 	public Boolean updateArticle(Article updatedItem) {
 
 		for (Article item : articles.values()) {
-			System.out.println("UPOREDJUJEM I MENJAM " + item.getName() + " I " + updatedItem.getId());
 			if (item.getId().equals(updatedItem.getId())) {
 				articles.remove(item.getId());
 				articles.put(updatedItem.getId(), updatedItem);
@@ -78,27 +77,14 @@ public class ArticlesDAO {
 
 	public Article find(Integer id) {
 
-		for (Article item : articles.values()) {
-			if (item.getId().equals(id)) {
-				return item;
-			}
-		}
-
-		return null;
+		return articles.get(id);
 
 	}
 
 	public void deleteArticle(Integer id) {
 
-		for (Article ArticlesItem : articles.values()) {
-
-			if (ArticlesItem.getId().equals(id)) {
-				articles.remove(ArticlesItem.getId());
-				saveArticles();
-				return;
-			}
-		}
-		return;
+		articles.get(id).setLogicalDeleted(1);
+		saveArticles();
 
 	}
 
