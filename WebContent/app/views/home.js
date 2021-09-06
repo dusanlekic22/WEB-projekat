@@ -92,12 +92,15 @@ Vue.component('home', {
          <div class="form-group">
             <label for="loginUsername">Username</label>
             <input type="username" class="form-control" id="loginUsername" aria-describedby="loginUsernameHelp" placeholder="Enter username" v-model="loginUsername">
-            <small id="loginUsernameHelp" class="form-text text-muted">Your information is safe with us.</small>
+            <span class="loginError"  v-if="usernameEmpty">Morate uneti vase korisnicko ime</span>
+            <span class="loginError"  v-if="usernameError">Pogresno korisnicko ime</span>
           </div>
             <div class="form-group">
             <label for="loginPassword">Password {{ loginPassword }}</label>
             <input type="loginPassword" class="form-control" id="loginPassword" placeholder="Password" v-model="loginPassword">
-          </div>
+          <span class="loginError"  v-if="passwordEmpty">Morate uneti vase sifru</span>
+            <span class="loginError"  v-if="passwordError">Pogresna sifra</span>
+            </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
           <button type="submit" class="btn btn-success" @click.prevent="login">Login</button>
           </div>
@@ -120,6 +123,8 @@ Vue.component('home', {
       dateofbirth: '',
       loginUsername: '',
       loginPassword: '',
+      usernameEmpty: false,
+      passwordEmpty: false,
       cities: [
         {
           id: 12,
@@ -161,7 +166,14 @@ Vue.component('home', {
     },
     isLogin() {
        return this.$store.getters['loginModule/isLoginActive'];
+    },
+    usernameError() {
+      return this.$store.getters['loginModule/getUsernameError'];
+    },
+   passwordError() {
+      return  this.$store.getters['loginModule/getPasswordError'];
     }
+
   },
   methods: {
     closeRegistration() {
@@ -186,13 +198,40 @@ Vue.component('home', {
       );
     },
     login() {
+
+      if (this.loginUsername === '') {
+        this.usernameEmpty = true;
+        $('#loginUsername').css ("border", "2px solid red");
+        setTimeout(() => {
+        $('#loginUsername').css ("border", "1px solid #ced4da");
+        }, 1000);
+        return false;
+       }
+      if (this.loginPassword === '') {
+        this.usernameEmpty = false;
+        this.passwordEmpty = true;
+        $('#loginPassword').css("border", "2px solid red");
+        setTimeout(() => {
+          $('#loginPassword').css("border", "1px solid #ced4da");
+        }, 1000);
+        return false;
+      }
+      else {
+        this.usernameEmpty = false;
+        this.passwordEmpty = false;
         this.$store.dispatch(
-       'loginModule/login',
-        {
-          loginUsername: this.loginUsername,
-          loginPassword: this.loginPassword
-        }
-      );
+          'loginModule/login',
+          {
+            loginUsername: this.loginUsername,
+            loginPassword: this.loginPassword
+          }
+        ).then(err => {
+          if (!this.usernameError || !this.passwordError)
+            this.closeLogin();
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+      }
    }
 
   },

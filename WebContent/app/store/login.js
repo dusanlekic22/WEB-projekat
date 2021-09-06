@@ -4,6 +4,8 @@ var loginStore = {
         return {
             module: 'logovanje',
             loginActive: false,
+            usernameError: false,
+            passwordError: false,
             user: {}
         };
     },
@@ -19,7 +21,7 @@ var loginStore = {
     },
     actions: {
         login(context, payload) {
-                 axios
+            axios
                 .post('rest/users/login', { "username": '' + payload.loginUsername, "password": '' + payload.loginPassword })
                 .then(response => {
                     this.message = response.data;
@@ -28,11 +30,12 @@ var loginStore = {
                     this.user = response.data;
                     context.commit('userModule/setUser', this.user, { root: true })
                     console.log("\n\n ----------------------\n\n");
-                    
                 })
                 .catch(err => {
                     console.log("\n\n ------- ERROR -------\n");
                     console.log(err);
+                    context.state.usernameError = true;
+                    context.state.passwordError = true;
                     console.log("\n\n ----------------------\n\n");
                 });
                 // this.$store.commit('userModule/setUser', this.user);
@@ -46,6 +49,12 @@ var loginStore = {
             },
             isLoginActive(state) {
                 return state.loginActive;
-            }
+            }, 
+            getUsernameError(state) {
+                return state.usernameError;
+            },
+            getPasswordError(state) {
+                return state.passwordError;
+            },
         }
 }

@@ -127,13 +127,13 @@ public class UserService {
 
 		if (userForLogin == null) {
 			System.out.println("Nema takvog usera");
-			return Response.status(Response.Status.BAD_REQUEST).entity("Password or username are incorrect, try again")
+			return Response.status(Response.Status.BAD_REQUEST).entity("Username is incorrect, try again")
 					.build();
 		}
 
 		if (!userForLogin.getPassword().equals(user.getPassword())) {
 			System.out.println("SIFRE NISU JEDNAKE");
-			return Response.status(Response.Status.BAD_REQUEST).entity("Password or username are incorrect, try again")
+			return Response.status(Response.Status.BAD_REQUEST).entity("Password is incorrect, try again")
 					.build();
 		}
 
