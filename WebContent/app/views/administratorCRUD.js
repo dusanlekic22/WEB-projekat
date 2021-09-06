@@ -33,7 +33,7 @@ Vue.component('administrator-crud', {
            <input class="radioRegistration" type="radio" v-model="gender" value="FEMALE"/>FEMALE
            <br />
           </div>
-            <div class="form-group">
+            <div class="form-group" v-if="!knowManager">
            <label for="role">Uloga</label>
            <input class="radioRegistration" type="radio" v-model="role" value="MANAGER"/>MANAGER
            <input class="radioRegistration" type="radio" v-model="role" value="DELIVERY"/>DELIVERY
@@ -53,7 +53,8 @@ Vue.component('administrator-crud', {
   `,
   name: "Home",
   data() {
-      return {
+    return {
+      knowManager : this.$route.params.manager  ,
       username: '',
       password: '',
       confirmPassword: '',
@@ -71,12 +72,18 @@ Vue.component('administrator-crud', {
         style.type = "text/css";
         style.rel = "stylesheet";
         style.href = 'css/administatorCRUD.css';
-       document.head.appendChild(style);
+     document.head.appendChild(style);
+     console.log("manager");
+      console.log(this.knowManager);
   },
-  computed: {
+  props: {
+    isManager: String
   },
     methods: {
       submit() {
+        if (this.knowManager) {
+          this.role = "MANAGER";
+        }
       this.$store.dispatch(
        'registrationModule/addManagerDeliver',
         {
@@ -89,7 +96,17 @@ Vue.component('administrator-crud', {
           dateOfBirth: this.dateofbirth,
           role: this.role
         }
-      );
+      ).then(response => {
+      
+                        console.log(response);
+                        console.log("\n\n ----------------------\n\n");
+                        console.log(this.$route.params.manager === true);
+                        if (this.$route.params.manager) {
+                            this.$router.push('/createRestaurant');
+                            this.$store.dispatch('managerModule/getFreeManagers');
+                        }
+                        
+                    });
     }
   },
 

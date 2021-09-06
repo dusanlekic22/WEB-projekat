@@ -32,7 +32,7 @@ const router = new VueRouter({
         name: 'CreateRestaurant',
           component: CreateRestaurantComponent,
           children: [
-          { name:'create-manager-for-restaurant', path: 'manager', component: AdministratorCrudComponent}
+          { name:'create-manager-for-restaurant', path: ':manager', component: AdministratorCrudComponent , props: true}
         ]
       }
 	  ]

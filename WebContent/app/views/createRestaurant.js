@@ -38,7 +38,7 @@ Vue.component('create-restaurant', {
           <br />
           </div>
         </div>
-        <div class="modal-footer border-top-0 d-flex justify-content-center"  v-if="!needManager">
+        <div class="modal-footer border-top-0 d-flex justify-content-center"  v-if="freeManager.length !== 0">
           <button type="submit" class="btn btn-success" @click.prevent="dodajRestoran">Submit</button>
         </div>
       </form>
@@ -101,7 +101,7 @@ Vue.component('create-restaurant', {
     },
     dodajMenadzera() {
       this.needManager = true;
-      this.$router.push('/createRestaurant/manager');
+      this.$router.push('/createRestaurant/true');
     },
     dodajRestoran() {
       console.log(this.restaurantName);

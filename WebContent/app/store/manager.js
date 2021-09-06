@@ -20,7 +20,7 @@ var managerStore = {
                     console.log("\n\n ------- Slobodni menadzeri -------\n");
                     console.log(response.data);
                     context.state.freeManagers = response.data;
-                    context.commit('setFreeManagers',response.data);
+                    context.commit('setFreeManagers', response.data);
                     console.log("\n\n ----------------------\n\n");
                     
                 })

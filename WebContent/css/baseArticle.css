@@ -20,6 +20,7 @@
 .slika{
   width: 220px!important;
   height: 180px!important;
+  border-radius: 5px;
 }
 
 .fullArticleImg{
@@ -37,11 +38,11 @@
 
 
 .fullAImg-enter-active {
-  transition: all 2s ease-out;
+  transition: all .4s ease-out;
 }
 
 .fullAImg-leave-active {
-  transition: all 2s cubic-bezier(1.0, 0.5, 0.8, 1.0) ;
+  transition: all .4s cubic-bezier(1.0, 0.5, 0.8, 1.0) ;
 }
 
 .fullAImg-enter-from,
@@ -58,11 +59,11 @@
 
 
 .aImg-enter-active {
-  transition: all 2s ease;
+  transition: all .4s ease;
 }
 
 .aImg-leave-active {
-  transition: all 2s ease-in-out ;
+  transition: all .4s ease-in-out ;
 }
 
 .aImg-enter-from{
@@ -79,6 +80,32 @@
   opacity: 0;
 }
 
-.active{
-  opacity: 0;
+.addButtons{
+width: 100%;
+margin: 0;
+height: 100px;
+border-top: 1px solid grey;
+}
+
+.buttonCartMinus{
+  background: white;
+  width: 100px;
+  height: 55px;
+  border: 1px solid grey;
+  padding: 0px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.buttonCartPlus{
+  background: white;
+  width: 100px;
+  height: 55px;
+  border: 1px solid grey;
+  padding: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.naslov{
+  margin-top: 15px;
 }

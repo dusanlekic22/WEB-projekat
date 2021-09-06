@@ -93,7 +93,6 @@ public class RestaurantsDAO {
 		if (!restaurants.containsKey(restaurant.getId())) {
 			restaurant.setId(restaurants.size() + 1);
 			restaurant.setArticlesIds(new ArrayList<Integer>());
-			restaurant.setLogoId(restaurants.size() + 1);;
 			restaurants.put(restaurants.size() + 1, restaurant);
 			saveRestaurants();
 			System.out.println("Sacuvao" + restaurant.getName());
