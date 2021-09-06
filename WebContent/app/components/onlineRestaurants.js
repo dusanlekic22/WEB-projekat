@@ -5,7 +5,7 @@ template:
       <div id="onlineRestaurantsSection">
         <div class="container py-5">
           <div class="row py-4">
-            <base-online-restaurant v-for="r in this.restaurants" :key="r.id" :name="r.name"></base-online-restaurant>
+            <base-online-restaurant v-for="r in this.restaurants" :key="r.id" :name="r.name" :id="r.id"></base-online-restaurant>
             </div>
         </div>
       </div>

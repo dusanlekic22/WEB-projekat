@@ -54,8 +54,8 @@ template:
     },
     methods: {
         open() {
-            console.log("kliknuo sam");
+        this.$router.push('/Restaurant/' + this.id);
         }
     },
-    props: ['name']
+    props: ['name','id']
 });
