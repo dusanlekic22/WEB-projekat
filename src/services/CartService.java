@@ -1,6 +1,8 @@
 package services;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -60,6 +62,8 @@ public class CartService {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCart(@PathParam("id") Integer id) {
+		
+		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 
 		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
 		if (carts == null) {
@@ -69,14 +73,26 @@ public class CartService {
 		if (!users.checkUserRole(request, UserRole.CUSTOMER)) {
 			return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 		}
-
-		return Response.status(200).entity(carts.find(id)).build();
+		
+		Cart oldCart = carts.find(id);
+		Cart newCart = new Cart(oldCart);
+		newCart.getArticleIdsWithQuantity().forEach((articleId, quantity) -> {
+			articles.getValues().forEach((k, v) -> {
+				if (k.equals(articleId)) {
+					newCart.setPrice(newCart.getPrice()+v.getPrice()*quantity);
+				}
+			});
+		});
+		carts.updateCart(oldCart, newCart);
+		
+		return Response.status(200).entity(newCart).build();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GET
 	@Path("/getCartArticles/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCartArticles(@PathParam("id") Integer id) {
+	public Response getCartArticlesWithQuantity(@PathParam("id") Integer id) {
 
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
@@ -87,15 +103,16 @@ public class CartService {
 		if (!users.checkUserRole(request, UserRole.CUSTOMER)) {
 			return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 		}
-		HashMap<Integer,Article> cartArticles = new HashMap<Integer,Article>(); 
-		for (Integer articleId : carts.find(id).getArticleIdsWithQuantity().keySet()) {
+		HashMap<Integer,Entry<Article,Integer>> cartArticles = new HashMap<Integer,Entry<Article,Integer>>(); 
+		carts.find(id).getArticleIdsWithQuantity().forEach((articleId, quantity) -> {
 			articles.getValues().forEach((k, v) -> {
 				if (k.equals(articleId)) {
-					cartArticles.put(k, v);
+					cartArticles.put(k, new SimpleEntry(v,quantity));
 				}
 			});
+		});
 
-		}
+		
 		return Response.status(200).entity(cartArticles.values()).build();
 	}
 

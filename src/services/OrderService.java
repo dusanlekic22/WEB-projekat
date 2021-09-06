@@ -1,23 +1,29 @@
 package services;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.DefaultValue;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.sun.tools.javac.util.Pair;
+
+import beans.Cart;
 import beans.Order;
+import beans.User;
 import beans.enums.OrderStatus;
+import beans.enums.UserRole;
+import dao.ArticlesDAO;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
 import dao.UsersDAO;
@@ -46,6 +52,10 @@ public class OrderService {
 		if (ctx.getAttribute("restaurantsDAO") == null) {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("restaurantsDAO", new RestaurantsDAO(contextPath));
+		}
+		if (ctx.getAttribute("articlesDAO") == null) {
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("articlesDAO", new ArticlesDAO(contextPath));
 		}
 	}
 
@@ -99,7 +109,7 @@ public class OrderService {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
-		HashMap<Integer, Order> ordersResult = new HashMap<Integer, Order>();
+		HashMap<String, Order> ordersResult = new HashMap<String, Order>();
 		for (Order item : orders.getValues().values()) {
 			if (restaurants.find(item.getRestaurantId()).getType().equals(type)) {
 				ordersResult.put(item.getId(), item);
@@ -114,35 +124,40 @@ public class OrderService {
 	public Response filterOrdersByStatus(@PathParam("status") OrderStatus status) {
 
 		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
-		HashMap<Integer, Order> filtered = orders.filterByStatus(status);
+		HashMap<String, Order> filtered = orders.filterByStatus(status);
 		return Response.status(200).entity(filtered.values()).build();
 	}
 	
-//	@POST
-//	@Path("/addOrder/{username}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public Response addOrder(@PathParam("username") String managerUsername, OrderWithImageDTO restaurantWithImage) {
-//		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-//		if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
-//			
-//			ImagesDAO images = (ImagesDAO) ctx.getAttribute("imagesDAO");
-//			Logo logo = new Logo();
-//			logo.setImage(restaurantWithImage.getImage());
-//			images.addImage(logo);
-//			
-//			OrdersDAO restaurants = (OrdersDAO) ctx.getAttribute("restaurantsDAO");
-//			restaurantWithImage.getOrder().setLogoId(logo.getId());
-//			restaurants.addOrder(restaurantWithImage.getOrder());
-//			
-//			users.addOrder(users.getUserByUsername(managerUsername), restaurantWithImage.getOrder());
-//
-//			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())
-//					.build();
-//
-//		}
-//		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
-//	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@POST
+	@Path("/createOrder")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createOrder(Cart cart) {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
+		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
+		if (users.checkUserRole(request, UserRole.CUSTOMER)) {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			Order order = new Order();
+			order.setArticlesIdsWithQuantity(cart.getArticleIdsWithQuantity());
+			order.setPrice(cart.getPrice());
+			Integer anyOrderArticleId = order.getArticlesIdsWithQuantity().keySet().stream().findAny().get();
+			order.setRestaurantId(articles.find(anyOrderArticleId).getRestaurantId());
+			order.setDateAndTime(LocalDateTime.now());
+			order.setCustomer(new Pair(user.getName(),user.getPassword()));
+			order.setStatus(OrderStatus.PROCESSING);
+			orders.addOrder(order);
+			User newUser = new User(user);
+			newUser.setPoints(order.getPrice()/1000*133);
+			//request.getSession().setAttribute("loginUser", newUser);
+			users.updateUser(newUser, user);
+			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(order)
+					.build();
+
+		}
+		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+	}
 	
 //	@GET
 //	@Path("/{id}")

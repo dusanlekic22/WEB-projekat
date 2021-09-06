@@ -1,7 +1,7 @@
 package beans;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.sun.tools.javac.util.Pair;
 
@@ -9,8 +9,8 @@ import beans.enums.OrderStatus;
 
 public class Order {
 
-	private Integer id;
-	private ArrayList<Integer> articlesIds;
+	private String id;
+	private HashMap<Integer, Integer> articlesIdsWithQuantity;
 	private Integer restaurantId;
 	private LocalDateTime dateAndTime;
 	// TODO:FORMAT
@@ -25,11 +25,12 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(Integer id, ArrayList<Integer> articlesIds, Integer restaurantId, LocalDateTime dateAndTime,
-			float price, Pair<String, String> customer, OrderStatus status, Integer logicalDeleted) {
+	public Order(String id, HashMap<Integer, Integer> articlesIdsWithQuantity, Integer restaurantId,
+			LocalDateTime dateAndTime, float price, Pair<String, String> customer, OrderStatus status,
+			Integer logicalDeleted) {
 		super();
 		this.id = id;
-		this.articlesIds = articlesIds;
+		this.articlesIdsWithQuantity = articlesIdsWithQuantity;
 		this.restaurantId = restaurantId;
 		this.dateAndTime = dateAndTime;
 		this.price = price;
@@ -38,11 +39,11 @@ public class Order {
 		this.logicalDeleted = logicalDeleted;
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -70,12 +71,14 @@ public class Order {
 		this.price = price;
 	}
 
-	public ArrayList<Integer> getArticlesIds() {
-		return articlesIds;
+	
+	
+	public HashMap<Integer, Integer> getArticlesIdsWithQuantity() {
+		return articlesIdsWithQuantity;
 	}
 
-	public void setArticlesIds(ArrayList<Integer> articlesIds) {
-		this.articlesIds = articlesIds;
+	public void setArticlesIdsWithQuantity(HashMap<Integer, Integer> articlesIdsWithQuantity) {
+		this.articlesIdsWithQuantity = articlesIdsWithQuantity;
 	}
 
 	public Pair<String, String> getCustomer() {

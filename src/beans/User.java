@@ -13,11 +13,11 @@ public class User {
 	private Gender gender;
 	private String dateOfBirth;
 	private UserRole role;
-	private ArrayList<Integer> customerOrdersIds;
+	private ArrayList<String> customerOrdersIds;
 	private Integer cartId;
 	private Integer restaurantId;
-	private ArrayList<Integer> deliveryOrdersIds;
-	private int points;
+	private ArrayList<String> deliveryOrdersIds;
+	private double points;
 	private CustomerType type;
 	private Integer logicalDeleted;
 
@@ -29,8 +29,8 @@ public class User {
 	}
 
 	public User(String username, String password, String name, String surname, Gender gender, String dateOfBirth,
-			UserRole role, ArrayList<Integer> customerOrdersIds, Integer cartId, Integer restaurantId,
-			ArrayList<Integer> deliveryOrdersIds, int points, CustomerType type, Integer logicalDeleted,
+			UserRole role, ArrayList<String> customerOrdersIds, Integer cartId, Integer restaurantId,
+			ArrayList<String> deliveryOrdersIds, double points, CustomerType type, Integer logicalDeleted,
 			boolean blocked) {
 		super();
 		this.username = username;
@@ -48,6 +48,25 @@ public class User {
 		this.type = type;
 		this.logicalDeleted = logicalDeleted;
 		this.blocked = blocked;
+	}
+
+	public User(User user) {
+		super();
+		this.username = user.username;
+		this.password = user.password;
+		this.name = user.name;
+		this.surname = user.surname;
+		this.gender = user.gender;
+		this.dateOfBirth = user.dateOfBirth;
+		this.role = user.role;
+		this.customerOrdersIds = user.customerOrdersIds;
+		this.cartId = user.cartId;
+		this.restaurantId = user.restaurantId;
+		this.deliveryOrdersIds = user.deliveryOrdersIds;
+		this.points = user.points;
+		this.type = user.type;
+		this.logicalDeleted = user.logicalDeleted;
+		this.blocked = user.blocked;
 	}
 
 	public String getUsername() {
@@ -106,14 +125,6 @@ public class User {
 		this.role = role;
 	}
 
-	public ArrayList<Integer> getCustomerOrdersIds() {
-		return customerOrdersIds;
-	}
-
-	public void setCustomerOrdersIds(ArrayList<Integer> customerOrdersIds) {
-		this.customerOrdersIds = customerOrdersIds;
-	}
-
 	public Integer getCartId() {
 		return cartId;
 	}
@@ -130,19 +141,27 @@ public class User {
 		this.restaurantId = restaurantId;
 	}
 
-	public ArrayList<Integer> getDeliveryOrdersIds() {
+	public ArrayList<String> getCustomerOrdersIds() {
+		return customerOrdersIds;
+	}
+
+	public void setCustomerOrdersIds(ArrayList<String> customerOrdersIds) {
+		this.customerOrdersIds = customerOrdersIds;
+	}
+
+	public ArrayList<String> getDeliveryOrdersIds() {
 		return deliveryOrdersIds;
 	}
 
-	public void setDeliveryOrdersIds(ArrayList<Integer> deliveryOrdersIds) {
+	public void setDeliveryOrdersIds(ArrayList<String> deliveryOrdersIds) {
 		this.deliveryOrdersIds = deliveryOrdersIds;
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
 
-	public void setPoints(int points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
 
