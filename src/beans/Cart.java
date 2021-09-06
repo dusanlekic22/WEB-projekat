@@ -1,10 +1,11 @@
 package beans;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Cart {
-	private ArrayList<Integer> articlesIds;
-	private User user;
+	private Integer id;
+	private HashMap<Integer, Integer> articleIdsWithQuantity;
+	private String username;
 	private float price;
 	private Integer logicalDeleted;
 
@@ -13,28 +14,47 @@ public class Cart {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cart(Integer logicalDeleted, ArrayList<Integer> articlesIds, User user, float price) {
+	public Cart(Integer id, HashMap<Integer, Integer> articleIdsWithQuantity, String username, float price,
+			Integer logicalDeleted) {
 		super();
-		this.articlesIds = articlesIds;
-		this.user = user;
+		this.id = id;
+		this.articleIdsWithQuantity = articleIdsWithQuantity;
+		this.username = username;
 		this.price = price;
 		this.logicalDeleted = logicalDeleted;
 	}
 
-	public ArrayList<Integer> getArticlesIds() {
-		return articlesIds;
+	public Cart(Cart cart) {
+		super();
+		this.id = cart.id;
+		this.articleIdsWithQuantity = cart.articleIdsWithQuantity;
+		this.username = cart.username;
+		this.price = cart.price;
+		this.logicalDeleted = cart.logicalDeleted;
 	}
 
-	public void setArticlesIds(ArrayList<Integer> articlesIds) {
-		this.articlesIds = articlesIds;
+	public Integer getId() {
+		return id;
 	}
 
-	public User getUser() {
-		return user;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public HashMap<Integer, Integer> getArticleIdsWithQuantity() {
+		return articleIdsWithQuantity;
+	}
+
+	public void setArticleIdsWithQuantity(HashMap<Integer, Integer> articleIdsWithQuantity) {
+		this.articleIdsWithQuantity = articleIdsWithQuantity;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public float getPrice() {

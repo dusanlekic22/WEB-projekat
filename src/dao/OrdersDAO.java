@@ -137,6 +137,16 @@ public class OrdersDAO {
 		return userOrders;
 	}
 
+	public HashMap<Integer, Order> filterByStatus(OrderStatus status) {
+		HashMap<Integer, Order> ordersResult = new HashMap<Integer, Order>();
+		for (Order item : getValues().values()) {
+			if (item.getStatus().equals(status)) {
+				ordersResult.put(item.getId(), item);
+			}
+		}
+		return ordersResult;
+	}
+	
 	public boolean checkUserRole(User user, UserRole role) {
 
 		if (user != null) {

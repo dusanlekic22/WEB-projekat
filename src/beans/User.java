@@ -14,7 +14,7 @@ public class User {
 	private String dateOfBirth;
 	private UserRole role;
 	private ArrayList<Integer> customerOrdersIds;
-	private Cart cart;
+	private Integer cartId;
 	private Integer restaurantId;
 	private ArrayList<Integer> deliveryOrdersIds;
 	private int points;
@@ -29,7 +29,7 @@ public class User {
 	}
 
 	public User(String username, String password, String name, String surname, Gender gender, String dateOfBirth,
-			UserRole role, ArrayList<Integer> customerOrdersIds, Cart cart, Integer restaurantId,
+			UserRole role, ArrayList<Integer> customerOrdersIds, Integer cartId, Integer restaurantId,
 			ArrayList<Integer> deliveryOrdersIds, int points, CustomerType type, Integer logicalDeleted,
 			boolean blocked) {
 		super();
@@ -41,7 +41,7 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 		this.role = role;
 		this.customerOrdersIds = customerOrdersIds;
-		this.cart = cart;
+		this.cartId = cartId;
 		this.restaurantId = restaurantId;
 		this.deliveryOrdersIds = deliveryOrdersIds;
 		this.points = points;
@@ -114,12 +114,12 @@ public class User {
 		this.customerOrdersIds = customerOrdersIds;
 	}
 
-	public Cart getCart() {
-		return cart;
+	public Integer getCartId() {
+		return cartId;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setCartId(Integer cartId) {
+		this.cartId = cartId;
 	}
 
 	public Integer getRestaurantId() {

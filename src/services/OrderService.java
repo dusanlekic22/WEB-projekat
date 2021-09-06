@@ -1,32 +1,30 @@
 package services;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import beans.Order;
-import beans.User;
-import beans.enums.UserRole;
+import beans.enums.OrderStatus;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
 import dao.UsersDAO;
 
 @Path("/orders")
 public class OrderService {
-	
+
 	@Context
 	HttpServletRequest request;
 	@Context
@@ -56,7 +54,7 @@ public class OrderService {
 	public Response getAllOrders() {
 
 		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
-		
+
 		if (orders == null) {
 			return Response.status(400).entity("Lista artikala nije pronadjena").build();
 		}
@@ -64,6 +62,88 @@ public class OrderService {
 		return Response.status(200).entity(orders.getUserOrders(request)).build();
 	}
 
+//	@GET
+//	@Path("/search")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response searchOrders(@DefaultValue("~") @QueryParam("restaurant") String name,
+//			@DefaultValue("Integer.MAX_VALUE") @QueryParam("minPrice") float minPrice,
+//			@DefaultValue("Integer.MIN_VALUE") @QueryParam("maxPrice") float maxPrice,
+//			@DefaultValue("LocalDate.MAX") @QueryParam("startDate") LocalDate startDate,
+//			@DefaultValue("LocalDate.MIN") @QueryParam("endDate") LocalDate endDate) {
+//
+//		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
+//		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
+//		HashMap<Integer, Order> ordersResult = new HashMap<Integer, Order>();
+//
+//		for (Order item : orders.getUserOrders(request).values()) {
+//			Integer restaurantId = item.getRestaurantId();
+//			LocalDate orderDate = item.getDateAndTime().toLocalDate();
+//			
+//			if (restaurants.getValues().get(restaurantId).getName().contains(name)) {
+//				ordersResult.put(item.getId(), item);
+//			} else if (item.getPrice() <= maxPrice && item.getPrice() >= minPrice) {
+//				ordersResult.put(item.getId(), item);
+//			} else if (orderDate.isAfter(startDate) && orderDate.isBefore(endDate)) {
+//				ordersResult.put(item.getId(), item);
+//			}
+//
+//		}
+//		return Response.status(200).entity(ordersResult.values()).build();
+//	}
+
+	
+	@GET
+	@Path("/filterByType/{type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response filterOrdersByRestaurantType(@PathParam("type") String type) {
+
+		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
+		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
+		HashMap<Integer, Order> ordersResult = new HashMap<Integer, Order>();
+		for (Order item : orders.getValues().values()) {
+			if (restaurants.find(item.getRestaurantId()).getType().equals(type)) {
+				ordersResult.put(item.getId(), item);
+			}
+		}
+		return Response.status(200).entity(ordersResult.values()).build();
+	}
+	
+	@GET
+	@Path("/filterByStatus/{status}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response filterOrdersByStatus(@PathParam("status") OrderStatus status) {
+
+		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
+		HashMap<Integer, Order> filtered = orders.filterByStatus(status);
+		return Response.status(200).entity(filtered.values()).build();
+	}
+	
+//	@POST
+//	@Path("/addOrder/{username}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response addOrder(@PathParam("username") String managerUsername, OrderWithImageDTO restaurantWithImage) {
+//		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+//		if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
+//			
+//			ImagesDAO images = (ImagesDAO) ctx.getAttribute("imagesDAO");
+//			Logo logo = new Logo();
+//			logo.setImage(restaurantWithImage.getImage());
+//			images.addImage(logo);
+//			
+//			OrdersDAO restaurants = (OrdersDAO) ctx.getAttribute("restaurantsDAO");
+//			restaurantWithImage.getOrder().setLogoId(logo.getId());
+//			restaurants.addOrder(restaurantWithImage.getOrder());
+//			
+//			users.addOrder(users.getUserByUsername(managerUsername), restaurantWithImage.getOrder());
+//
+//			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())
+//					.build();
+//
+//		}
+//		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+//	}
+	
 //	@GET
 //	@Path("/{id}")
 //	@Produces(MediaType.APPLICATION_JSON)
