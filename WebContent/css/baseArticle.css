@@ -1,0 +1,84 @@
+.articleRow{
+    margin-top: 20px!important;
+    border-top: 1px solid #80808040!important;
+    border-bottom: 1px solid #80808040!important;
+    border-radius: 10px!important;
+    overflow: hidden;
+}
+
+.articleRow:hover{
+    margin-top: 20px!important;
+    border: 1px solid #80808040!important;
+    box-shadow: 0px 0px 15px -7px;
+}
+
+
+.articleImg {
+  padding: 10px;
+  opacity: 1;
+}
+.slika{
+  width: 220px!important;
+  height: 180px!important;
+}
+
+.fullArticleImg{
+  padding: 0px;
+  height: 300px;
+}
+
+.fullArticleImg  img{
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  max-height: 300px!important;
+}
+
+
+
+.fullAImg-enter-active {
+  transition: all 2s ease-out;
+}
+
+.fullAImg-leave-active {
+  transition: all 2s cubic-bezier(1.0, 0.5, 0.8, 1.0) ;
+}
+
+.fullAImg-enter-from,
+.fullAImg-enter-to {
+  transform:  scaleY(1);
+  margin-top: -300px;
+}
+
+.fullAImg-leave-from,
+.fullAImg-leave-to {
+  transform:  scaleY(1);
+  margin-top: -300px;
+}
+
+
+.aImg-enter-active {
+  transition: all 2s ease;
+}
+
+.aImg-leave-active {
+  transition: all 2s ease-in-out ;
+}
+
+.aImg-enter-from{
+  opacity: 0;
+}
+.aImg-enter-to {
+  opacity: 1;
+}
+
+.aImg-leave-from{
+  opacity: 1;
+}
+.aImg-leave-to {
+  opacity: 0;
+}
+
+.active{
+  opacity: 0;
+}
