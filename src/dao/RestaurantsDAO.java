@@ -3,7 +3,11 @@ package dao;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -85,14 +89,12 @@ public class RestaurantsDAO {
 
 	public Restaurant addRestaurant(Restaurant restaurant) {
 
-		if (!restaurants.containsKey(restaurant.getId())) {
-			restaurant.setId(restaurants.size() + 1);
-			restaurant.setArticlesIds(new ArrayList<Integer>());
-			restaurants.put(restaurants.size() + 1, restaurant);
-			saveRestaurants();
-			System.out.println("Sacuvao" + restaurant.getName());
-			return restaurants.get(restaurant.getId());
-		}
+		restaurant.setId(restaurants.size() + 1);
+		restaurant.setArticlesIds(new ArrayList<Integer>());
+		restaurants.put(restaurants.size() + 1, restaurant);
+		saveRestaurants();
+		System.out.println("Sacuvao" + restaurant.getName());
+		return restaurants.get(restaurant.getId());
 
 	}
 
@@ -115,4 +117,34 @@ public class RestaurantsDAO {
 		}
 		return restaurantsResult;
 	}
+	
+	
+	
+//	public HashMap<Integer, Restaurant> sortHashMapByValues(
+//	        HashMap<Integer, Restaurant> passedMap) {
+//	    List<Integer> mapKeys = new ArrayList<>(passedMap.keySet());
+//	    List<Restaurant> mapValues = new ArrayList<>(passedMap.values());
+//
+//	    HashMap<Integer, Restaurant> sortedMap =
+//	        new HashMap<>();
+//
+//	    Iterator<Restaurant> valueIt = mapValues.iterator();
+//	    while (valueIt.hasNext()) {
+//	    	RestaurantStatus val = valueIt.next().getStatus();
+//	        Iterator<Integer> keyIt = mapKeys.iterator();
+//
+//	        while (keyIt.hasNext()) {
+//	            Integer key = keyIt.next();
+//	            RestaurantStatus comp1 = passedMap.get(key).getStatus();
+//	            RestaurantStatus comp2 = val;
+//
+//	            if (comp1.toString().compareTo(comp2.toString())) {
+//	                keyIt.remove();
+//	                sortedMap.put(key, val);
+//	                break;
+//	            }
+//	        }
+//	    }
+//	    return sortedMap;
+//	}
 }

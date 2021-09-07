@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
@@ -60,8 +61,13 @@ public class RestaurantService {
 		if (restaurants == null) {
 			return Response.status(400).entity("Lista restorana nije pronadjena").build();
 		}
-
-		return Response.status(200).entity(restaurants.getValues().values()).build();
+		ArrayList<Restaurant> sortedRestaurants =  new ArrayList<>(restaurants.getValues().values());
+		
+		sortedRestaurants.sort((o1, o2)
+                -> -(o1.getStatus().toString().compareTo(
+                    o2.getStatus().toString())));
+		
+		return Response.status(200).entity(sortedRestaurants).build();
 	}
 
 	@GET
