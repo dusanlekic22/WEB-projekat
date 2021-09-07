@@ -115,23 +115,6 @@ Vue.component('create-restaurant', {
         "logoId": this.restaurantImage,
         "manager": this.manager
       });
-
-      // let formData = new FormData();
-      // formData.append('file', this.file);
-      // console.log('>> formData >> ', formData);
-
-      // axios.post('/rest/users/fileupload',
-      //     formData, {
-      //       headers: {
-      //         'Content-Type': 'multipart/form-data'
-      //       }
-      //     }
-      //   ).then(function () {
-      //     console.log('SUCCESS!!');
-      //   })
-      //   .catch(function () {
-      //     console.log('FAILURE!!');
-      //   });
     }
   },
   computed: {

@@ -1,6 +1,10 @@
 var restaurantStore = {
     namespaced: true,
-    state() { },
+    state() {
+        return {
+            restaurant: null
+        };
+     },
     mutations: {},
     actions: {
         addRestaurantUpdateManager(context, payload) {
@@ -10,7 +14,7 @@ var restaurantStore = {
                     "type": payload.type,
                     "location": payload.location
                 },
-                "image": payload.logoId 
+                "image": payload.logoId
             })
                 .then(response => {
                     this.message = response.data;
@@ -23,6 +27,28 @@ var restaurantStore = {
                     console.log(err);
                     console.log("\n\n ----------------------\n\n");
                 });
+        },
+        addArticle(context,payload){
+          axios.post('rest/articles/addArticle',{
+                "name": payload.articleName,
+                "price": payload.articlePrice,
+                "type": payload.articleType,
+                "restaurantId":  payload.articleRestaurantId,
+                "quantity": payload.articleQuantity,
+                "description": payload.articleDescription,
+                "image": payload.articleImage
+          })
+              .then(response => {
+                  this.message = response.data;
+                  console.log("\n\n -------Dodat novi artikal -------\n");
+                  console.log(response.data);
+                  console.log("\n\n ----------------------\n\n");
+              })
+              .catch(err => {
+                  console.log("\n\n ------- ERROR -------\n");
+                  console.log(err);
+                  console.log("\n\n ----------------------\n\n");
+              });
         }
 
     },

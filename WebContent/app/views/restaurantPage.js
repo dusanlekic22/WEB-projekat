@@ -29,9 +29,9 @@ Vue.component('restaurant-page', {
 			<div class="row ">
 				<div class="col-md-2"> </div>
 				<div class="col-md-8"> 
-		     <base-article :ida="1"></base-article>
-          <base-article :ida="2"></base-article>
-           <base-article :ida="3"></base-article>
+		     <base-article :ida="1" @dodaj="noviArtikal"></base-article>
+          <base-article :ida="2" @dodaj="noviArtikal"></base-article>
+           <base-article :ida="3" @dodaj="noviArtikal"></base-article>
         </div>
 				<div class="col-md-2">  </div>
 			</div>
@@ -51,7 +51,8 @@ Vue.component('restaurant-page', {
       dateofbirth: '',
       loginUsername: '',
       loginPassword: '',
-      role: ''
+      role: '',
+      korpa: []
     };
   },
    mounted() {
@@ -64,7 +65,26 @@ Vue.component('restaurant-page', {
   computed: {
   },
   methods: {
-  
+    noviArtikal(value) {
+      if (this.korpa.length === 0) {
+          this.korpa.push(value);
+      }
+      else {
+        var notInlist = true;
+        this.korpa.forEach(element => {
+          if (element.id === value.id) {
+            this.korpa[this.korpa.indexOf(element)] = value;
+            notInlist = false;
+          }
+        });
+        if (notInlist) {
+         this.korpa.push(value);
+      }    
+      
+      }
+      // this.korpa.push(value);
+      console.log(this.korpa);
+    }
     },
 
 });

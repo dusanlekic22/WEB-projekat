@@ -9,7 +9,8 @@ var userStore = {
                 surname: '',
                 gender: '',
                 dateOfBirth: '',
-                role: null
+                role: null,
+                restaurantId: null,
             },
             logged: false,
             module: 'korisnik'
@@ -79,6 +80,11 @@ var userStore = {
         },
         isAdmin(state) {
             if (state.user.role === 'ADMINISTRATOR') {
+                return true;
+            }
+        },
+        isManager(state) {
+            if (state.user.role === 'MANAGER') {
                 return true;
             }
         }

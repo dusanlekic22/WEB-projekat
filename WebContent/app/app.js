@@ -3,6 +3,8 @@ const ProfileComponent = { template: '<profile></profile>' }
 const AdministratorCrudComponent = { template: '<administrator-crud></administrator-crud>' }
 const CreateRestaurantComponent = { template: '<create-restaurant></create-restaurant>' }
 const RestaurantPageComponent = { template: '<restaurant-page></restaurant-page>' }
+const CreateArticleComponent = { template: '<create-article></create-article>' }
+const ShowUsersComponent = { template: '<show-users></show-users>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -34,6 +36,16 @@ const router = new VueRouter({
           children: [
           { name:'create-manager-for-restaurant', path: ':manager', component: AdministratorCrudComponent , props: true}
         ]
+      },
+        {
+        path: '/CreateArticle',
+        name: 'CreateArticle',
+        component: CreateArticleComponent
+      },
+         {
+        path: '/ShowUser',
+        name: 'ShowUser',
+        component: ShowUsersComponent
       }
 	  ]
 });

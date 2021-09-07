@@ -57,7 +57,6 @@ Vue.component('base-article', {
             theme: 'idA',
             startTheme: 'id',
             fullTheme: 'id',
-            korpa: {},
             brojPorucenih: 0,
             ukupnaCena: 0
         };
@@ -84,11 +83,8 @@ Vue.component('base-article', {
       this.$store.commit('loginModule/closeLogin');
      },
       check(evt) {
-        console.log("zatvaranje")
-        console.log(evt);
         if (evt.srcElement.id === "baseDialogForm") {
           $("#baseDialogForm").mousedown(function(){
-        console.log("Mouse button released.");
 }); 
           this.closeRegistration();
           this.closeLogin();
@@ -96,15 +92,10 @@ Vue.component('base-article', {
         }
         },
       change(evt) {
-        console.log(evt);
-        console.log(evt.srcElement.className);
         if (evt.srcElement.className === 'buttonCartPlus' || evt.srcElement.className === 'fa fa-plus iplus' || evt.srcElement.className === 'buttonCartMinus') {
         }
         else{
           this.isClicked = !this.isClicked;
-          console.log(this.isClicked);
-        console.log(this.id);
-          console.log($('.ml-auto ')[1]);
         if (this.isClicked === false) {
           console.log($('.ml-auto '));
             // $('.ml-auto')[this.id].style='opacity:0';
@@ -130,10 +121,13 @@ Vue.component('base-article', {
           }}
       },
       dodajUKorpu() {
-        this.brojPorucenih =  this.brojPorucenih + 1;
+        this.brojPorucenih = this.brojPorucenih + 1;
+        this.$emit('dodaj', {
+          "id": this.id,
+          "brojPorucenih": this.brojPorucenih
+        });
        },
       ukloniIzKorpe() {
-        console.log("ukloni");
         if (this.brojPorucenih - 1 <= 0) {
           this.brojPorucenih = 0;
         }
