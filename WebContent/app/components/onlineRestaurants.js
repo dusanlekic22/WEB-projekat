@@ -12,8 +12,10 @@ Vue.component('online-restaurants', {
         <input type="checkbox" id="checkbox" v-model="open"/>
         <label for="checkbox">Otvoren</label>
         <button @click.prevent = "search">Pretrazi</button>
+        <button @click.prevent = "sortedProducts('name')">Sortiraj po imenu</button>
+        <button @click.prevent = "sortedProducts('status')">Sortiraj po statusu</button>
           <div  v-if= "checkRestaurants.length !== 0" class="row py-4">
-            <base-online-restaurant  v-for="r in filteredRestaurants"  :key="r.id" :name="r.name"></base-online-restaurant>
+            <base-online-restaurant  v-for="r in filteredRestaurants"  :key="r.id" :name="r.name" :isOpen="r.status" :type="r.type"></base-online-restaurant>
             </div>
         </div>
       </div>
@@ -28,6 +30,8 @@ Vue.component('online-restaurants', {
       location: '',
       type: null,
       open: null,
+      sortBy: 'name',
+      sortDirection: 'asc',
       restaurants: [
         {
           id: 1,
@@ -69,16 +73,28 @@ Vue.component('online-restaurants', {
         }
       }
     });
-
+    this.sortedProducts('status');
   },
   computed: {
     checkRestaurants() {
       this.onlineRestaurants = this.$store.getters['restaurantsModule/restaurants'];
       return this.filteredRestaurants = [...this.onlineRestaurants];
-    },
+    }
 
   },
   methods: {
+    sortedProducts(sortBy) {
+      this.onlineRestaurants = this.$store.getters['restaurantsModule/restaurants'];
+      this.filteredRestaurants = [...this.onlineRestaurants];
+      this.filteredRestaurants.sort((p1, p2) => {
+        let modifier = 1;
+        if (this.sortDirection === 'desc') modifier = -1;
+        if (p1[sortBy] < p2[sortBy]) return -1 * modifier; if (p1[sortBy] > p2[sortBy]) return 1 * modifier;
+        return 0;
+      });
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      console.log(this.filteredRestaurants);
+    },
     inital() {
 
     },
@@ -86,19 +102,25 @@ Vue.component('online-restaurants', {
       let articles = [...this.onlineRestaurants];
       this.filteredRestaurants = articles.filter(restaurant => {
         return (restaurant.name.toLowerCase().includes(this.name.toLowerCase()) &&
-          restaurant.location.address.city.toLowerCase().includes(this.location.toLowerCase())); 
+          restaurant.location.address.city.toLowerCase().includes(this.location.toLowerCase()));
       });
-      if(this.type !== null){
-      this.filteredRestaurants = this.filteredRestaurants.filter(restaurant => {
-        return (restaurant.type.toLowerCase().includes(this.type.toLowerCase())); 
-      });
-    }
-      if(this.open){
+      if (this.type !== null) {
         this.filteredRestaurants = this.filteredRestaurants.filter(restaurant => {
-          return restaurant.status === "OPEN"; 
+          return (restaurant.type.toLowerCase().includes(this.type.toLowerCase()));
+        });
+      }
+      if (this.open) {
+        this.filteredRestaurants = this.filteredRestaurants.filter(restaurant => {
+          return restaurant.status === "OPEN";
         });
       }
       console.log(this.filteredRestaurants);
+    },
+    sort: function (s) {
+      if (s === this.sortBy) {
+        this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      }
+      this.sortBy = s;
     },
     getRestaurants() {
       this.$store.dispatch('restaurantsModule/getRestaurants');

@@ -29,12 +29,13 @@ template:
           </div>
           <p class="mb-0">
             <strong>
-              <a href="#" class="text-secondary">Otvoren</a>
+              <a href="#" v-if="isOpen === 'OPEN'" class="text-secondary">Otvoren</a>
+              <a href="#" v-else class="text-secondary">Zatvoren</a>
             </strong>
           </p>
           <p class="mb-1">
             <small>
-              <a href="#" class="text-secondary">Besplatna dostava</a>
+              <a href="#" class="text-secondary">{{type}}</a>
             </small>
           </p>
           </div>
@@ -51,11 +52,12 @@ template:
         style.rel = "stylesheet";
         style.href = 'css/baseOnlineRestaurant.css';
         document.head.appendChild(style);
+        console.log(this.isOpen);
     },
     methods: {
         open() {
             console.log("kliknuo sam");
         }
     },
-    props: ['name']
+    props: ['name','isOpen','type']
 });
