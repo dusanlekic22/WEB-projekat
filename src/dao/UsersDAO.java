@@ -19,7 +19,7 @@ public class UsersDAO {
 	private HashMap<String, User> users = new HashMap<String, User>();
 	private String path;
 	public UsersDAO() {
-//		this.path = "C:/Users/papov/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Delivery/";
+
 		File dataDir = new File(this.path + File.separator + "data");
 		if (!dataDir.exists()) {
 			dataDir.mkdir();

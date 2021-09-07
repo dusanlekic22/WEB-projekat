@@ -45,7 +45,7 @@ public class RestaurantService {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("usersDAO", new UsersDAO(contextPath));
 		}
-		
+
 		if (ctx.getAttribute("imagesDAO") == null) {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("imagesDAO", new ImagesDAO(contextPath));
@@ -81,19 +81,20 @@ public class RestaurantService {
 	@Path("/addRestaurant/{username}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addRestaurant(@PathParam("username") String managerUsername, RestaurantWithImageDTO restaurantWithImage) {
+	public Response addRestaurant(@PathParam("username") String managerUsername,
+			RestaurantWithImageDTO restaurantWithImage) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
 		if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
-			
+
 			ImagesDAO images = (ImagesDAO) ctx.getAttribute("imagesDAO");
 			Logo logo = new Logo();
 			logo.setImage(restaurantWithImage.getImage());
 			images.addImage(logo);
-			
+
 			RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 			restaurantWithImage.getRestaurant().setLogoId(logo.getId());
 			restaurants.addRestaurant(restaurantWithImage.getRestaurant());
-			
+
 			users.addRestaurant(users.getUserByUsername(managerUsername), restaurantWithImage.getRestaurant());
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())
@@ -102,7 +103,7 @@ public class RestaurantService {
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 	}
-	
+
 	@POST
 	@Path("/addImage/{logoId}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -110,10 +111,10 @@ public class RestaurantService {
 	public Response addRestaurantImage(@PathParam("logoId") Integer logoId, String image) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
 		if (users.checkUserRole(request, UserRole.ADMINISTRATOR)) {
-			
+
 			ImagesDAO images = (ImagesDAO) ctx.getAttribute("imagesDAO");
-			images.addImage(new Logo(logoId,image));
-			
+			images.addImage(new Logo(logoId, image));
+
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(images.getValues())
 					.build();
 
@@ -124,17 +125,18 @@ public class RestaurantService {
 	@GET
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchRestaurants(@DefaultValue("~") @QueryParam("name") String name,@DefaultValue("~") @QueryParam("type") String type,
-			@DefaultValue("~") @QueryParam("city") String city,@DefaultValue("~") @QueryParam("country") String country,
-			@DefaultValue("~") @QueryParam("average") String average) {
+	public Response searchRestaurants(@DefaultValue("~") @QueryParam("name") String name,
+			@DefaultValue("~") @QueryParam("location") String location) {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		HashMap<Integer, Restaurant> restaurantsResult = new HashMap<Integer, Restaurant>();
 
 		for (Restaurant item : restaurants.getValues().values()) {
-			
-				if (item.getName().toLowerCase().contains(name.toLowerCase()) || item.getType().toLowerCase().contains(type.toLowerCase())) 
-					restaurantsResult.put(item.getId(), item);
+
+			if (item.getName().toLowerCase().contains(name.toLowerCase()) ||
+				item.getLocation().getAddress().getCity().toLowerCase().contains(location)||
+				item.getLocation().getAddress().getState().toLowerCase().contains(location))
+				restaurantsResult.put(item.getId(), item);
 		}
 		return Response.status(200).entity(restaurantsResult.values()).build();
 	}

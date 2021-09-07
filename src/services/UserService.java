@@ -108,7 +108,8 @@ public class UserService {
 		HashMap<String, User> usersResult = new HashMap<String, User>();
 
 		for (User item : users.getValues().values()) {
-			if (item.getName().toLowerCase().contains(name.toLowerCase()) || item.getSurname().toLowerCase().contains(surname.toLowerCase())
+			if (item.getName().toLowerCase().contains(name.toLowerCase())
+					|| item.getSurname().toLowerCase().contains(surname.toLowerCase())
 					|| item.getUsername().toLowerCase().contains(username.toLowerCase())) {
 				usersResult.put(item.getName(), item);
 			}
@@ -154,6 +155,12 @@ public class UserService {
 		}
 		return null;
 
+	}
+
+	@POST
+	@Path("/logout")
+	public void logout(@Context HttpServletRequest request) {
+		request.getSession().invalidate();
 	}
 
 }

@@ -32,6 +32,18 @@ public class Restaurant {
 		this.logoId = logoId;
 		this.logicalDeleted = logicalDeleted;
 	}
+	
+	public Restaurant(Restaurant restaurant) {
+		super();
+		this.id = restaurant.id;
+		this.name = restaurant.name;
+		this.type = restaurant.type;
+		this.articlesIds = restaurant.articlesIds;
+		this.status = restaurant.status;
+		this.location = restaurant.location;
+		this.logoId = restaurant.logoId;
+		this.logicalDeleted = restaurant.logicalDeleted;
+	}
 
 	public Integer getId() {
 		return id;

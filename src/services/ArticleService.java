@@ -6,12 +6,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Article;
 import beans.enums.UserRole;
@@ -38,7 +42,7 @@ public class ArticleService {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("usersDAO", new UsersDAO(contextPath));
 		}
-		
+
 		if (ctx.getAttribute("restaurantsDAO") == null) {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("restaurantsDAO", new RestaurantsDAO(contextPath));
@@ -69,7 +73,7 @@ public class ArticleService {
 
 		return Response.status(200).entity(articles.find(id)).build();
 	}
-	
+
 	@POST
 	@Path("/addArticle")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -88,4 +92,31 @@ public class ArticleService {
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 	}
+
+	@PUT
+	@Path("/updateArticle/{id}")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateArticle(@PathParam("id") Integer oldArticleId, Article updatedArticle) {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		if (users.checkUserRole(request, UserRole.MANAGER)) {
+			ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
+			Article oldArticle = articles.find(oldArticleId);
+			articles.updateArticle(updatedArticle, oldArticle);
+
+			try {
+				return Response.status(Response.Status.ACCEPTED).entity(objectMapper.writeValueAsString(updatedArticle))
+						.build();
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+
+	}
+	
+	
 }
