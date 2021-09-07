@@ -24,6 +24,7 @@ import beans.User;
 import beans.enums.OrderStatus;
 import beans.enums.UserRole;
 import dao.ArticlesDAO;
+import dao.CartsDAO;
 import dao.OrdersDAO;
 import dao.RestaurantsDAO;
 import dao.UsersDAO;
@@ -42,6 +43,11 @@ public class OrderService {
 		if (ctx.getAttribute("ordersDAO") == null) {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("ordersDAO", new OrdersDAO(contextPath));
+		}
+		
+		if (ctx.getAttribute("cartsDAO") == null) {
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("cartsDAO", new CartsDAO(contextPath));
 		}
 
 		if (ctx.getAttribute("usersDAO") == null) {
@@ -137,6 +143,8 @@ public class OrderService {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
 		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
+		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
+
 		if (users.checkUserRole(request, UserRole.CUSTOMER)) {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			Order order = new Order();
@@ -148,6 +156,7 @@ public class OrderService {
 			order.setCustomer(new Pair(user.getName(),user.getPassword()));
 			order.setStatus(OrderStatus.PROCESSING);
 			orders.addOrder(order);
+			carts.getValues().get(user.getCartId()).setArticleIdsWithQuantity(null);
 			User newUser = new User(user);
 			newUser.setPoints(order.getPrice()/1000*133);
 			//request.getSession().setAttribute("loginUser", newUser);

@@ -145,6 +145,37 @@ public class CartService {
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 	}
+	
+	@POST
+	@Path("/addArticlesToCart")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addArticlesToCart(HashMap<Integer,Integer> articleIdsWithQuantity) {
+
+		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+
+		if (users.checkUserRole(request, UserRole.CUSTOMER)) {
+			User user = (User) request.getSession().getAttribute("loginUser");
+			if (user.getCartId() == null) {
+				Cart cart = new Cart();
+				cart.setArticleIdsWithQuantity(articleIdsWithQuantity);
+				cart.setUsername(user.getUsername());
+				carts.addCart(cart);
+				user.setCartId(cart.getId());
+				return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(cart).build();
+			}
+
+			Cart oldCart = carts.getValues().get(user.getCartId());
+			Cart newCart = new Cart(oldCart);
+			newCart.setArticleIdsWithQuantity(articleIdsWithQuantity);
+			carts.updateCart(oldCart, newCart);
+
+			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(carts.getValues().values())
+					.build();
+		}
+		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+	}
 
 	@POST
 	@Path("/updateArticleQuantity/{id}")

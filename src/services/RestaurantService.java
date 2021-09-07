@@ -126,17 +126,16 @@ public class RestaurantService {
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response searchRestaurants(@DefaultValue("~") @QueryParam("name") String name,
-			@DefaultValue("~") @QueryParam("type") String type, @DefaultValue("~") @QueryParam("city") String city,
-			@DefaultValue("~") @QueryParam("country") String country,
-			@DefaultValue("~") @QueryParam("average") String average) {
+			@DefaultValue("~") @QueryParam("location") String location) {
 
 		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 		HashMap<Integer, Restaurant> restaurantsResult = new HashMap<Integer, Restaurant>();
 
 		for (Restaurant item : restaurants.getValues().values()) {
 
-			if (item.getName().toLowerCase().contains(name.toLowerCase())
-					|| item.getType().toLowerCase().contains(type.toLowerCase()))
+			if (item.getName().toLowerCase().contains(name.toLowerCase()) ||
+				item.getLocation().getAddress().getCity().toLowerCase().contains(location)||
+				item.getLocation().getAddress().getState().toLowerCase().contains(location))
 				restaurantsResult.put(item.getId(), item);
 		}
 		return Response.status(200).entity(restaurantsResult.values()).build();

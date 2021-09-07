@@ -10,17 +10,20 @@ public class Address {
 
 	private int postalCode;
 
+	private String state;
+
 	public Address() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Address(String streetName, int houseNumber, String city, int postalCode) {
+	public Address(String streetName, int houseNumber, String city, int postalCode, String state) {
 		super();
 		this.streetName = streetName;
 		this.houseNumber = houseNumber;
 		this.city = city;
 		this.postalCode = postalCode;
+		this.state = state;
 	}
 
 	public String getStreetName() {
@@ -53,6 +56,14 @@ public class Address {
 
 	public void setPostalCode(int postalCode) {
 		this.postalCode = postalCode;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 }

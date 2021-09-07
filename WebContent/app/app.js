@@ -44,7 +44,8 @@ const store = new Vuex.Store({
     loginModule: loginStore,
     userModule: userStore,
     managerModule: managerStore,
-    restaurantModule: restaurantStore
+    restaurantModule: restaurantStore,
+    restaurantsModule: restaurantsStore
   },
   state: {
       registrationActive: false,
