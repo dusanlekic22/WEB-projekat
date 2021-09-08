@@ -5,8 +5,25 @@ var restaurantStore = {
             restaurant: null
         };
      },
-    mutations: {},
+    mutations: {
+        setRestaurant(state, payload) {
+        state.restaurant = payload;
+    }},
     actions: {
+        getRestaurant(context, payload) {
+            axios.get('rest/restaurants/' + payload.restaurantId)
+                .then(response => {
+                    this.message = response.data;
+                    console.log("\n\n -------Izmenjeni PODACI -------\n");
+                    context.commit('setRestaurant', response.data)
+                    console.log("\n\n ----------------------\n\n");
+                })
+                .catch(err => {
+                    console.log("\n\n ------- ERROR -------\n");
+                    console.log(err);
+                    console.log("\n\n ----------------------\n\n");
+                });
+        },
         addRestaurantUpdateManager(context, payload) {
             axios.post('rest/restaurants/addRestaurant/' + payload.manager, {
                 "restaurant": {
@@ -74,5 +91,9 @@ var restaurantStore = {
         }
 
     },
-    getters: {}
+    getters: {
+        restaurant(state) {
+            return state.restaurant;
+        }
+    }
 }

@@ -16,6 +16,7 @@ var restaurantsStore = {
                 .then(response => {
                     console.log("\n\n -------Restorani -------\n");
                     context.commit('setRestaurants',response.data);
+                    console.log(response.data);
                     console.log("\n\n ----------------------\n\n");
                 })
                 .catch(err => {
@@ -29,6 +30,7 @@ var restaurantsStore = {
                 .then(response => {
                     console.log("\n\n -------Restorani -------\n");
                     context.commit('setRestaurants',response.data);
+                    console.log(response.data);
                     console.log("\n\n ----------------------\n\n");
                 })
                 .catch(err => {

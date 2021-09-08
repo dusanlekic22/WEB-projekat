@@ -112,4 +112,34 @@ public class RestaurantsDAO {
 		}
 		return restaurantsResult;
 	}
+	
+	
+	
+//	public HashMap<Integer, Restaurant> sortHashMapByValues(
+//	        HashMap<Integer, Restaurant> passedMap) {
+//	    List<Integer> mapKeys = new ArrayList<>(passedMap.keySet());
+//	    List<Restaurant> mapValues = new ArrayList<>(passedMap.values());
+//
+//	    HashMap<Integer, Restaurant> sortedMap =
+//	        new HashMap<>();
+//
+//	    Iterator<Restaurant> valueIt = mapValues.iterator();
+//	    while (valueIt.hasNext()) {
+//	    	RestaurantStatus val = valueIt.next().getStatus();
+//	        Iterator<Integer> keyIt = mapKeys.iterator();
+//
+//	        while (keyIt.hasNext()) {
+//	            Integer key = keyIt.next();
+//	            RestaurantStatus comp1 = passedMap.get(key).getStatus();
+//	            RestaurantStatus comp2 = val;
+//
+//	            if (comp1.toString().compareTo(comp2.toString())) {
+//	                keyIt.remove();
+//	                sortedMap.put(key, val);
+//	                break;
+//	            }
+//	        }
+//	    }
+//	    return sortedMap;
+//	}
 }

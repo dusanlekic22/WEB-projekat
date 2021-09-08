@@ -14,13 +14,13 @@ Vue.component('base-article', {
 		<div class="p-2 pt-4" style="color: lightblue" v-show="brojPorucenih > 0" > <h3>{{brojPorucenih}}x </h3></div>
     <div class="p-2">
             <div class="col-lg plus">
-           <h3> Uzmi pivo 0.3l </h3>
+           <h3> {{name}} </h3>
             </div>
             <div class="col-lg">
-          Take a shake 0.33l Strawberry-coconut session milkshake IPA 4% 1 kom, 620.00 RSD po komadu
+          {{description}}
             </div>
             <div class="col-lg" style="color:blue;">
-            <h5>633,33din</h5>
+            <h5>{{price}}</h5>
             </div>
         </div>
         <transition name="aImg">
@@ -34,7 +34,9 @@ Vue.component('base-article', {
               <h4>Broj: {{ brojPorucenih }} </h4>
             </div>
           </div>
-          <div class= "col-4"></div>
+          <div class= "col-4">
+          <div class="naslov">
+        </div></div>
           <div class="col-3 pt-4">
             <div class="d-flex">
               <div class="pt-2">
@@ -62,7 +64,7 @@ Vue.component('base-article', {
         };
   },
   props: [
-     'ida'
+     'ida','name','description','price','quantity'
   ],
     mounted() {
         $('#baseDialogForm').modal('show');
@@ -74,6 +76,9 @@ Vue.component('base-article', {
       this.isClicked = false;
       this.theme = "idA" + this.id;
       this.fullTheme = "idF" + this.id
+      if(this.quantity>0){
+        this.brojPorucenih = this.quantity;
+      }
     },    
     methods: {
         closeRegistration() {

@@ -31,28 +31,13 @@ Vue.component('online-restaurants', {
       type: null,
       open: null,
       sortBy: 'name',
-      sortDirection: 'asc',
-      restaurants: [
-        {
-          id: 1,
-          name: "Boom Boom"
-        },
-        {
-          id: 2,
-          name: "Ciao Ciao"
-        },
-        {
-          id: 3,
-          name: "Zar Mance"
-        }
-      ],
+      sortDirection: 'desc',
       onlineRestaurants: [],
       filteredRestaurants: []
     };
   },
   mounted() {
     this.getRestaurants();
-    console.log(this.onlineRestaurants);
     let style = document.createElement('link');
     style.type = "text/css";
     style.rel = "stylesheet";
@@ -87,16 +72,18 @@ Vue.component('online-restaurants', {
       this.onlineRestaurants = this.$store.getters['restaurantsModule/restaurants'];
       this.filteredRestaurants = [...this.onlineRestaurants];
       this.filteredRestaurants.sort((p1, p2) => {
+
         let modifier = 1;
         if (this.sortDirection === 'desc') modifier = -1;
+
+        if (sortBy === 'status') {
+          let modifier = -1;
+          if (this.sortDirection === 'desc') modifier = 11;
+        }
         if (p1[sortBy] < p2[sortBy]) return -1 * modifier; if (p1[sortBy] > p2[sortBy]) return 1 * modifier;
         return 0;
       });
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-      console.log(this.filteredRestaurants);
-    },
-    inital() {
-
     },
     search() {
       let articles = [...this.onlineRestaurants];
@@ -114,7 +101,6 @@ Vue.component('online-restaurants', {
           return restaurant.status === "OPEN";
         });
       }
-      console.log(this.filteredRestaurants);
     },
     sort: function (s) {
       if (s === this.sortBy) {

@@ -1,1 +1,13 @@
-{}
+{
+    "1": {
+    	"id" : "1",
+        "name": "Bela vesalica",
+        "price": 220,
+        "type": "FOOD",
+        "restaurantId": 3,
+        "quantity": 120,
+        "description": "dobra",
+        "image":null,
+        "logicalDeleted":null
+    }
+}

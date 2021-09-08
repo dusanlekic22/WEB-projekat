@@ -6,6 +6,7 @@ const RestaurantPageComponent = { template: '<restaurant-page></restaurant-page>
 const CreateArticleComponent = { template: '<create-article></create-article>' }
 const UpdateArticleComponent = { template: '<update-article></update-article>' }
 const ShowUsersComponent = { template: '<show-users></show-users>' }
+const CartComponent = { template: '<cart-page></cart-page>' }
 
 
 const router = new VueRouter({
@@ -53,7 +54,12 @@ const router = new VueRouter({
         path: '/UpdateArticle/:idArticle',
         name: 'UpdateArticle',
         component: UpdateArticleComponent
-      } 
+      } ,
+      {
+        path: '/Cart/:id',
+        name: 'Cart',
+        component: CartComponent
+      }
 	  ]
 });
 
@@ -65,29 +71,30 @@ const store = new Vuex.Store({
     managerModule: managerStore,
     restaurantModule: restaurantStore,
     restaurantsModule: restaurantsStore,
+    restaurantArticlesModule: restaurantArticlesStore,
     cartModule: cartStore
   },
   state: {
-      registrationActive: false,
+    registrationActive: false,
   },
   mutations: {
     openRegistration(state) {
       state.registrationActive = true;
     },
     closeRegistration(state) {
-       state.registrationActive = false;
+      state.registrationActive = false;
     }
   },
   actions: {
     openRegistration(context) {
       context.openRegistration();
     },
-     closeRegistration(context) {
-      context. closeRegistration();
+    closeRegistration(context) {
+      context.closeRegistration();
     }
   },
   getters: {
-  isActive(state) {
+    isActive(state) {
       return state.registrationActive;
     }
   },

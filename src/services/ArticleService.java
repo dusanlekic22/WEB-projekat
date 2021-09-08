@@ -1,5 +1,7 @@
 package services;
 
+import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Article;
+import beans.Restaurant;
 import beans.enums.UserRole;
 import dao.ArticlesDAO;
 import dao.RestaurantsDAO;
@@ -72,6 +75,27 @@ public class ArticleService {
 		}
 
 		return Response.status(200).entity(articles.find(id)).build();
+	}
+	
+	@GET
+	@Path("/restaurant/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurantArticles(@PathParam("id") Integer id) {
+		
+		RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
+		Restaurant restaurant = restaurants.find(id);
+		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
+		if (articles == null) {
+			return Response.status(400).entity("Lista artikala nije pronadjena").build();
+		}
+		HashMap<Integer,Article> restaurantArticles = new HashMap<Integer,Article>(); 
+		for (Integer articleId: restaurant.getArticlesIds()) {
+			Article article = articles.find(articleId);
+			restaurantArticles.put(article.getId(), article);
+		}
+		
+
+		return Response.status(200).entity(restaurantArticles.values()).build();
 	}
 
 	@POST
