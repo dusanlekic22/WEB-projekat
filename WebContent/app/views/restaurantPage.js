@@ -1,6 +1,6 @@
 Vue.component('restaurant-page', {
   template:
-  `
+    `
  <div class="container-fluid">
 	<div id="restaurantPageSection">
 		<div class="container py-5">
@@ -14,6 +14,9 @@ Vue.component('restaurant-page', {
 		<div class="gradeAndSearch">
 			<div class="container pt-4">
 				<div class="d-flex "> <img src="img/1.gif">
+        <div v-if= "restaurantComp !== null" ><h2> {{restaurant.name}} </h2></div>
+        <div><h3> {{restaurant.type}} </h3></div>
+        <div><h3> {{restaurant.status}} </h3></div>
 					<div id="grade">
 						<h3>9.6<sup>od 10</sup></h3> </div>
 					<div class="ml-auto">
@@ -28,10 +31,9 @@ Vue.component('restaurant-page', {
 		<div class="container pt 2">
 			<div class="row ">
 				<div class="col-md-2"> </div>
-				<div class="col-md-8"> 
-		     <base-article :ida="1" @dodaj="noviArtikal"></base-article>
-          <base-article :ida="2" @dodaj="noviArtikal"></base-article>
-           <base-article :ida="3" @dodaj="noviArtikal"></base-article>
+				<div v-if= "restaurantArticles.length !== 0" class="col-md-8"> 
+		     <base-article v-for="a in this.articles" :key="a.id" :ida="a.id" :name="a.name" :description="a.description"
+         :price="a.price" @dodaj="noviArtikal"></base-article>
         </div>
 				<div class="col-md-2">  </div>
 			</div>
@@ -41,7 +43,7 @@ Vue.component('restaurant-page', {
   `,
   name: "Home",
   data() {
-      return {
+    return {
       username: '',
       password: '',
       confirmPassword: '',
@@ -52,22 +54,32 @@ Vue.component('restaurant-page', {
       loginUsername: '',
       loginPassword: '',
       role: '',
-      korpa: []
+      articles: [],
+      korpa: [],
+      restaurant:[],
     };
   },
-   mounted() {
-        let style = document.createElement('link');
-        style.type = "text/css";
-        style.rel = "stylesheet";
-        style.href = 'css/restaurantPage.css';
-       document.head.appendChild(style);
+  mounted() {
+    let style = document.createElement('link');
+    style.type = "text/css";
+    style.rel = "stylesheet";
+    style.href = 'css/restaurantPage.css';
+    document.head.appendChild(style);
+    this.getRestaurant();
+    this.getRestaurantArticles();
   },
   computed: {
+    restaurantArticles() {
+      return this.articles = this.$store.getters['restaurantArticlesModule/articles'];
+    },
+    restaurantComp() {
+      return this.restaurant = this.$store.getters['restaurantModule/restaurant'];
+    }
   },
   methods: {
     noviArtikal(value) {
       if (this.korpa.length === 0) {
-          this.korpa.push(value);
+        this.korpa.push(value);
       }
       else {
         var notInlist = true;
@@ -78,13 +90,22 @@ Vue.component('restaurant-page', {
           }
         });
         if (notInlist) {
-         this.korpa.push(value);
-      }    
-      
+          this.korpa.push(value);
+        }
+
       }
       // this.korpa.push(value);
       console.log(this.korpa);
-    }
     },
+    getRestaurantArticles() {
+      this.$store.dispatch('restaurantArticlesModule/getRestaurantArticles',
+        { "restaurantId": this.$route.params.id });
+    },
+    getRestaurant() {
+      this.$store.dispatch('restaurantModule/getRestaurant',
+        { "restaurantId": this.$route.params.id });
+    },
+  },
+
 
 });

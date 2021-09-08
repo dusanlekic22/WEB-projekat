@@ -57,7 +57,8 @@ const store = new Vuex.Store({
     userModule: userStore,
     managerModule: managerStore,
     restaurantModule: restaurantStore,
-    restaurantsModule: restaurantsStore
+    restaurantsModule: restaurantsStore,
+    restaurantArticlesModule: restaurantArticlesStore
   },
   state: {
       registrationActive: false,

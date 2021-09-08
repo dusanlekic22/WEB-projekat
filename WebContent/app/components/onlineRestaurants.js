@@ -38,7 +38,6 @@ Vue.component('online-restaurants', {
   },
   mounted() {
     this.getRestaurants();
-    console.log(this.onlineRestaurants);
     let style = document.createElement('link');
     style.type = "text/css";
     style.rel = "stylesheet";
@@ -85,7 +84,6 @@ Vue.component('online-restaurants', {
         return 0;
       });
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-      console.log(this.filteredRestaurants);
     },
     search() {
       let articles = [...this.onlineRestaurants];
@@ -103,7 +101,6 @@ Vue.component('online-restaurants', {
           return restaurant.status === "OPEN";
         });
       }
-      console.log(this.filteredRestaurants);
     },
     sort: function (s) {
       if (s === this.sortBy) {

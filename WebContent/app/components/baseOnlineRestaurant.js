@@ -52,7 +52,6 @@ template:
         style.rel = "stylesheet";
         style.href = 'css/baseOnlineRestaurant.css';
         document.head.appendChild(style);
-        console.log(this.isOpen);
     },
     methods: {
         open() {
