@@ -29,9 +29,9 @@ Vue.component('restaurant-page', {
 			<div class="row ">
 				<div class="col-md-2"> </div>
 				<div class="col-md-8"> 
-		     <base-article :ida="1" @dodaj="noviArtikal"></base-article>
-          <base-article :ida="2" @dodaj="noviArtikal"></base-article>
-           <base-article :ida="3" @dodaj="noviArtikal"></base-article>
+		     <base-article :ida="1" @dodaj="noviArtikal" @ukloni="ukloniArtikal"></base-article>
+          <base-article :ida="2" @dodaj="noviArtikal" @ukloni="ukloniArtikal"></base-article>
+           <base-article :ida="3" @dodaj="noviArtikal" @ukloni="ukloniArtikal"></base-article>
         </div>
 				<div class="col-md-2">
         <button @click="dodajUKorpu"class="bt-green">Dodaj u korpu</button>  </div>
@@ -91,6 +91,31 @@ Vue.component('restaurant-page', {
       }
       this.mapaKorpa = map;
       console.log("mapaKorpa" + this.mapaKorpa);
+    },
+    ukloniArtikal(value) {
+      if (this.korpa.length === 0) {}
+      else {
+        this.korpa.forEach(element => {
+          if (element.id === value.id) {
+            if (value.brojPorucenih === 0) {
+                this,korpa
+            }
+            else {
+               this.korpa[this.korpa.indexOf(element)] = value;
+            }
+          }
+        });
+      }
+      //let map = new Map();
+      console.log(this.korpa);
+      // for (const [key, value] of Object.entries(this.korpa)) {
+      //   console.log(`${value.id}: ${value.brojPorucenih}`);
+      //   map[value.id] = value.brojPorucenih;
+      // }
+
+
+
+
     },
     dodajUKorpu() {
       this.$store.dispatch(

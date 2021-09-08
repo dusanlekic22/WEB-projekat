@@ -134,6 +134,10 @@ Vue.component('base-article', {
         else {
              this.brojPorucenih = this.brojPorucenih - 1;
         }
+         this.$emit('ukloni', {
+          "id": this.id,
+          "brojPorucenih": this.brojPorucenih
+        })
       },
       
     },
