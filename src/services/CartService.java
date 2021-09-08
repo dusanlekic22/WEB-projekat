@@ -1,6 +1,7 @@
 package services;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -17,6 +18,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Article;
 import beans.Cart;
@@ -96,6 +100,7 @@ public class CartService {
 
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
+		ObjectMapper objectMapper = new ObjectMapper();
 		if (carts == null) {
 			return Response.status(400).entity("Ne postoje korpe").build();
 		}
@@ -103,17 +108,21 @@ public class CartService {
 		if (!users.checkUserRole(request, UserRole.CUSTOMER)) {
 			return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 		}
-		HashMap<Integer,Entry<Article,Integer>> cartArticles = new HashMap<Integer,Entry<Article,Integer>>(); 
+		HashMap<String,Integer> cartArticles = new HashMap<String,Integer>(); 
 		carts.find(id).getArticleIdsWithQuantity().forEach((articleId, quantity) -> {
 			articles.getValues().forEach((k, v) -> {
 				if (k.equals(articleId)) {
-					cartArticles.put(k, new SimpleEntry(v,quantity));
+					try {
+						cartArticles.put(objectMapper.writeValueAsString(v),quantity);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			});
 		});
 
-		
-		return Response.status(200).entity(cartArticles.values()).build();
+		return Response.status(200).entity(cartArticles).build();
 	}
 
 	@POST
@@ -159,7 +168,7 @@ public class CartService {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			if (user.getCartId() == null) {
 				Cart cart = new Cart();
-				cart.setArticleIdsWithQuantity(articleIdsWithQuantity);
+				cart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
 				cart.setUsername(user.getUsername());
 				carts.addCart(cart);
 				user.setCartId(cart.getId());
@@ -168,7 +177,7 @@ public class CartService {
 
 			Cart oldCart = carts.getValues().get(user.getCartId());
 			Cart newCart = new Cart(oldCart);
-			newCart.setArticleIdsWithQuantity(articleIdsWithQuantity);
+			newCart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
 			carts.updateCart(oldCart, newCart);
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(carts.getValues().values())

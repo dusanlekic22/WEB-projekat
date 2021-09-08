@@ -34,7 +34,9 @@ Vue.component('base-article', {
               <h4>Broj: {{ brojPorucenih }} </h4>
             </div>
           </div>
-          <div class= "col-4"></div>
+          <div class= "col-4">
+          <div class="naslov">
+        </div></div>
           <div class="col-3 pt-4">
             <div class="d-flex">
               <div class="pt-2">
@@ -62,7 +64,7 @@ Vue.component('base-article', {
         };
   },
   props: [
-     'ida','name','description','price'
+     'ida','name','description','price','quantity'
   ],
     mounted() {
         $('#baseDialogForm').modal('show');
@@ -74,6 +76,9 @@ Vue.component('base-article', {
       this.isClicked = false;
       this.theme = "idA" + this.id;
       this.fullTheme = "idF" + this.id
+      if(this.quantity>0){
+        this.brojPorucenih = this.quantity;
+      }
     },    
     methods: {
         closeRegistration() {
