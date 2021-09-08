@@ -49,6 +49,28 @@ var restaurantStore = {
                   console.log(err);
                   console.log("\n\n ----------------------\n\n");
               });
+        },
+        updateArticle(context,payload){
+          axios.post('rest/articles/updateArticle'+payload.id,{
+                "name": payload.articleName,
+                "price": payload.articlePrice,
+                "type": payload.articleType,
+                "restaurantId":  payload.articleRestaurantId,
+                "quantity": payload.articleQuantity,
+                "description": payload.articleDescription,
+                "image": payload.articleImage
+          })
+              .then(response => {
+                  this.message = response.data;
+                  console.log("\n\n -------Update artikla -------\n");
+                  console.log(response.data);
+                  console.log("\n\n ----------------------\n\n");
+              })
+              .catch(err => {
+                  console.log("\n\n ------- ERROR -------\n");
+                  console.log(err);
+                  console.log("\n\n ----------------------\n\n");
+              });
         }
 
     },

@@ -46,6 +46,20 @@ Vue.component("the-header", {
                 >Add Restaurant</router-link
               >
             </li>
+                 <li v-if="isAdmin">
+              <router-link
+                class="nav-link"
+                to="/ShowUsers"
+                >Korisnici</router-link
+              >
+            </li>
+                 <li v-if="isManager">
+              <router-link
+                class="nav-link"
+                to="/CreateArticle"
+                >Dodaj Artikal</router-link
+              >
+            </li>
         </ul>
       </div>
     </div>
@@ -83,7 +97,10 @@ Vue.component("the-header", {
     },
     isAdmin() {
       return this.$store.getters['userModule/isAdmin'];
-      }
+    },
+     isManager() {
+      return this.$store.getters['userModule/isManager'];
+    },
     }
 
 

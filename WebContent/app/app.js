@@ -4,7 +4,9 @@ const AdministratorCrudComponent = { template: '<administrator-crud></administra
 const CreateRestaurantComponent = { template: '<create-restaurant></create-restaurant>' }
 const RestaurantPageComponent = { template: '<restaurant-page></restaurant-page>' }
 const CreateArticleComponent = { template: '<create-article></create-article>' }
+const UpdateArticleComponent = { template: '<update-article></update-article>' }
 const ShowUsersComponent = { template: '<show-users></show-users>' }
+
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -46,7 +48,12 @@ const router = new VueRouter({
         path: '/ShowUsers',
         name: 'ShowUsers',
         component: ShowUsersComponent
-      }
+      },
+          {
+        path: '/UpdateArticle/:idArticle',
+        name: 'UpdateArticle',
+        component: UpdateArticleComponent
+      } 
 	  ]
 });
 
