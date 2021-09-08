@@ -1,239 +1,94 @@
-Vue.component('home', {
+Vue.component('show-users', {
   template:
   `
-  <div class="container-fluid">
-    <online-restaurants></online-restaurants>
-    <section class="mt-5 cards-section">
-    <div class="container">
-      <h2>Istraži gradove u kojima ćeš naći MFOOD</h2>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4 col-sm-12 ">
-            <h2 class="pt-5">
-              🇷🇸 Srbija <br />
-              <button class="showCountries">Prikaži sve zemlje</button>
-            </h2>
-          </div>
-          <div class="col-lg-8 col-sm-2">
-            <city
-              v-for="city in cities"
-              :key="city.id"
-              :id="city.id"
-              :name="city.name"
-            ></city>
-          </div>
+  <div class="container-fluid" v-if="updatedUsers.length !== 0">
+	<div class="container pt-4">
+		<h2>Korisnici sistema</h2> </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-sm-12 ">
+				 <h2 class="pt-5">
+               Administratori
+         </h2>
+         	<div class="d-flex pt-2">
+        <div class="pt-2 m-auto"> Korisnicko ime </div>
+        <div class="pt-2 m-auto"> Ime </div>
+        <div class="pt-2 m-auto"> Prezime </div>
         </div>
-      </div>
-    </section>
-    <base-dialog v-if="isRegistration">
-    <template v-slot:header>
-        <h5 class="modal-title" id="exampleModalLabel">Create Account</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeRegistration">
-        X
-        </button>
-           </template>
-      <template v-slot:body>
-      <keep-alive>
-       <form>
-        <div class="modal-body">
-         <div class="form-group">
-            <label for="username">Username</label>
-            <input type="username" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username" v-model="username">
-            <small id="usernameHelp" class="form-text text-muted">Your information is safe with us.</small>
-          </div>
-            <div class="form-group">
-            <label for="password1">Password {{ password }}</label>
-            <input type="password" class="form-control" id="password1" placeholder="Password" v-model="password">
-          </div>
-          <div class="form-group">
-            <label for="password1">Confirm Password</label>
-            <input type="password" class="form-control" id="password2" placeholder="Confirm Password" v-model="confirmPassword">
-          </div>
-           <div class="form-group">
-            <label for="firstname">Name</label>
-            <input type="firstname" class="form-control" id="firstname" aria-describedby="firstnameHelp" placeholder="Enter name" v-model="firstname">
-            <small id="firstnameHelp" class="form-text text-muted">Your information is safe with us.</small>
-          </div>
-          <div class="form-group">
-            <label for="surname">Surname </label>
-            <input type="surname" class="form-control" id="surname" placeholder="Enter surname" v-model="surname">
-          </div>
-          <div class="form-group">
-           <label for="gender">Pol</label>
-           <input class="radioRegistration" type="radio" v-model="gender" value="MALE"/>MALE
-           <input class="radioRegistration" type="radio" v-model="gender" value="FEMALE"/>FEMALE
-           <br />
-          </div>
-          <div class="form-group">
-           <label for="dateofbirth">Datum rodjenja </label><br/>
-          <input type="date" name="dateofbirth" id="dateofbirth" v-model="dateofbirth">
-          </div>
-        </div>
-        <div class="modal-footer border-top-0 d-flex justify-content-center">
-          <button type="submit" class="btn btn-success" @click.prevent="submit">Submit</button>
-        </div>
-      </form>
-      </keep-alive>
-      </template>
-      </base-dialog>
-
-    <base-dialog v-if="isLogin">
-    <template v-slot:header>
-        <h5 class="modal-title" id="exampleModalLabel">Login </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeLogin">
-        X
-        </button>
-           </template>
-      <template v-slot:body>
-      <keep-alive>
-       <form>
-        <div class="modal-body">
-         <div class="form-group">
-            <label for="loginUsername">Username</label>
-            <input type="username" class="form-control" id="loginUsername" aria-describedby="loginUsernameHelp" placeholder="Enter username" v-model="loginUsername">
-            <span class="loginError"  v-if="usernameEmpty">Morate uneti vase korisnicko ime</span>
-            <span class="loginError"  v-if="usernameError">Pogresno korisnicko ime</span>
-          </div>
-            <div class="form-group">
-            <label for="loginPassword">Password {{ loginPassword }}</label>
-            <input type="loginPassword" class="form-control" id="loginPassword" placeholder="Password" v-model="loginPassword">
-          <span class="loginError"  v-if="passwordEmpty">Morate uneti vase sifru</span>
-            <span class="loginError"  v-if="passwordError">Pogresna sifra</span>
-            </div>
-        <div class="modal-footer border-top-0 d-flex justify-content-center">
-          <button type="submit" class="btn btn-success" @click.prevent="login">Login</button>
-          </div>
-        </div>
-      </form>
-      </keep-alive>
-      </template>
-      </base-dialog>
+         <base-user v-for="a in admins" :name="a.name" :surname="a.surname" :username="a.username"></base-user>
+       </div>
+	 </div>
+   		<div class="row">
+			<div class="col-lg-12 col-sm-12 ">
+				 <h2 class="pt-5">
+              Menadzeri
+         </h2>
+          <div class="pt-2 m-auto"> Korisnicko ime </div>
+        <div class="pt-2 m-auto"> Ime </div>
+        <div class="pt-2 m-auto"> Prezime </div>
+          <base-user v-for="m in managers" :name="m.name" :surname="m.surname" :username="m.username"></base-user>
+       </div>
+	 </div>
+   	<div class="row">
+			<div class="col-lg-12 col-sm-12 ">
+				 <h2 class="pt-5">
+              Dostavljaci
+         </h2>
+        <div class="pt-2 m-auto"> Korisnicko ime </div>
+        <div class="pt-2 m-auto"> Ime </div>
+        <div class="pt-2 m-auto"> Prezime </div>
+          <base-user v-for="d in delivers" :name="d.name" :surname="d.surname" :username="d.username"></base-user>
+       </div>
+	 </div>
+   	<div class="row">
+			<div class="col-lg-12 col-sm-12 ">
+				 <h2 class="pt-5">
+             Kupci
+         </h2>
+          <div class="pt-2 m-auto"> Korisnicko ime </div>
+        <div class="pt-2 m-auto"> Ime </div>
+        <div class="pt-2 m-auto"> Prezime </div>
+        <base-user v-for="c in customers" :name="c.name" :surname="c.surname" :username="c.username"></base-user>
+       </div>
+	 </div>
+	</div>
   </div>
+</div>
   `,
-  name: "Home",
+  name: "showUsers",
   data() {
     return {
-      username: '',
-      password: '',
-      confirmPassword: '',
-      firstname: '',
-      surname: '',
-      gender: '',
-      dateofbirth: '',
-      loginUsername: '',
-      loginPassword: '',
-      usernameEmpty: false,
-      passwordEmpty: false,
-      cities: [
-        {
-          id: 12,
-          name: "London",
-        },
-        {
-          id: 100,
-          name: "Novi Sad",
-        },
-        {
-          id: 102,
-          name: "Kraljevo",
-        },
-        {
-          id: 110,
-          name: "Beograd",
-        },
-        {
-          id: 111,
-          name: "Beograd 2",
-        },
-        {
-          id: 113,
-          name: "Beograd 3",
-        },
-      ],
+      users: [],
+      managers: [],
+      delivers: [],
+      admins: [],
+      customers: []
     };
   },
    mounted() {
         let style = document.createElement('link');
         style.type = "text/css";
         style.rel = "stylesheet";
-        style.href = 'css/home.css';
-        document.head.appendChild(style);
+        // style.href = 'css/showUsers.css';
+     document.head.appendChild(style);
+     this.$store.dispatch('userModule/getUsers');
   },
   computed: {
-    isRegistration() {
-     return this.$store.getters.isActive;
+    updatedUsers() {
+      this.users = this.$store.getters['userModule/getterUsers']
+      this.admins = this.getByRole('ADMINISTRATOR');
+      this.managaers = this.getByRole('MANAGER');
+      this.delivers = this.getByRole('DELIVERY');
+      this.customers = this.getByRole('CUSTOMER');
+      return this.users;
     },
-    isLogin() {
-       return this.$store.getters['loginModule/isLoginActive'];
-    },
-    usernameError() {
-      return this.$store.getters['loginModule/getUsernameError'];
-    },
-   passwordError() {
-      return  this.$store.getters['loginModule/getPasswordError'];
-    }
-
   },
   methods: {
-    closeRegistration() {
-      this.$store.commit('closeRegistration');
-    },
-    closeLogin() {
-      this.$store.commit('loginModule/closeLogin');
-    },
-    submit() {
-      console.log( this.$store.getters['registrationModule/module'])
-      this.$store.dispatch(
-       'registrationModule/register',
-        {
-          username: this.username,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-          name:  this.firstname,
-          surname: this.surname,
-          gender: this.gender,
-          dateOfBirth: this.dateofbirth,
-        }
-      );
-    },
-    login() {
-
-      if (this.loginUsername === '') {
-        this.usernameEmpty = true;
-        $('#loginUsername').css ("border", "2px solid red");
-        setTimeout(() => {
-        $('#loginUsername').css ("border", "1px solid #ced4da");
-        }, 1000);
-        return false;
-       }
-      if (this.loginPassword === '') {
-        this.usernameEmpty = false;
-        this.passwordEmpty = true;
-        $('#loginPassword').css("border", "2px solid red");
-        setTimeout(() => {
-          $('#loginPassword').css("border", "1px solid #ced4da");
-        }, 1000);
-        return false;
-      }
-      else {
-        this.usernameEmpty = false;
-        this.passwordEmpty = false;
-        this.$store.dispatch(
-          'loginModule/login',
-          {
-            loginUsername: this.loginUsername,
-            loginPassword: this.loginPassword
-          }
-        ).then(err => {
-          if (!this.usernameError || !this.passwordError)
-            this.closeLogin();
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').remove();
-        });
-      }
-   }
-
+    getByRole(role) {
+      return this.users.filter((user) => {
+        return user.role === role;
+      })
+    }
   },
 
 });

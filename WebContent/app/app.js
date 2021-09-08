@@ -43,8 +43,8 @@ const router = new VueRouter({
         component: CreateArticleComponent
       },
          {
-        path: '/ShowUser',
-        name: 'ShowUser',
+        path: '/ShowUsers',
+        name: 'ShowUsers',
         component: ShowUsersComponent
       }
 	  ]

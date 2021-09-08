@@ -84,15 +84,12 @@ public class RestaurantsDAO {
 	}
 
 	public Restaurant addRestaurant(Restaurant restaurant) {
-
-		if (!restaurants.containsKey(restaurant.getId())) {
-			restaurant.setId(restaurants.size() + 1);
-			restaurant.setArticlesIds(new ArrayList<Integer>());
-			restaurants.put(restaurants.size() + 1, restaurant);
-			saveRestaurants();
-			System.out.println("Sacuvao" + restaurant.getName());
-			return restaurants.get(restaurant.getId());
-		}
+		restaurant.setId(restaurants.size() + 1);
+        restaurant.setArticlesIds(new ArrayList<Integer>());
+        restaurants.put(restaurants.size() + 1, restaurant);
+        saveRestaurants();
+        System.out.println("Sacuvao" + restaurant.getName());
+        return restaurants.get(restaurant.getId());
 
 	}
 

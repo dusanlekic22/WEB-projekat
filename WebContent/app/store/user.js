@@ -13,6 +13,7 @@ var userStore = {
                 restaurantId: null,
             },
             logged: false,
+            users: [],
             module: 'korisnik'
         };
     },
@@ -21,7 +22,7 @@ var userStore = {
             state.user = payload;
             state.logged = true;
             console.log(state.user);
-        },
+        }
     },
     actions: {
    setCurrentUser(context, payload) {
@@ -65,7 +66,23 @@ var userStore = {
                         console.log("\n\n ----------------------\n\n");
                     })
            
-    }
+        },
+        getUsers(context, payload) {
+             axios
+                .get('rest/users')
+                .then(response => {
+                    console.log("\n\n ------- Korisnici -------\n");
+                    console.log(response.data);
+                    context.state.users = response.data;
+                    console.log("\n\n ----------------------\n\n");
+                    
+                })
+                .catch(err => {
+                    console.log("\n\n ------- ERROR -------\n");
+                    console.log(err);
+                    console.log("\n\n ----------------------\n\n");
+                });
+        }
 
     },
     getters: {
@@ -87,6 +104,9 @@ var userStore = {
             if (state.user.role === 'MANAGER') {
                 return true;
             }
+        },
+        getterUsers(state) {
+            return state.users;
         }
     }
 }
