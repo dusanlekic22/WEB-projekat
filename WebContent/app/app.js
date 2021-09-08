@@ -22,7 +22,7 @@ const router = new VueRouter({
       {
         path: '/Restaurant/:id',
         name: 'Restaurant',
-        component: RestaurantPageComponent
+        component: RestaurantPageComponent,
       },
        {
         path: '/AdministratorCrud',
@@ -57,7 +57,8 @@ const store = new Vuex.Store({
     userModule: userStore,
     managerModule: managerStore,
     restaurantModule: restaurantStore,
-    restaurantsModule: restaurantsStore
+    restaurantsModule: restaurantsStore,
+    cartModule: cartStore
   },
   state: {
       registrationActive: false,

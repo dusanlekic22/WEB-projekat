@@ -1,6 +1,6 @@
 Vue.component('restaurant-page', {
   template:
-  `
+    `
  <div class="container-fluid">
 	<div id="restaurantPageSection">
 		<div class="container py-5">
@@ -33,7 +33,8 @@ Vue.component('restaurant-page', {
           <base-article :ida="2" @dodaj="noviArtikal"></base-article>
            <base-article :ida="3" @dodaj="noviArtikal"></base-article>
         </div>
-				<div class="col-md-2">  </div>
+				<div class="col-md-2">
+        <button @click="dodajUKorpu"class="bt-green">Dodaj u korpu</button>  </div>
 			</div>
 		</div>
 	</div>
@@ -41,7 +42,7 @@ Vue.component('restaurant-page', {
   `,
   name: "Home",
   data() {
-      return {
+    return {
       username: '',
       password: '',
       confirmPassword: '',
@@ -52,22 +53,23 @@ Vue.component('restaurant-page', {
       loginUsername: '',
       loginPassword: '',
       role: '',
-      korpa: []
+      korpa: [],
+      mapaKorpa: new Map()
     };
   },
-   mounted() {
-        let style = document.createElement('link');
-        style.type = "text/css";
-        style.rel = "stylesheet";
-        style.href = 'css/restaurantPage.css';
-       document.head.appendChild(style);
+  mounted() {
+    let style = document.createElement('link');
+    style.type = "text/css";
+    style.rel = "stylesheet";
+    style.href = 'css/restaurantPage.css';
+    document.head.appendChild(style);
   },
   computed: {
   },
   methods: {
     noviArtikal(value) {
       if (this.korpa.length === 0) {
-          this.korpa.push(value);
+        this.korpa.push(value);
       }
       else {
         var notInlist = true;
@@ -78,12 +80,23 @@ Vue.component('restaurant-page', {
           }
         });
         if (notInlist) {
-         this.korpa.push(value);
-      }    
-      
+          this.korpa.push(value);
+        }
       }
-      // this.korpa.push(value);
+      let map = new Map();
       console.log(this.korpa);
+      for (const [key, value] of Object.entries(this.korpa)) {
+        console.log(`${value.id}: ${value.brojPorucenih}`);
+        map[value.id] = value.brojPorucenih;
+      }
+      this.mapaKorpa = map;
+      console.log("mapaKorpa" + this.mapaKorpa);
+    },
+    dodajUKorpu() {
+      this.$store.dispatch(
+        'cartModule/addToCart',
+        this.mapaKorpa
+      );
     }
     },
 
