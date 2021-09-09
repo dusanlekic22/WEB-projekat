@@ -10,8 +10,9 @@ Vue.component('cart-page', {
               <div class="row ">
                   <div class="col-md-2"> </div>
                   <div v-if= "cartArticles.length !== 0" class="col-md-8"> 
-               <base-article  v-for="a in art" :key="a.article.id" :ida="a.article.id" :name="a.article.name" :description="a.article.description" :quantity="a.brojPorucenih"
-           :price="a.article.price" @dodaj="noviArtikal" @ukloni="ukloniArtikal" > </base-article>
+               <base-article v-for="a in art" :key="a.article.id" v-if="a.article.logicalDeleted!== 1" :ida="a.article.id" 
+               :name="a.article.name" :description="a.article.description" :quantity="a.brojPorucenih"
+           :price="a.article.price" @dodaj="noviArtikal" @ukloni="ukloniArtikal"> </base-article>
           </div>
                   <div class="col-md-2" >
                   <button @click="poruci">Poruci</button>

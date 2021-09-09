@@ -6,7 +6,8 @@ const RestaurantPageComponent = { template: '<restaurant-page></restaurant-page>
 const CreateArticleComponent = { template: '<create-article></create-article>' }
 const UpdateArticleComponent = { template: '<update-article></update-article>' }
 const ShowUsersComponent = { template: '<show-users></show-users>' }
-const CartComponent = { template: '<cart-page></cart-page>' } 
+const CartComponent = { template: '<cart-page></cart-page>' }
+const OrdersComponent = { template: '<orders-page></orders-page>' }
 
 
 const router = new VueRouter({
@@ -59,6 +60,11 @@ const router = new VueRouter({
         path: '/Cart/:id',
         name: 'Cart',
         component: CartComponent
+      },
+      {
+        path: '/Orders',
+        name: 'Orders',
+        component: OrdersComponent
       }
 	  ]
 });

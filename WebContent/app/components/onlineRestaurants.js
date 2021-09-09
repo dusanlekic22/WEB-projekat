@@ -15,7 +15,7 @@ Vue.component('online-restaurants', {
         <button class="restaurantsSearchButton" @click.prevent = "sortedProducts('name')">Sortiraj po imenu</button>
         <button class="restaurantsSearchButton" @click.prevent = "sortedProducts('status')">Sortiraj po statusu</button>
           <div  v-if= "checkRestaurants.length !== 0" class="row py-4">
-            <base-online-restaurant  v-for="r in filteredRestaurants"  :key="r.id" :name="r.name" :isOpen="r.status" :type="r.type" :id="r.id"></base-online-restaurant>
+            <base-online-restaurant  v-for="r in filteredRestaurants" v-if="r.logicalDeleted !== 1" :key="r.id" :name="r.name" :isOpen="r.status" :type="r.type" :id="r.id"></base-online-restaurant>
             </div>
         </div>
       </div>

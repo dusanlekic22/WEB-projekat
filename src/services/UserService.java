@@ -131,6 +131,12 @@ public class UserService {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Username is incorrect, try again")
 					.build();
 		}
+		if(user.getLogicalDeleted()!=null)
+		if (userForLogin.getLogicalDeleted()==1) {
+			System.out.println("Korisnik je izbrisan");
+			return Response.status(Response.Status.BAD_REQUEST).entity("The user has been deleted")
+					.build();
+		}
 
 		if (!userForLogin.getPassword().equals(user.getPassword())) {
 			System.out.println("SIFRE NISU JEDNAKE");

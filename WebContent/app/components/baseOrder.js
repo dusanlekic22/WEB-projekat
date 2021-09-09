@@ -5,13 +5,23 @@ template:
  <div class="row">
     <div class="col-6 col-sm-6">
       <div class="comment-header">
-        {{ tekstKomentara }}
-      </div
+        {{ id }}
+      </div>
     </div>
       <div class="col-3 col-sm-3">
       <div class="comment-header">
-        {{ tekstKomentara }}
-      </div
+        {{ restId }}
+      </div>
+    </div>
+    <div class="col-6 col-sm-6">
+      <div class="comment-header">
+        {{ price }}
+      </div>
+    </div>
+    <div class="col-6 col-sm-6">
+      <div class="comment-header">
+        {{ status }}
+      </div>
     </div>
       <div class="col-3 col-sm-3">
         <slot></slot>
@@ -33,9 +43,10 @@ template:
     data() {
         return {
             tekstKomentara: 'Solidna dostava',
-            ocena: null,
+            ocena: null
         };
     },
     methods: {
     },
+    props:['id','restId','price','status']
 });

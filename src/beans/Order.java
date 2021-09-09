@@ -3,8 +3,6 @@ package beans;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-import com.sun.tools.javac.util.Pair;
-
 import beans.enums.OrderStatus;
 
 public class Order {
@@ -15,7 +13,8 @@ public class Order {
 	private LocalDateTime dateAndTime;
 	// TODO:FORMAT
 	private float price;
-	private Pair<String, String> customer;
+	private String customerName;
+	private String customerSurname;
 	// TODO:Proveri
 	private OrderStatus status;
 	private Integer logicalDeleted;
@@ -26,7 +25,7 @@ public class Order {
 	}
 
 	public Order(String id, HashMap<Integer, Integer> articlesIdsWithQuantity, Integer restaurantId,
-			LocalDateTime dateAndTime, float price, Pair<String, String> customer, OrderStatus status,
+			LocalDateTime dateAndTime, float price, String customerName, String customerSurname, OrderStatus status,
 			Integer logicalDeleted) {
 		super();
 		this.id = id;
@@ -34,7 +33,8 @@ public class Order {
 		this.restaurantId = restaurantId;
 		this.dateAndTime = dateAndTime;
 		this.price = price;
-		this.customer = customer;
+		this.customerName = customerName;
+		this.customerSurname = customerSurname;
 		this.status = status;
 		this.logicalDeleted = logicalDeleted;
 	}
@@ -71,8 +71,6 @@ public class Order {
 		this.price = price;
 	}
 
-	
-	
 	public HashMap<Integer, Integer> getArticlesIdsWithQuantity() {
 		return articlesIdsWithQuantity;
 	}
@@ -81,12 +79,20 @@ public class Order {
 		this.articlesIdsWithQuantity = articlesIdsWithQuantity;
 	}
 
-	public Pair<String, String> getCustomer() {
-		return customer;
+	public String getCustomerName() {
+		return customerName;
 	}
 
-	public void setCustomer(Pair<String, String> customer) {
-		this.customer = customer;
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getCustomerSurname() {
+		return customerSurname;
+	}
+
+	public void setCustomerSurname(String customerSurname) {
+		this.customerSurname = customerSurname;
 	}
 
 	public OrderStatus getStatus() {

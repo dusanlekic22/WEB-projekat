@@ -39,7 +39,7 @@ var ordersStore = {
                     console.log("\n\n ----------------------\n\n");
                 });
         },
-       deleteOrder(context, payload) {
+        deleteOrder(context, payload) {
             axios.put('rest/orders/deleteOrder'+payload.orderId)
                 .then(response => {
                     console.log("\n\n -------Porudzbine -------\n");
