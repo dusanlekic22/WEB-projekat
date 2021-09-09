@@ -7,6 +7,6 @@
         "status": "OPEN",
         "location": null,
         "logoId": null,
-        "logicalDeleted":null
+        "logicalDeleted":0
     }
 }

@@ -1,9 +1,6 @@
 package services;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -22,7 +19,6 @@ import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import beans.Article;
 import beans.Cart;
 import beans.User;
 import beans.enums.UserRole;
@@ -168,7 +164,17 @@ public class CartService {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			if (user.getCartId() == null) {
 				Cart cart = new Cart();
-				cart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
+				for(Integer articleId : articleIdsWithQuantity.keySet()) {
+					if(cart.getArticleIdsWithQuantity().keySet().contains(articleId)) {
+						Integer newQuantity = cart.getArticleIdsWithQuantity().get(articleId);
+						newQuantity +=articleIdsWithQuantity.get(articleId);
+						cart.getArticleIdsWithQuantity().remove(articleId);
+						cart.getArticleIdsWithQuantity().put(articleId, newQuantity);
+					}
+					else {
+						cart.getArticleIdsWithQuantity().put(articleId,articleIdsWithQuantity.get(articleId));
+					}
+				}
 				cart.setUsername(user.getUsername());
 				carts.addCart(cart);
 				user.setCartId(cart.getId());
@@ -177,7 +183,17 @@ public class CartService {
 
 			Cart oldCart = carts.getValues().get(user.getCartId());
 			Cart newCart = new Cart(oldCart);
-			newCart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
+			for(Integer articleId : articleIdsWithQuantity.keySet()) {
+				if(newCart.getArticleIdsWithQuantity().keySet().contains(articleId)) {
+					Integer newQuantity = newCart.getArticleIdsWithQuantity().get(articleId);
+					newQuantity +=articleIdsWithQuantity.get(articleId);
+					newCart.getArticleIdsWithQuantity().remove(articleId);
+					newCart.getArticleIdsWithQuantity().put(articleId, newQuantity);
+				}
+				else {
+					newCart.getArticleIdsWithQuantity().put(articleId,articleIdsWithQuantity.get(articleId));
+				}
+			}
 			carts.updateCart(oldCart, newCart);
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(carts.getValues().values())

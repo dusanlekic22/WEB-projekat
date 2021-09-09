@@ -30,7 +30,7 @@ Vue.component('restaurant-page', {
 			<div class="row ">
 				<div class="col-md-2"> </div>
 				<div  class="col-md-8"> 
-		     <base-article v-for="a in this.articles" :key="a.id" :ida="a.id" :name="a.name" :description="a.description"
+		     <base-article v-for="a in this.articles" v-if="a.logicalDeleted!== 1" :key="a.id" :ida="a.id" :name="a.name" :description="a.description"
          :price="a.price" @dodaj="noviArtikal" @ukloni="ukloniArtikal"></base-article>
         </div>
 				<div class="col-md-2"> <div><h3> {{restaurant.type}} </h3></div>
@@ -110,7 +110,7 @@ Vue.component('restaurant-page', {
         this.korpa.forEach(element => {
           if (element.id === value.id) {
             if (value.brojPorucenih === 0) {
-                this,korpa
+              this.korpa.splice (this.korpa.indexOf(element), 1);
             }
             else {
                this.korpa[this.korpa.indexOf(element)] = value;
