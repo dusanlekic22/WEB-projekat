@@ -1,9 +1,6 @@
 package services;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -22,7 +19,6 @@ import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import beans.Article;
 import beans.Cart;
 import beans.User;
 import beans.enums.UserRole;
@@ -124,6 +120,38 @@ public class CartService {
 
 		return Response.status(200).entity(cartArticles).build();
 	}
+	
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@GET
+	@Path("/getCartRestaurantID/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCartRestaurantId() {
+		Integer  restaurantID[] = {-1} ;
+		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
+		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
+		ObjectMapper objectMapper = new ObjectMapper();
+		if (carts == null) {
+			return Response.status(400).entity("Ne postoje korpe").build();
+		}
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+		if (!users.checkUserRole(request, UserRole.CUSTOMER)) {
+			return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+		}
+	
+		User user = (User) request.getSession().getAttribute("loginUser");
+		HashMap<String,Integer> cartArticles = new HashMap<String,Integer>(); 
+		carts.find(user.getCartId()).getArticleIdsWithQuantity().forEach((articleId, quantity) -> {
+			articles.getValues().forEach((k, v) -> {
+				restaurantID[0] =  v.getRestaurantId();
+			});
+		});
+	
+		return Response.status(200).entity(restaurantID[0]).build();
+	}
+	
+	
+	
 
 	@POST
 	@Path("/addArticleToCart/{id}")
@@ -155,6 +183,37 @@ public class CartService {
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 	}
 	
+//	@POST
+//	@Path("/addArticlesToCart")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response addArticlesToCart(HashMap<Integer,Integer> articleIdsWithQuantity) {
+//
+//		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
+//		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+//
+//		if (users.checkUserRole(request, UserRole.CUSTOMER)) {
+//			User user = (User) request.getSession().getAttribute("loginUser");
+//			if (user.getCartId() == null) {
+//				Cart cart = new Cart();
+//				cart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
+//				cart.setUsername(user.getUsername());
+//				carts.addCart(cart);
+//				user.setCartId(cart.getId());
+//				return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(cart).build();
+//			}
+//
+//			Cart oldCart = carts.getValues().get(user.getCartId());
+//			Cart newCart = new Cart(oldCart);
+//			newCart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
+//			carts.updateCart(oldCart, newCart);
+//
+//			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(carts.getValues().values())
+//					.build();
+//		}
+//		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+//	}
+
 	@POST
 	@Path("/addArticlesToCart")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -163,29 +222,77 @@ public class CartService {
 
 		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-
+		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
+		HashMap<String,Integer> cartArticles = new HashMap<String,Integer>();
+		ObjectMapper objectMapper = new ObjectMapper();
+		
 		if (users.checkUserRole(request, UserRole.CUSTOMER)) {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			if (user.getCartId() == null) {
 				Cart cart = new Cart();
-				cart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
+				for(Integer articleId : articleIdsWithQuantity.keySet()) {
+					if(cart.getArticleIdsWithQuantity().keySet().contains(articleId)) {
+						Integer newQuantity = cart.getArticleIdsWithQuantity().get(articleId);
+						newQuantity +=articleIdsWithQuantity.get(articleId);
+						cart.getArticleIdsWithQuantity().remove(articleId);
+						cart.getArticleIdsWithQuantity().put(articleId, newQuantity);
+					}
+					else {
+						cart.getArticleIdsWithQuantity().put(articleId,articleIdsWithQuantity.get(articleId));
+					}
+				}
 				cart.setUsername(user.getUsername());
 				carts.addCart(cart);
 				user.setCartId(cart.getId());
-				return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(cart).build();
+				
+				carts.find(user.getCartId()).getArticleIdsWithQuantity().forEach((aId, q) -> {
+					articles.getValues().forEach((k, v) -> {
+						if (k.equals(aId)) {
+							try {
+								cartArticles.put(objectMapper.writeValueAsString(v),q);
+							} catch (JsonProcessingException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					});
+				});
+				return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(cartArticles).build();
+			
 			}
-
 			Cart oldCart = carts.getValues().get(user.getCartId());
 			Cart newCart = new Cart(oldCart);
-			newCart.getArticleIdsWithQuantity().putAll(articleIdsWithQuantity);
+			for(Integer articleId : articleIdsWithQuantity.keySet()) {
+				if(newCart.getArticleIdsWithQuantity().keySet().contains(articleId)) {
+					Integer newQuantity = newCart.getArticleIdsWithQuantity().get(articleId);
+					newQuantity +=articleIdsWithQuantity.get(articleId);
+					newCart.getArticleIdsWithQuantity().remove(articleId);
+					newCart.getArticleIdsWithQuantity().put(articleId, newQuantity);
+				}
+				else {
+					newCart.getArticleIdsWithQuantity().put(articleId,articleIdsWithQuantity.get(articleId));
+				}
+			}
 			carts.updateCart(oldCart, newCart);
 
-			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(carts.getValues().values())
-					.build();
+			carts.find(user.getCartId()).getArticleIdsWithQuantity().forEach((aId, q) -> {
+				articles.getValues().forEach((k, v) -> {
+					if (k.equals(aId)) {
+						try {
+							cartArticles.put(objectMapper.writeValueAsString(v),q);
+						} catch (JsonProcessingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+			});
+			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(cartArticles).build();
+			
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 	}
-
+	
 	@POST
 	@Path("/updateArticleQuantity/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -200,7 +307,9 @@ public class CartService {
 			Cart oldCart = carts.getValues().get(user.getCartId());
 			Cart newCart = new Cart(oldCart);
 			newCart.getArticleIdsWithQuantity().remove(articleId);
+			if( quantity != 0) {
 			newCart.getArticleIdsWithQuantity().put(articleId, quantity);
+			}
 			carts.updateCart(oldCart, newCart);
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(carts.getValues().values())

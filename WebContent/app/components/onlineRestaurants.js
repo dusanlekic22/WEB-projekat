@@ -4,16 +4,16 @@ Vue.component('online-restaurants', {
 <section>
       <div id="onlineRestaurantsSection" >
         <div class="container py-5">
-        <input type="text" placeholder="Ime" v-model="name"/>
-        <input type="text" placeholder="Lokacija" v-model="location"/>
-        <select v-model="type">
+        <input class="restaurantsSearchInput" type="text" placeholder="Ime" v-model="name"/>
+        <input class="restaurantsSearchInput" type="text" placeholder="Lokacija" v-model="location"/>
+        <select v-model="type" class="restaurantsSearchButton">
           <option v-for="r in onlineRestaurants">{{r.type}}</option>
         </select> 
-        <input type="checkbox" id="checkbox" v-model="open"/>
-        <label for="checkbox">Otvoren</label>
-        <button @click.prevent = "search">Pretrazi</button>
-        <button @click.prevent = "sortedProducts('name')">Sortiraj po imenu</button>
-        <button @click.prevent = "sortedProducts('status')">Sortiraj po statusu</button>
+        <input type="checkbox" class="restaurantsSearchCheckbox" id="checkbox" v-model="open"/>
+        <label class="restaurantsSearchLabel" for="checkbox">Otvoren</label>
+        <button class="restaurantsSearchButton" @click.prevent = "search">Pretrazi</button>
+        <button class="restaurantsSearchButton" @click.prevent = "sortedProducts('name')">Sortiraj po imenu</button>
+        <button class="restaurantsSearchButton" @click.prevent = "sortedProducts('status')">Sortiraj po statusu</button>
           <div  v-if= "checkRestaurants.length !== 0" class="row py-4">
             <base-online-restaurant  v-for="r in filteredRestaurants"  :key="r.id" :name="r.name" :isOpen="r.status" :type="r.type" :id="r.id"></base-online-restaurant>
             </div>

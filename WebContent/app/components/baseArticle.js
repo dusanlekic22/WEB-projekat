@@ -60,7 +60,7 @@ Vue.component('base-article', {
             startTheme: 'id',
             fullTheme: 'id',
             brojPorucenih: 0,
-            ukupnaCena: 0
+            ukupnaCena: 0,
         };
   },
   props: [

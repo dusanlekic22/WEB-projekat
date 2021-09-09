@@ -58,7 +58,8 @@ Vue.component('restaurant-page', {
       mapaKorpa: new Map(),
       articles: [],
       korpa: [],
-      restaurant:[],
+      restaurant: [],
+      activeCartId: -1
     };
   },
   mounted() {
@@ -69,6 +70,7 @@ Vue.component('restaurant-page', {
     document.head.appendChild(style);
     this.getRestaurant();
     this.getRestaurantArticles();
+    this.getCartRestaurantId();
   },
   computed: {
     restaurantArticles() {
@@ -110,7 +112,7 @@ Vue.component('restaurant-page', {
         this.korpa.forEach(element => {
           if (element.id === value.id) {
             if (value.brojPorucenih === 0) {
-                this,korpa
+              this.korpa.splice(this.korpa.indexOf(element), 1);
             }
             else {
                this.korpa[this.korpa.indexOf(element)] = value;
@@ -132,7 +134,10 @@ Vue.component('restaurant-page', {
     dodajUKorpu() {
       this.$store.dispatch(
         'cartModule/addToCart',
-        this.mapaKorpa
+        {
+          "map": this.mapaKorpa,
+          "id" : this.$route.params.id
+        }
       );
     },
     getRestaurantArticles() {
@@ -143,9 +148,35 @@ Vue.component('restaurant-page', {
       this.$store.dispatch('restaurantModule/getRestaurant',
         { "restaurantId": this.$route.params.id });
     },
+     getCartRestaurantId() {
+        this.$store.dispatch('cartModule/getCartRestaurantId');
+      },
+    
     addArticlesToCart() {
       //Fali za dodavanje
-      this.$router.push('/Cart/1');
+      this.activeCartId = this.$store.getters['cartModule/activeCart'];
+      console.log("aktivan" +  this.activeCartId);
+      if (this.activeCartId === parseInt(this.$route.params.id) ) {
+        this.dodajUKorpu();
+        setTimeout(() => {
+             this.$router.push('/Cart/1');
+        }, 500);
+        //this.$router.push('/Cart/1');
+      }
+      else if (this.activeCartId === -1) {
+        this.$store.commit('cartModule/setActiveCart', this.$route.params.id);
+        this.dodajUKorpu();
+       setTimeout(() => {
+             this.$router.push('/Cart/1');
+        }, 500);
+      }
+      else {
+        // greska
+        var r = confirm("Oslobodite aktivnu korpu da bi ste narucili iz novog restorana");
+        if (r == true) {
+           this.$router.push('/Cart/1');
+          }
+      }
       }
   },
 

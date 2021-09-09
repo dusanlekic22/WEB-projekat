@@ -10,10 +10,12 @@ Vue.component('cart-page', {
               <div class="row ">
                   <div class="col-md-2"> </div>
                   <div v-if= "cartArticles.length !== 0" class="col-md-8"> 
-               <base-article v-for="a in art" :key="a.article.id" :ida="a.article.id" :name="a.article.name" :description="a.article.description" :quantity="a.brojPorucenih"
-           :price="a.article.price" @dodaj="noviArtikal"> </base-article>
+               <base-article  v-for="a in art" :key="a.article.id" :ida="a.article.id" :name="a.article.name" :description="a.article.description" :quantity="a.brojPorucenih"
+           :price="a.article.price" @dodaj="noviArtikal" @ukloni="ukloniArtikal" > </base-article>
           </div>
-                  <div class="col-md-2"> 
+                  <div class="col-md-2" >
+                  <button @click="poruci">Poruci</button>
+                  Ukupan racun: {{  suma }}
            </div>
               </div>
           </div>
@@ -36,7 +38,12 @@ Vue.component('cart-page', {
         articles: new Map(),
         korpa: [],
         cart:null,
-        art:[],
+        art: [],
+        mapaKorpa: null,
+        suma: 0,
+        stari: new Map(),
+        restaurantId : null
+        
       };
     },
     mounted() {
@@ -53,13 +60,32 @@ Vue.component('cart-page', {
       
       cartArticles() {
         this.articles = this.$store.getters['cartModule/articles'];
-        console.log(this.articles);
-        this.articles.forEach((key,value)=> {this.art.push({'article' :JSON.parse(value),'brojPorucenih':key})});
-        return this.articles = this.$store.getters['cartModule/articles'];
+        console.log("artikli su" + this.articles);
+        this.art = [];
+        this.articles.forEach((key, value) => {
+          if (key !== 0) {
+            this.art.push({ 'article': JSON.parse(value), 'brojPorucenih': key });
+          }
+          this.restaurantID = JSON.parse(value).restaurantId;
+        });
+
+       let sumica = 0;
+       this.articles.forEach((key, value) => {
+         sumica += JSON.parse(value).price * key;
+         this.korpa.push({
+           "id": JSON.parse(value).id,
+           "brojPorucenih": key
+         });
+       });
+        console.log(sumica);
+        this.suma = sumica;
+
+        return this.articles;
       },
       cartComp() {
         return this.cart = this.$store.getters['cartModule/cart'];
-      }
+      },
+
     },
     methods: {
       checkId(val){
@@ -67,6 +93,22 @@ Vue.component('cart-page', {
         let k;
         this.articles.forEach((key,value)=> {if(val===JSON.parse(value)){k=key;}});
         return k;
+      },
+      overallSum() {
+            this.suma = 0;
+          let s= 0;
+          this.mapaKorpa.forEach((values, keys) => {
+            s = 0;
+           this.art.forEach(element => {
+             console.log("elemid" + element.article.id);
+              console.log("kljuc" + keys);
+            if (element.article.id === keys) {
+             s =  values * element.article.price;
+            }
+           });
+            this.suma += s;
+          });
+        return this.suma;
       },
       noviArtikal(value) {
         if (this.korpa.length === 0) {
@@ -76,6 +118,7 @@ Vue.component('cart-page', {
           var notInlist = true;
           this.korpa.forEach(element => {
             if (element.id === value.id) {
+              this.changeCart(element.id, value.brojPorucenih);
               this.korpa[this.korpa.indexOf(element)] = value;
               notInlist = false;
             }
@@ -83,10 +126,57 @@ Vue.component('cart-page', {
           if (notInlist) {
             this.korpa.push(value);
           }
-  
         }
-        // this.korpa.push(value);
-        console.log(this.korpa);
+           let map = new Map();
+          console.log(this.korpa);
+          for (const [key, value] of Object.entries(this.korpa)) {
+          console.log(`${value.id}: ${value.brojPorucenih}`);
+          //map[value.id] = value.brojPorucenih;
+          map.set(value.id, value.brojPorucenih);
+      }
+          this.mapaKorpa = map;
+          console.log(map);
+          this.overallSum();
+    
+      },
+      ukloniArtikal(value) {
+      if (this.korpa.length === 0) {}
+      else {
+        this.korpa.forEach(element => {
+          if (element.id === value.id) {
+            if (value.brojPorucenih === 0) {
+              this.changeCart(element.id, 0);
+              this.korpa.splice(this.korpa.indexOf(element), 1);
+              // const indeks = this.art.indexOf({ 'article': element, 'brojPorucenih': value.brojPorucenih });
+              // console.log("indeks jee" + indeks);
+              // this.art.splice(indeks+1, 1);
+            }
+            else {
+               this.changeCart(element.id, value.brojPorucenih);
+               this.korpa[this.korpa.indexOf(element)] = value;
+            }
+          }
+        });
+
+      }
+      
+      let map = new Map();
+      console.log(this.korpa);
+      for (const [key, value] of Object.entries(this.korpa)) {
+        console.log(`${value.id}: ${value.brojPorucenih}`);
+        //map[value.id] = value.brojPorucenih;
+        map.set(value.id, value.brojPorucenih);
+      }
+          this.mapaKorpa = map;
+           console.log(this.korpa);
+          this.overallSum();
+      },
+      poruci() {
+       this.activeCartId = this.$store.getters['cartModule/activeCart'];
+       if (activeCartId !== -1) {
+          
+        }
+        
       },
       getCartArticles() {
         this.$store.dispatch('cartModule/getCartArticles',
@@ -96,8 +186,18 @@ Vue.component('cart-page', {
         this.$store.dispatch('cartModule/getCart',
           { "cartId": 1 });
       },
-    },
-  
-  
+      changeCart(id, value) {
+        console.log("IDDD" + id);
+        console.log("Value" + value);
+        console.log(typeof value);
+        this.$store.dispatch('cartModule/changeCart',
+          {
+            "id": id,
+            "quantity": parseInt(value)
+          }
+        );
+                  
+      }
+    }
   });
   

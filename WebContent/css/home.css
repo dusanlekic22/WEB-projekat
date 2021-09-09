@@ -29,3 +29,40 @@ border: 1px solid #c4c4c4;
   color: red;
   font-size: 14px;
 }
+
+.restaurantsSearchButton{
+  background-color: #00000070;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
+.restaurantsSearchButton:hover{
+  background-color: #00000090;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
+
+.restaurantsSearchInput{
+    background-color: #00000080;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+}
+
+.restaurantsSearchCheckbox {
+  background-color: #00000080;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  width: 30px;
+}
+.restaurantsSearchLabel{
+  background-color: #00000070;
+  border-radius: 10px;
+  color: white;
+}

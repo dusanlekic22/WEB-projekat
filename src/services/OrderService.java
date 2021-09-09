@@ -136,15 +136,15 @@ public class OrderService {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@POST
-	@Path("/createOrder")
+	@Path("/createOrder/{cartId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createOrder(Cart cart) {
+	public Response createOrder(@PathParam ("cartId") Integer cartId) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
 		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
-
+		Cart cart = carts.find(cartId);
 		if (users.checkUserRole(request, UserRole.CUSTOMER)) {
 			User user = (User) request.getSession().getAttribute("loginUser");
 			Order order = new Order();
@@ -153,16 +153,16 @@ public class OrderService {
 			Integer anyOrderArticleId = order.getArticlesIdsWithQuantity().keySet().stream().findAny().get();
 			order.setRestaurantId(articles.find(anyOrderArticleId).getRestaurantId());
 			order.setDateAndTime(LocalDateTime.now());
-			order.setCustomer(new Pair(user.getName(),user.getPassword()));
+			order.setCustomer(new Pair(user.getName(), user.getPassword()));
 			order.setStatus(OrderStatus.PROCESSING);
 			orders.addOrder(order);
 			carts.getValues().get(user.getCartId()).setArticleIdsWithQuantity(null);
 			User newUser = new User(user);
-			newUser.setPoints(order.getPrice()/1000*133);
-			//request.getSession().setAttribute("loginUser", newUser);
+			newUser.getCustomerOrdersIds().add(order.getId());
+			newUser.setPoints(order.getPrice() / 1000 * 133);
+			request.getSession().setAttribute("loginUser", newUser);
 			users.updateUser(newUser, user);
-			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(order)
-					.build();
+			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(order).build();
 
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
