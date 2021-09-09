@@ -60,6 +60,14 @@ Vue.component("the-header", {
                 >Dodaj Artikal</router-link
               >
             </li>
+            </li>
+                 <li v-if="canSeeOrders">
+              <router-link
+                class="nav-link"
+                to="/Orders"
+                >Moje Porudzbine</router-link
+              >
+            </li>
         </ul>
       </div>
     </div>
@@ -100,6 +108,9 @@ Vue.component("the-header", {
     },
      isManager() {
       return this.$store.getters['userModule/isManager'];
+    },
+    canSeeOrders() {
+      return this.$store.getters['userModule/canSeeOrders'];
     },
     }
 

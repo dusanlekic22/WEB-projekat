@@ -20,7 +20,6 @@ import beans.enums.OrderStatus;
 import beans.enums.UserRole;
 import dao.CommentsDAO;
 import dao.OrdersDAO;
-import dao.CommentsDAO;
 import dao.RestaurantsDAO;
 import dao.UsersDAO;
 
@@ -77,7 +76,6 @@ public class CommentService {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getComment(@PathParam("id") Integer id) {
-		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
 		CommentsDAO comments = (CommentsDAO) ctx.getAttribute("commentsDAO");
 		if (comments == null) {
 			return Response.status(400).entity("Artikal nije pronadjen").build();

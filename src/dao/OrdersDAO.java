@@ -117,12 +117,14 @@ public class OrdersDAO {
 		Order order = new Order();
 		
 		if (checkUserRole(user, UserRole.CUSTOMER)) {
+			if(user.getCustomerOrdersIds()!=null)
 			for (String id : user.getCustomerOrdersIds()) {
 				order = find(id);
 				userOrders.put(order.getId(), order);
 			}
 		}
 		else if (checkUserRole(user, UserRole.DELIVERY)) {
+			if(user.getDeliveryOrdersIds()!=null)
 			for (String id : user.getDeliveryOrdersIds()) {
 				order = find(id);
 				userOrders.put(order.getId(), order);

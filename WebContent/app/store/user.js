@@ -105,6 +105,21 @@ var userStore = {
                 return true;
             }
         },
+        isCustomer(state) {
+            if (state.user.role === 'CUSTOMER') {
+                return true;
+            }
+        },
+        isDelivery(state) {
+            if (state.user.role === 'DELIVERY') {
+                return true;
+            }
+        },
+        canSeeOrders(state) {
+            if (state.user.role === 'DELIVERY' || state.user.role === 'CUSTOMER' || state.user.role === 'DELIVERY') {
+                return true;
+            }
+        },
         getterUsers(state) {
             return state.users;
         }

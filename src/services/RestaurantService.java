@@ -18,6 +18,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import beans.Address;
+import beans.Location;
 import beans.Logo;
 import beans.Restaurant;
 import beans.enums.RestaurantStatus;
@@ -63,6 +65,7 @@ public class RestaurantService {
 		}
 		ArrayList<Restaurant> sortedRestaurants =  new ArrayList<>(restaurants.getValues().values());
 		
+		
 		sortedRestaurants.sort((o1, o2)
                 -> -(o1.getStatus().toString().compareTo(
                     o2.getStatus().toString())));
@@ -99,8 +102,12 @@ public class RestaurantService {
 
 			RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
 			restaurantWithImage.getRestaurant().setLogoId(logo.getId());
+			restaurantWithImage.getRestaurant().setStatus(RestaurantStatus.OPEN);
+			Location location = new Location();
+			location.setAddress(new Address());
+			restaurantWithImage.getRestaurant().setLocation(location);
 			restaurants.addRestaurant(restaurantWithImage.getRestaurant());
-
+			
 			users.addRestaurant(users.getUserByUsername(managerUsername), restaurantWithImage.getRestaurant());
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())

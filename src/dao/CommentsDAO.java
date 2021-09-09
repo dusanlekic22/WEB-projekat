@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import beans.Comment;
-import beans.Comment;
 import beans.enums.CommentStatus;
 
 public class CommentsDAO {
