@@ -1,19 +1,19 @@
 Vue.component('base-order', {
   template:
     `
-<div class="col-md-3 comment"> 
+<div class="col-12 comment"> 
  <div class="row">
     <div class="col-6 col-sm-6">
       <div class="comment-header">
         {{ id }}
       </div>
     </div>
-      <div v-if="restaurantComp" class="col-3 col-sm-3">
+      <div v-if="restaurantComp" class="col-6 col-sm-6">
       <div class="comment-header">
         {{ restaurant.name }}
       </div>
     </div>
-    <div class="col-3 col-sm-3">
+    <div class="col-6 col-sm-6">
       <div class="comment-header">
         {{ customerName }}
       </div>

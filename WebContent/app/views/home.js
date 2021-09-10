@@ -97,8 +97,8 @@ Vue.component('home', {
           </div>
             <div class="form-group">
             <label for="loginPassword">Password</label>
-            <input type="loginPassword" class="form-control" id="loginPassword" placeholder="Password" v-model="loginPassword">
-          <span class="loginError"  v-if="passwordEmpty">Morate uneti vase sifru</span>
+            <input type="password" class="form-control" id="loginPassword" placeholder="Password" v-model="loginPassword">
+          <span class="loginError"  v-if="passwordEmpty">Morate uneti vasu sifru</span>
             <span class="loginError"  v-if="passwordError">Pogresna sifra</span>
             </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
