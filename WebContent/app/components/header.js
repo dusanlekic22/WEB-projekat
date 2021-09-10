@@ -68,6 +68,16 @@ Vue.component("the-header", {
                 >Moje Porudzbine</router-link
               >
             </li>
+            </li>
+                 <li v-if="isLogged" >
+    
+              <router-link
+              @click.native="logout"
+                class="nav-link"
+                to="/"
+                >Odjavi se</router-link>
+           
+            </li>
         </ul>
       </div>
     </div>
@@ -88,6 +98,9 @@ Vue.component("the-header", {
     },
      openLogin() {
       this.$store.commit('loginModule/openLogin');
+    },
+    logout() {
+      this.$store.dispatch('loginModule/logout');
     }
   },
     mounted() {

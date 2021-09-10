@@ -155,7 +155,7 @@ public class OrderService {
 			order.setCustomerSurname(user.getSurname());
 			order.setStatus(OrderStatus.PROCESSING);
 			orders.addOrder(order);
-			carts.getValues().get(user.getCartId()).setArticleIdsWithQuantity(null);
+			carts.getValues().get(user.getCartId()).setArticleIdsWithQuantity(new HashMap<Integer,Integer>());
 			User newUser = new User(user);
 			newUser.getCustomerOrdersIds().add(order.getId());
 			newUser.setPoints(order.getPrice() / 1000 * 133);
@@ -186,7 +186,7 @@ public class OrderService {
 				users.updateUser(user, user);
 				return Response
 						.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGED")
-						.entity(orders.getValues())
+						.entity(orders.getUserOrders(request).values())
 						.build();
 		}
 		return Response.status(403).type("text/plain")
@@ -194,53 +194,41 @@ public class OrderService {
 		
 	}
 
-//	@GET
-//	@Path("/{id}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response getOrder(@PathParam("id") Integer id) {
-//
-//		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
-//		if (orders == null) {
-//			return Response.status(400).entity("Artikal nije pronadjen").build();
-//		}
-//
-//		return Response.status(200).entity(orders.find(id)).build();
-//	}
-//
-//	@POST
-//	@Path("/addOrder")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public Response addOrder(Order order) {
-//		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
-//		OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
-//		if (users.checkUserRole(request, UserRole.MANAGER)) {
-//			RestaurantsDAO restaurants = (RestaurantsDAO) ctx.getAttribute("restaurantsDAO");
-//
-//			orders.addOrderToRestaurant(restaurants, order);
-//
-//			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(restaurants.getValues())
-//					.build();
-//
-//		}
-//		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
-//	}
-//
+
 	@PUT
 	@Path("/updateOrder/{id}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateOrder(@PathParam("id") String oldOrderId, Order updatedOrder) {
 		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
 
 		if (users.checkUserRole(request, UserRole.MANAGER) || 
-				users.checkUserRole(request, UserRole.DELIVERY)) {
+				users.checkUserRole(request, UserRole.DELIVERY )
+				|| users.checkUserRole(request, UserRole.CUSTOMER )) {
 			OrdersDAO orders = (OrdersDAO) ctx.getAttribute("ordersDAO");
 			Order oldOrder = orders.find(oldOrderId);
 			orders.updateOrder(updatedOrder, oldOrder);
-
 			
-				return Response.status(Response.Status.ACCEPTED).entity(orders.getValues().values())
+			
+			if(updatedOrder.getStatus().equals(OrderStatus.AWAITING_DELIVERY))
+			{				
+				
+				users.addUserDeliveryIds(updatedOrder.getId());
+			}
+			
+			if(updatedOrder.getStatus().equals(OrderStatus.DELIVERY_REQUESTED))
+			{	
+			User user = (User) request.getSession().getAttribute("loginUser");
+			updatedOrder.setDeliveryId(user.getUsername());
+			orders.updateOrder(updatedOrder, orders.find(oldOrderId));
+			}
+			
+			if(updatedOrder.getStatus().equals(OrderStatus.TRANSPORTING))
+			{
+				users.removeUserDeliveryIdsExceptOne(oldOrderId, updatedOrder.getDeliveryId());
+			}
+			
+			return Response.status(Response.Status.ACCEPTED).entity(orders.getUserOrders(request).values())
 						.build();
 			
 		}

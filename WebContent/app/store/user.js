@@ -22,7 +22,22 @@ var userStore = {
             state.user = payload;
             state.logged = true;
             console.log(state.user);
-        }
+        },
+        loggedOut(state, payload){
+            state.user = {
+                username: '',
+                password: '',
+                name: '',
+                surname: '',
+                gender: '',
+                dateOfBirth: '',
+                role: null,
+                restaurantId: null,
+            };
+            state.logged = false,
+            users= [],
+            module = 'korisnik'
+        },
     },
     actions: {
    setCurrentUser(context, payload) {
@@ -116,7 +131,7 @@ var userStore = {
             }
         },
         canSeeOrders(state) {
-            if (state.user.role === 'DELIVERY' || state.user.role === 'CUSTOMER' || state.user.role === 'DELIVERY') {
+            if (state.user.role === 'DELIVERY' || state.user.role === 'CUSTOMER' || state.user.role === 'MANAGER') {
                 return true;
             }
         },

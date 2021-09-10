@@ -174,18 +174,16 @@ Vue.component('cart-page', {
       },
       poruci() {
        this.activeCartId = this.$store.getters['cartModule/activeCart'];
-       if (activeCartId !== -1) {
+       if (this.activeCartId !== -1) {
           
         }
         
       },
       getCartArticles() {
-        this.$store.dispatch('cartModule/getCartArticles',
-          { "cartId": 1 });
+        this.$store.dispatch('cartModule/getCartArticles');
       },
       getCart() {
-        this.$store.dispatch('cartModule/getCart',
-          { "cartId": 1 });
+        this.$store.dispatch('cartModule/getCart');
       },
       changeCart(id, value) {
         console.log("IDDD" + id);

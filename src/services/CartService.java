@@ -59,9 +59,9 @@ public class CartService {
 	}
 
 	@GET
-	@Path("/{id}")
+	@Path("/getCart")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCart(@PathParam("id") Integer id) {
+	public Response getCart() {
 		
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 
@@ -73,8 +73,8 @@ public class CartService {
 		if (!users.checkUserRole(request, UserRole.CUSTOMER)) {
 			return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 		}
-		
-		Cart oldCart = carts.find(id);
+		User user = (User) request.getSession().getAttribute("loginUser");
+		Cart oldCart = carts.find(user.getCartId());
 		Cart newCart = new Cart(oldCart);
 		newCart.getArticleIdsWithQuantity().forEach((articleId, quantity) -> {
 			articles.getValues().forEach((k, v) -> {
@@ -89,9 +89,9 @@ public class CartService {
 	}
 
 	@GET
-	@Path("/getCartArticles/{id}")
+	@Path("/getCartArticles")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCartArticlesWithQuantity(@PathParam("id") Integer id) {
+	public Response getCartArticlesWithQuantity() {
 
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
@@ -123,7 +123,6 @@ public class CartService {
 	}
 	
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GET
 	@Path("/getCartRestaurantID/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -131,7 +130,6 @@ public class CartService {
 		Integer  restaurantID[] = {-1} ;
 		ArticlesDAO articles = (ArticlesDAO) ctx.getAttribute("articlesDAO");
 		CartsDAO carts = (CartsDAO) ctx.getAttribute("cartsDAO");
-		ObjectMapper objectMapper = new ObjectMapper();
 		if (carts == null) {
 			return Response.status(400).entity("Ne postoje korpe").build();
 		}
@@ -141,7 +139,6 @@ public class CartService {
 		}
 	
 		User user = (User) request.getSession().getAttribute("loginUser");
-		HashMap<String,Integer> cartArticles = new HashMap<String,Integer>(); 
 		carts.find(user.getCartId()).getArticleIdsWithQuantity().forEach((articleId, quantity) -> {
 			articles.getValues().forEach((k, v) -> {
 				restaurantID[0] =  v.getRestaurantId();

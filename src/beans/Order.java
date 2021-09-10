@@ -15,6 +15,7 @@ public class Order {
 	private float price;
 	private String customerName;
 	private String customerSurname;
+	private String deliveryId;
 	// TODO:Proveri
 	private OrderStatus status;
 	private Integer logicalDeleted;
@@ -24,9 +25,11 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
+	
+
 	public Order(String id, HashMap<Integer, Integer> articlesIdsWithQuantity, Integer restaurantId,
-			LocalDateTime dateAndTime, float price, String customerName, String customerSurname, OrderStatus status,
-			Integer logicalDeleted) {
+			LocalDateTime dateAndTime, float price, String customerName, String customerSurname, String deliveryId,
+			OrderStatus status, Integer logicalDeleted) {
 		super();
 		this.id = id;
 		this.articlesIdsWithQuantity = articlesIdsWithQuantity;
@@ -35,9 +38,12 @@ public class Order {
 		this.price = price;
 		this.customerName = customerName;
 		this.customerSurname = customerSurname;
+		this.deliveryId = deliveryId;
 		this.status = status;
 		this.logicalDeleted = logicalDeleted;
 	}
+
+
 
 	public String getId() {
 		return id;
@@ -70,6 +76,19 @@ public class Order {
 	public void setPrice(float price) {
 		this.price = price;
 	}
+
+	
+	
+	public String getDeliveryId() {
+		return deliveryId;
+	}
+
+
+	public void setDeliveryId(String deliveryId) {
+		this.deliveryId = deliveryId;
+	}
+
+
 
 	public HashMap<Integer, Integer> getArticlesIdsWithQuantity() {
 		return articlesIdsWithQuantity;

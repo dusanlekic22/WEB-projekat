@@ -41,6 +41,7 @@ input {
   background: black;
 }
 .navbar-dark .navbar-nav .nav-link {
+  cursor: pointer;
   position: relative;
   color: black;
   font-size: 1.1rem;

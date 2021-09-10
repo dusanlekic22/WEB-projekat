@@ -83,7 +83,40 @@ public class UsersDAO {
 		return true;
 
 	}
+	
+	public Boolean addUserDeliveryIds(String newId) {
+		
+		for(User user : users.values()) {
+			if(user.getRole().equals(UserRole.DELIVERY))
+			user.getDeliveryOrdersIds().add(newId);
+		}
+		saveUsers();
+		return true;
 
+	}
+	
+	public Boolean removeUserDeliveryIds(String orderId) {
+		
+		for(User user : users.values()) {
+			if(user.getRole().equals(UserRole.DELIVERY))
+			user.getDeliveryOrdersIds().remove(orderId);
+		}
+		saveUsers();
+		return true;
+
+	}
+	
+	public Boolean removeUserDeliveryIdsExceptOne(String orderId,String deliveryUserId) {
+		
+		for(User user : users.values()) {
+			if(user.getRole().equals(UserRole.DELIVERY) && !user.getUsername().equals(deliveryUserId))
+			user.getDeliveryOrdersIds().remove(orderId);
+		}
+		saveUsers();
+		return true;
+
+	}
+	
 	public void deleteUser(String username) {
 
 		users.get(username).setLogicalDeleted(1);

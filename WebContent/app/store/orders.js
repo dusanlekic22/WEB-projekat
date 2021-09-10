@@ -26,7 +26,7 @@ var ordersStore = {
                 });
         },
         updateOrder(context, payload) {
-            axios.put('rest/orders/updateOrder'+payload.orderId)
+            axios.put('rest/orders/updateOrder/'+payload.orderId,payload.order)
                 .then(response => {
                     console.log("\n\n -------Porudzbine -------\n");
                     context.commit('setOrders', response.data);
@@ -40,7 +40,7 @@ var ordersStore = {
                 });
         },
         deleteOrder(context, payload) {
-            axios.put('rest/orders/deleteOrder'+payload.orderId)
+            axios.delete('rest/orders/deleteOrder/'+payload.orderId)
                 .then(response => {
                     console.log("\n\n -------Porudzbine -------\n");
                     context.commit('setOrders', response.data);

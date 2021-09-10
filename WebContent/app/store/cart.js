@@ -21,7 +21,7 @@ var cartStore = {
     },
     actions: {
         getCartArticles(context, payload) {
-            axios.get('rest/carts/getCartArticles/'+payload.cartId)
+            axios.get('rest/carts/getCartArticles')
                 .then(response => {
                     console.log("\n\n -------Artikli kolica-------\n");
                     context.commit('setCartArticles',response.data);
@@ -69,7 +69,7 @@ var cartStore = {
               });
         },
         getCart(context, payload) {
-            axios.get('rest/carts/' + payload.cartId)
+            axios.get('rest/carts/')
                 .then(response => {
                     this.message = response.data;
                     console.log("\n\n -------Kolica-------\n");

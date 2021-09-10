@@ -1,6 +1,6 @@
 Vue.component('orders-page', {
-    template:
-    `<div class="container-fluid">
+   template:
+      `<div class="container-fluid">
     <div id="restaurantPageSection">
        <div class="gradeAndSearch">
           <div class="container pt-4">
@@ -20,49 +20,51 @@ Vue.component('orders-page', {
           <div class="row ">
              <div class="col-md-2"> </div>
              <div  class="col-md-8">
-                <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1" :key="o.id" :id="o.id" :restId="o.restId" :status="o.status"
-                   :price="o.price"><div v-if="isCustomer" ><button @click="deleteOrder">Ukloni porudzbinu</button></div></base-order>
+                <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1" :key="o.id" :order="o" :id="o.id" :restId="o.restaurantId" :status="o.status"
+                   :price="o.price" :customerName="o.customerName" :customerSurname="o.customerSurname" @update="updateOrder"></base-order>
              </div>
           </div>
        </div>
     </div>
  </div>
  `,
-    name: 'Home',
-    data() {
-        return { 
-            orders: [], 
-            user: null
-        };
-    },
-    mounted() {
-        let style = document.createElement('link');
-        style.type = "text/css";
-        style.rel = "stylesheet";
-        style.href = 'css/restaurantPage.css';
-        document.head.appendChild(style);
-        this.getOrders();
-      },
-      methods: {
-      getOrders() {
-        this.$store.dispatch('ordersModule/getOrders',
-          { "orderId": this.$route.params.id });
-      },
-      updateOrder() {
-        this.$store.dispatch('ordersModule/updateOrder',
-          { "orderId": this.$route.params.id });
-      },
-      deleteOrder() {
-        this.$store.dispatch('ordersModule/deleteOrder',
-          { "orderId": this.$route.params.id });
-      },
+   name: 'Home',
+   data() {
+      return {
+         orders: [],
+         user: null,
+         restaurant: null
+      };
    },
-   computed:{
+   mounted() {
+      let style = document.createElement('link');
+      style.type = "text/css";
+      style.rel = "stylesheet";
+      style.href = 'css/restaurantPage.css';
+      document.head.appendChild(style);
+      this.getOrders();
+   },
+   methods: {
+      getOrders() {
+         this.$store.dispatch('ordersModule/getOrders');
+      },
+      updateOrder(value) {
+         let o = value.order;
+         console.log("ORDER " + value.order.status);
+         o.status = value.status;
+         this.$store.dispatch('ordersModule/updateOrder',
+            { "orderId": value.order.id, "order": o });
+      }
+   },
+   computed: {
       ordersComp() {
          return this.orders = this.$store.getters['ordersModule/orders'];
-       },
-       isCustomer(){
-          return this.user = this.$store.getters['ordersModule/isCustomer'];
-       }
+      },
+      isCustomer() {
+         return this.$store.getters['userModule/isCustomer'];
+      },
+      checkRestaurants() {
+         return this.restaurant = this.$store.getters['restaurantsModule/restaurant'];;
+      }
    }
 });
