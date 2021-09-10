@@ -22,7 +22,9 @@ Vue.component('orders-page', {
              <div  class="col-md-8">
                 <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1" :key="o.id" :id="o.id" :restId="o.restId" :status="o.status"
                    :price="o.price"><div v-if="isCustomer" ><button @click="deleteOrder">Ukloni porudzbinu</button></div></base-order>
-             </div>
+               <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1" :key="o.id" :id="o.id" :restId="o.restId" :status="o.status"
+                   :price="o.price"><div v-if="isManager" ><button @click="deleteOrder">Ukloni porudzbinu</button></div></base-order>
+                   </div>
           </div>
        </div>
     </div>
@@ -63,6 +65,9 @@ Vue.component('orders-page', {
        },
        isCustomer(){
           return this.user = this.$store.getters['ordersModule/isCustomer'];
+      },
+      isManager(){
+          return this.user = this.$store.getters['ordersModule/isManager'];
        }
    }
 });

@@ -116,7 +116,7 @@ var userStore = {
             }
         },
         canSeeOrders(state) {
-            if (state.user.role === 'DELIVERY' || state.user.role === 'CUSTOMER' || state.user.role === 'DELIVERY') {
+            if (state.user.role === 'DELIVERY' || state.user.role === 'CUSTOMER' || state.user.role === 'MANAGER') {
                 return true;
             }
         },

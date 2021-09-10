@@ -127,9 +127,6 @@ Vue.component('restaurant-page', {
       //   map[value.id] = value.brojPorucenih;
       // }
 
-      
-
-
     },
     dodajUKorpu() {
       this.$store.dispatch(
