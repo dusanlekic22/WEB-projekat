@@ -64,19 +64,17 @@ Vue.component('cart-page', {
         console.log("artikli su" + this.articles);
         this.art = [];
         this.articles.forEach((key, value) => {
-          if (key !== 0) {
             this.art.push({ 'article': JSON.parse(value), 'brojPorucenih': key });
-          }
           this.restaurantID = JSON.parse(value).restaurantId;
         });
 
        let sumica = 0;
        this.articles.forEach((key, value) => {
          sumica += JSON.parse(value).price * key;
-         this.korpa.push({
-           "id": JSON.parse(value).id,
-           "brojPorucenih": key
-         });
+           this.korpa.push({
+             "id": JSON.parse(value).id,
+             "brojPorucenih": key
+           });
        });
         console.log(sumica);
         this.suma = sumica;
@@ -158,10 +156,7 @@ Vue.component('cart-page', {
             }
           }
         });
-
-      }
-      
-      let map = new Map();
+              let map = new Map();
       console.log(this.korpa);
       for (const [key, value] of Object.entries(this.korpa)) {
         console.log(`${value.id}: ${value.brojPorucenih}`);
@@ -171,13 +166,18 @@ Vue.component('cart-page', {
           this.mapaKorpa = map;
            console.log(this.korpa);
           this.overallSum();
+    
+      }
       },
       poruci() {
-       this.activeCartId = this.$store.getters['cartModule/activeCart'];
-       if (this.activeCartId !== -1) {
-          
+        this.activeCartId = this.$store.getters['cartModule/activeCart'];
+        if (this.activeCartId !== -1) {
+          this.$store.dispatch('ordersModule/addOrder',
+            {
+              "cartId": this.activeCartId,
+              "cartPrice": this.suma
+            })
         }
-        
       },
       getCartArticles() {
         this.$store.dispatch('cartModule/getCartArticles');
@@ -199,4 +199,3 @@ Vue.component('cart-page', {
       }
     }
   });
-  

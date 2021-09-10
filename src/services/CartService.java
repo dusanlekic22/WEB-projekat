@@ -306,9 +306,7 @@ public class CartService {
 			Cart oldCart = carts.getValues().get(user.getCartId());
 			Cart newCart = new Cart(oldCart);
 			newCart.getArticleIdsWithQuantity().remove(articleId);
-			if( quantity != 0) {
 			newCart.getArticleIdsWithQuantity().put(articleId, quantity);
-			}
 			carts.updateCart(oldCart, newCart);
 
 			return Response.status(Response.Status.ACCEPTED).entity("SUCCESS CHANGE").entity(carts.getValues().values())

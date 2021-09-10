@@ -39,12 +39,16 @@ Vue.component('base-article', {
         </div></div>
           <div class="col-3 pt-4">
             <div class="d-flex">
-              <div class="pt-2">
+              <div class="pt-2" v-if="!this.isManagerRestaurant">
                 <button class="buttonCartMinus" @click="ukloniIzKorpe()"> - </button>
               </div>
-              <div class="pt-2">
+              <div class="pt-2" v-if="!this.isManagerRestaurant">
               <button class="buttonCartPlus"  @click="dodajUKorpu()"> + </button></div>
               </div>
+              <div class="pt-2" v-if="this.isManagerRestaurant">
+              <button class="buttonCartMinus" @click="izmeniArtikal(id)"> Izmeni </button>
+            </div>
+            <div clas
             <div>
         </div>
        </div>
@@ -64,7 +68,7 @@ Vue.component('base-article', {
         };
   },
   props: [
-     'ida','name','description','price','quantity'
+     'ida','name','description','price','quantity','isManagerRestaurant'
   ],
     mounted() {
         $('#baseDialogForm').modal('show');
@@ -144,6 +148,9 @@ Vue.component('base-article', {
           "brojPorucenih": this.brojPorucenih
         })
       },
+      izmeniArtikal(id){
+        this.$router.push('/UpdateArticle/' + id);
+      }
       
     },
 });

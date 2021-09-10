@@ -68,7 +68,7 @@ var restaurantStore = {
               });
         },
         updateArticle(context,payload){
-          axios.post('rest/articles/updateArticle'+payload.id,{
+          axios.put('rest/articles/updateArticle/'+payload.id,{
                 "name": payload.articleName,
                 "price": payload.articlePrice,
                 "type": payload.articleType,

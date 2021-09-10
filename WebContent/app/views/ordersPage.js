@@ -65,6 +65,9 @@ Vue.component('orders-page', {
       },
       checkRestaurants() {
          return this.restaurant = this.$store.getters['restaurantsModule/restaurant'];;
-      }
+      },
+      isManager(){
+          return  this.$store.getters['ordersModule/isManager'];
+       }
    }
 });

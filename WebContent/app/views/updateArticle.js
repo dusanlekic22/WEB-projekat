@@ -1,19 +1,19 @@
 Vue.component('update-article', {
   template:
     `
-  <div class="container-fluid" v-if="checkArticle !=== null">
+  <div class="container-fluid" v-if="checkArticle.length !== 0">
    <div class="container">
    <keep-alive>
        <form>
         <div class="modal-body">
          <div class="form-group">
             <label for="articleName">Ime artikla </label>
-            <input type="articleName" class="form-control" id="articleName" aria-describedby="articleNameHelp" placeholder="Unesite naziv artikla" v-model="article.articleName">
+            <input type="articleName" class="form-control" id="articleName" aria-describedby="articleNameHelp" placeholder="Unesite naziv artikla" v-model="articleName">
             <small id="articleNameHelp" class="form-text text-muted">Your information is safe with us.</small>
           </div>
                 <div class="form-group">
             <label for="articlePrice">Cena artikla </label>
-            <input type="articlePrice" class="form-control" id="articlePrice" placeholder="Unesite cenu artikla" v-model="article.articlePrice">
+            <input type="articlePrice" class="form-control" id="articlePrice" placeholder="Unesite cenu artikla" v-model="articlePrice">
           </div>
             <div class="form-group">
             <select v-model="articleType" >
@@ -22,24 +22,24 @@ Vue.component('update-article', {
           </select>
           </div>
           <div class="form-group" v-if="restaurantData !== null">
-          <select v-model="article.articleRestaurantId" >
-            <option :value="article.articleRestaurantId"> {{ article.articleRestaurantId }} </option>
+          <select v-model="articleRestaurantId" >
+            <option :value="articleRestaurantId"> {{ articleRestaurantId }} </option>
           </select>
           </div>
           <div class="form-group">
           <label for="articleQuantity">Kolicina artikla </label>
-            <input type="articleQuantity" class="form-control" id="articleQuantity" placeholder="Unesite kolicinu artikla" v-model="article.articleQuantity">
+            <input type="articleQuantity" class="form-control" id="articleQuantity" placeholder="Unesite kolicinu artikla" v-model="articleQuantity">
            <br />
           </div>
            </div>
             <div class="form-group">
             <label for="articleDescription">Opis artikla </label>
-            <input type="articleDescription" class="form-control" id="articleDescription" placeholder="Unesite opis artikla" v-model="article.articleDescription">
+            <input type="articleDescription" class="form-control" id="articleDescription" placeholder="Unesite opis artikla" v-model="articleDescription">
           </div>
             <div class="form-group">
-          <label for="article.articleImage">Slika restorana </label>
+          <label for="articleImage">Slika restorana </label>
           <div class="imageRestaurant">
-            <img :src="article.articleImage" >
+            <img :src="articleImage" >
           </div>
            <input type="file"  @change=uploadImage id="file-input" ref="file" >
           <br />
@@ -55,12 +55,19 @@ Vue.component('update-article', {
   name: "UpdateArticle",
   data() {
     return {
-      article: null
+      article: [],
+      articleName: '',
+      articlePrice: 0,
+      articleType: '',
+      articleRestaurantId: '',
+      articleQuantity: 0,
+      articleDescription: '',
+      articleImage: '',
     };
   },
   mounted() {
+    this.getArticle();
     },
-  props: ['idArticle'],
   methods: {
     uploadImage(e) {
       this.articleImage = '';
@@ -74,13 +81,19 @@ Vue.component('update-article', {
       this.file = this.$refs.file.files[0];
       },
       getArticle() {
-       axios.get('rest/articles/'+ this.idArticle,
-              articleIdsWithQuantity
+       axios.get('rest/articles/'+ this.$route.params.idArticle
           )
               .then(response => {
                   this.message = response.data;
                   console.log("\n\n -------Dodata korpa -------\n");
                   this.article = response.data;
+                  this.articleName = this.article.articleName;
+                  this.articlePrice= this.article.articlePrice;
+                  this.articleType= this.article.articleType;
+                  this.articleRestaurantId= this.article.articleRestaurantId;
+                  this.articleQuantity= this.article.articleQuantity;
+                  this.articleDescription= this.article.articleDescription;
+                  this.articleImage= this.articleImage;
                   console.log("\n\n ----------------------\n\n");
               })
               .catch(err => {
@@ -91,7 +104,7 @@ Vue.component('update-article', {
       },
       updateArticle() {
         this.$store.dispatch('restaurantModule/updateArticle', {
-        "id": this.idArticle,
+        "id": this.$route.params.idArticle,
         "articleName": this.articleName,
         "articlePrice": this.articlePrice,
         "articleType": this.articleType,

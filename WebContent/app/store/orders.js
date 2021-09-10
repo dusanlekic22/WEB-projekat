@@ -2,13 +2,13 @@ var ordersStore = {
     namespaced: true,
     state() {
         return {
-            orders: []
+            orders: [],
         };
     },
     mutations: {
         setOrders(state, payload) {
             state.orders = payload;
-        },
+        }
     },
     actions: {
         getOrders(context, payload) {
@@ -54,7 +54,11 @@ var ordersStore = {
                 });
         },
         addOrder(context, payload) {
-              axios.post('rest/orders/createOrder/' + payload.cartId)
+              axios.post('rest/orders/createOrder/' + payload.cartId,
+              payload.cartPrice, {
+  headers: { "Content-type": "application/json" }
+}
+              )
                 .then(response => {
                     console.log("\n\n -------Porudzbine -------\n");
                     context.commit('setOrders', response.data);

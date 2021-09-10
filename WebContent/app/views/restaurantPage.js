@@ -31,7 +31,7 @@ Vue.component('restaurant-page', {
 				<div class="col-md-2"> </div>
 				<div  class="col-md-8"> 
 		     <base-article v-for="a in this.articles" v-if="a.logicalDeleted!== 1" :key="a.id" :ida="a.id" :name="a.name" :description="a.description"
-         :price="a.price" @dodaj="noviArtikal" @ukloni="ukloniArtikal"></base-article>
+         :price="a.price" :isManagerRestaurant="isManagerOfRestaurant" @dodaj="noviArtikal" @ukloni="ukloniArtikal"></base-article>
         </div>
 				<div class="col-md-2"> <div><h3> {{restaurant.type}} </h3></div>
         <div><h3> {{restaurant.status}} </h3></div>
@@ -59,7 +59,8 @@ Vue.component('restaurant-page', {
       articles: [],
       korpa: [],
       restaurant: [],
-      activeCartId: -1
+      activeCartId: -1,
+      isManagerOfRestaurant: false
     };
   },
   mounted() {
@@ -68,6 +69,7 @@ Vue.component('restaurant-page', {
     style.rel = "stylesheet";
     style.href = 'css/restaurantPage.css';
     document.head.appendChild(style);
+    this.isRestaurantManager();
     this.getRestaurant();
     this.getRestaurantArticles();
     this.getCartRestaurantId();
@@ -127,9 +129,6 @@ Vue.component('restaurant-page', {
       //   map[value.id] = value.brojPorucenih;
       // }
 
-      
-
-
     },
     dodajUKorpu() {
       this.$store.dispatch(
@@ -177,6 +176,10 @@ Vue.component('restaurant-page', {
            this.$router.push('/Cart/1');
           }
       }
+      },
+      isRestaurantManager(){
+        this.isManagerOfRestaurant = (parseInt(this.$route.params.id) === parseInt(this.$store.getters['userModule/user'].restaurantId));
+        console.log("Gleda menadzer" +this.isManagerOfRestaurant);
       }
   },
 
