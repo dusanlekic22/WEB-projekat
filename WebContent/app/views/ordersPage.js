@@ -20,9 +20,9 @@ Vue.component('orders-page', {
           <div class="row ">
              <div class="col-md-2"> </div>
              <div  class="col-md-8">
-                <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1" :key="o.id" :id="o.id" :restId="o.restId" :status="o.status"
+                <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1 && isCustomer" :key="o.id" :id="o.id" :restId="o.restId" :status="o.status"
                    :price="o.price"><div v-if="isCustomer" ><button @click="deleteOrder">Ukloni porudzbinu</button></div></base-order>
-               <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1" :key="o.id" :id="o.id" :restId="o.restId" :status="o.status"
+               <base-order v-for="o in orders" v-if="o.logicalDeleted!== 1 && isManager" :key="o.id" :id="o.id" :restId="o.restId" :status="o.status"
                    :price="o.price"><div v-if="isManager" ><button @click="deleteOrder">Ukloni porudzbinu</button></div></base-order>
                    </div>
           </div>
@@ -64,10 +64,10 @@ Vue.component('orders-page', {
          return this.orders = this.$store.getters['ordersModule/orders'];
        },
        isCustomer(){
-          return this.user = this.$store.getters['ordersModule/isCustomer'];
+          return  this.$store.getters['ordersModule/isCustomer'];
       },
       isManager(){
-          return this.user = this.$store.getters['ordersModule/isManager'];
+          return  this.$store.getters['ordersModule/isManager'];
        }
    }
 });

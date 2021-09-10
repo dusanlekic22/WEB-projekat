@@ -155,7 +155,7 @@ public class OrderService {
 			order.setCustomerSurname(user.getSurname());
 			order.setStatus(OrderStatus.PROCESSING);
 			orders.addOrder(order);
-			carts.getValues().get(user.getCartId()).setArticleIdsWithQuantity(null);
+			carts.getValues().get(user.getCartId()).setArticleIdsWithQuantity(new HashMap<Integer,Integer>());
 			User newUser = new User(user);
 			newUser.getCustomerOrdersIds().add(order.getId());
 			newUser.setPoints(order.getPrice() / 1000 * 133);
