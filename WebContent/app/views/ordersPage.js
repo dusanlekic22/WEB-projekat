@@ -7,6 +7,14 @@ Vue.component('orders-page', {
              <div class="d-flex ">
                 <img src="img/1.gif">
                 <div class="ml-auto">
+                <div>
+                <label for="start">Od:</label>
+                      <input type="date" id="start" v-model="startDate" /> 
+                </div>
+                <div>
+                <label for="end"> Do:</label>
+                      <input type="date" id="end" v-model="endDate"/> 
+                </div>
                 <div id="minPrice">
                 <label for="min">Min cena:</label>
                       <input type="number" id="min" v-model="minPrice" placeholder="Min cena"/> 
@@ -42,14 +50,16 @@ Vue.component('orders-page', {
    data() {
       return {
          orders: [],
-         filteredOrders:[],
-         minPrice:null,
-         maxPrice:null,
+         filteredOrders: [],
+         minPrice: null,
+         maxPrice: null,
          user: null,
          restaurant: null,
          sortBy: 'customerName',
          sortDirection: 'desc',
-         searchBar:null
+         searchBar: null,
+         startDate:null,
+         endDate:null
       };
    },
    mounted() {
@@ -61,6 +71,15 @@ Vue.component('orders-page', {
       this.getOrders();
    },
    methods: {
+      getCurrentDate() {
+         var today = new Date();
+         var dd = String(today.getDate()).padStart(2, '0');
+         var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+         var yyyy = today.getFullYear();
+
+         return today = yyyy + '-' + mm + '-' + dd;
+
+      },
       getOrders() {
          this.$store.dispatch('ordersModule/getOrders');
       },
@@ -71,8 +90,8 @@ Vue.component('orders-page', {
          this.$store.dispatch('ordersModule/updateOrder',
             { "orderId": value.order.id, "order": o });
       },
-      getRestaurant(value){
-         this.restaurant=value.restaurant;
+      getRestaurant(value) {
+         this.restaurant = value.restaurant;
       },
       sortedProducts(sortBy) {
          console.log("sortiranje");
@@ -96,12 +115,12 @@ Vue.component('orders-page', {
          });
          if (this.minPrice !== null) {
             this.filteredOrders = this.filteredOrders.filter(order => {
-               return order.price>this.minPrice;
+               return order.price > this.minPrice;
             });
          }
-         if (this.maxPrice!= null) {
+         if (this.maxPrice != null) {
             this.filteredOrders = this.filteredOrders.filter(order => {
-               return order.price<this.maxPrice;
+               return order.price < this.maxPrice;
             });
          }
       },

@@ -43,11 +43,14 @@ Vue.component('cart-page', {
         mapaKorpa: null,
         suma: 0,
         stari: new Map(),
-        restaurantId : null
+        restaurantId : null,
+        user:null,
+        cartId:null
         
       };
     },
     mounted() {
+      this.cartId = this.$store.getters['userModule/user'].cartId;
       let style = document.createElement('link');
       style.type = "text/css";
       style.rel = "stylesheet";
@@ -57,7 +60,7 @@ Vue.component('cart-page', {
       this.getCartArticles();
     },
     computed: {
-      
+     
       
       cartArticles() {
         this.articles = this.$store.getters['cartModule/articles'];
@@ -174,7 +177,7 @@ Vue.component('cart-page', {
         if (this.activeCartId !== -1) {
           this.$store.dispatch('ordersModule/addOrder',
             {
-              "cartId": this.activeCartId,
+              "cartId": this.cartId,
               "cartPrice": this.suma
             })
         }

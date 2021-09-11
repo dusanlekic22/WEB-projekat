@@ -64,13 +64,13 @@ Vue.component('restaurant-page', {
     };
   },
   mounted() {
+    this.getRestaurant();
     let style = document.createElement('link');
     style.type = "text/css";
     style.rel = "stylesheet";
     style.href = 'css/restaurantPage.css';
     document.head.appendChild(style);
     this.isRestaurantManager();
-    this.getRestaurant();
     this.getRestaurantArticles();
     this.getCartRestaurantId();
   },

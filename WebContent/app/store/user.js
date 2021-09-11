@@ -11,6 +11,7 @@ var userStore = {
                 dateOfBirth: '',
                 role: null,
                 restaurantId: null,
+                cartId:null
             },
             logged: false,
             users: [],
@@ -33,6 +34,7 @@ var userStore = {
                 dateOfBirth: '',
                 role: null,
                 restaurantId: null,
+                cartId:null
             };
             state.logged = false,
             users= [],
@@ -89,6 +91,21 @@ var userStore = {
                     console.log("\n\n ------- Korisnici -------\n");
                     console.log(response.data);
                     context.state.users = response.data;
+                    console.log("\n\n ----------------------\n\n");
+                    
+                })
+                .catch(err => {
+                    console.log("\n\n ------- ERROR -------\n");
+                    console.log(err);
+                    console.log("\n\n ----------------------\n\n");
+                });
+        },
+        getUser(context, payload) {
+             axios
+                .get('rest/users/'+payload.userId)
+                .then(response => {
+                    console.log("\n\n ------- Korisnik -------\n");
+                    context.state.user = response.data;
                     console.log("\n\n ----------------------\n\n");
                     
                 })

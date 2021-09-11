@@ -9,5 +9,38 @@
         "description": "dobra",
         "image":null,
         "logicalDeleted":null
+    },
+    "2": {
+    	"id" : "2",
+        "name": "Nutela Plazma",
+        "price": 220,
+        "type": "FOOD",
+        "restaurantId": 1,
+        "quantity": 120,
+        "description": "dobra",
+        "image":null,
+        "logicalDeleted":null
+    },
+    "3": {
+    	"id" : "3",
+        "name": "Kapri",
+        "price": 240,
+        "type": "FOOD",
+        "restaurantId": 1,
+        "quantity": 120,
+        "description": "dobra",
+        "image":null,
+        "logicalDeleted":null
+    },
+    "4": {
+    	"id" : "4",
+        "name": "Index sendvic",
+        "price": 200,
+        "type": "FOOD",
+        "restaurantId": 2,
+        "quantity": 120,
+        "description": "dobra",
+        "image":null,
+        "logicalDeleted":null
     }
 }

@@ -20,6 +20,7 @@ public class User {
 	private double points;
 	private CustomerType type;
 	private Integer logicalDeleted;
+	private Integer commented;
 
 	private boolean blocked;
 
@@ -31,7 +32,7 @@ public class User {
 	public User(String username, String password, String name, String surname, Gender gender, String dateOfBirth,
 			UserRole role, ArrayList<String> customerOrdersIds, Integer cartId, Integer restaurantId,
 			ArrayList<String> deliveryOrdersIds, double points, CustomerType type, Integer logicalDeleted,
-			boolean blocked) {
+			Integer commented, boolean blocked) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -47,6 +48,7 @@ public class User {
 		this.points = points;
 		this.type = type;
 		this.logicalDeleted = logicalDeleted;
+		this.commented = commented;
 		this.blocked = blocked;
 	}
 
@@ -187,6 +189,14 @@ public class User {
 
 	public void setLogicalDeleted(Integer logicalDeleted) {
 		this.logicalDeleted = logicalDeleted;
+	}
+
+	public Integer getCommented() {
+		return commented;
+	}
+
+	public void setCommented(Integer commented) {
+		this.commented = commented;
 	}
 
 }
