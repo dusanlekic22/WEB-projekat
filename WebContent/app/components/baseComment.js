@@ -14,7 +14,7 @@ template:
       </div
     </div>
       <div class="col-6 col-sm-3">
-      <div class="row">
+      <div class="row" v-if="this.noButton">
         <div class="col-3 col-sm-3">
         <button @click.prevent="approve">Odobri</button>
         </div>
@@ -28,7 +28,7 @@ template:
 </div>
   
 `,
-   props:['id', 'komentar', 'ocena', 'username', 'restaurantId'],
+   props:['id', 'komentar', 'ocena', 'username', 'restaurantId' ,"noButton"],
     mounted() {
         let style = document.createElement('link');
         style.type = "text/css";

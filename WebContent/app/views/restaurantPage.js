@@ -40,6 +40,11 @@ Vue.component('restaurant-page', {
 		</div>
     <button @click="addArticlesToCart">Idi na kolica</button>
 	</div>
+	<div class="row " v-if="commentsForRestaurant.length !== 0">
+	  <base-comment v-for="c in restaurantComments" :komentar="c.text" :ocena="c.rating" :username="c.user.username" :id="c.id" :restaurantId="c.restaurantId"
+              :noButton="false" ></base-comment>
+	</div>
+	
 </div>
   `,
   name: "Home",
@@ -60,7 +65,8 @@ Vue.component('restaurant-page', {
       korpa: [],
       restaurant: [],
       activeCartId: -1,
-      isManagerOfRestaurant: false
+      isManagerOfRestaurant: false,
+      restaurantComments: []
     };
   },
   mounted() {
@@ -73,6 +79,7 @@ Vue.component('restaurant-page', {
     this.getRestaurant();
     this.getRestaurantArticles();
     this.getCartRestaurantId();
+    this.getComments();
   },
   computed: {
     restaurantArticles() {
@@ -80,9 +87,17 @@ Vue.component('restaurant-page', {
     },
     restaurantComp() {
       return this.restaurant = this.$store.getters['restaurantModule/restaurant'];
+    },
+    commentsForRestaurant(){
+    	return this.restaurantComments;
     }
   },
   methods: {
+  getComments(){
+  	axios.get('rest/comments/restaurantComments/' + parseInt(this.$route.params.id)).then(
+  	response => 
+  	this.restaurantComments = response.data );
+  },
     noviArtikal(value) {
       if (this.korpa.length === 0) {
         this.korpa.push(value);

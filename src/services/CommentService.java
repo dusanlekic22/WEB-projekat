@@ -88,6 +88,18 @@ public class CommentService {
 	
 	
 	@GET
+	@Path("/restaurantComments/{restaurantId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurantComments(@PathParam("restaurantId") Integer restaurantId) {
+		CommentsDAO comments = (CommentsDAO) ctx.getAttribute("commentsDAO");
+		if (comments == null) {
+			return Response.status(400).entity("Artikal nije pronadjen").build();
+		}
+			return Response.status(200).entity(comments.filterByRestaurantId(restaurantId)).build();
+	}
+	
+	
+	@GET
 	@Path("/notApproved")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllCommentsNotApproved() {

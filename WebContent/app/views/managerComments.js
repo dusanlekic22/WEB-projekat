@@ -9,7 +9,7 @@ Vue.component('manager-comments', {
               <div class="col-md-2"> </div>
               <div  class="col-md-8" v-if=" commentsNot.length !== 0 ">
                <base-comment v-for="c in comments" :komentar="c.text" :ocena="c.rating" :username="c.user.username" :id="c.id" :restaurantId="c.restaurantId"
-               @approve="updateComment" @decline="updateComment" ></base-comment>
+               @approve="updateComment" @decline="updateComment" :noButton="false"></base-comment>
            </div>
         </div>
      </div>
