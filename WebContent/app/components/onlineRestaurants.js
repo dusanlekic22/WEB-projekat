@@ -24,8 +24,6 @@ Vue.component('online-restaurants', {
 
   data() {
     return {
-      message: null,
-      contains: false,
       name: '',
       location: '',
       type: null,
@@ -78,7 +76,7 @@ Vue.component('online-restaurants', {
 
         if (sortBy === 'status') {
           let modifier = -1;
-          if (this.sortDirection === 'desc') modifier = 11;
+          if (this.sortDirection === 'desc') modifier = 1;
         }
         if (p1[sortBy] < p2[sortBy]) return -1 * modifier; if (p1[sortBy] > p2[sortBy]) return 1 * modifier;
         return 0;

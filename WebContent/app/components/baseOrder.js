@@ -59,12 +59,12 @@ Vue.component('base-order', {
 `,
 
   mounted() {
+    this.getRestaurant();
     let style = document.createElement('link');
     style.type = "text/css";
     style.rel = "stylesheet";
     style.href = 'css/baseComment.css';
     document.head.appendChild(style);
-    this.getRestaurant();
   },
   data() {
     return {
@@ -105,6 +105,9 @@ Vue.component('base-order', {
       return this.restaurant = this.$store.getters['restaurantModule/restaurant'];
     }
   },
+  updated() {
+    this.sendRestaurant();
+  },
   methods: {
     removeOrder() {
       this.$emit('remove', {
@@ -117,8 +120,13 @@ Vue.component('base-order', {
         "order": this.order
       });
     },
+    sendRestaurant() {
+      console.log("rest " + this.restaurant);
+      this.$emit('sendRestaurant', {
+        "restaurant": this.restaurant
+      });
+    },
     getRestaurant() {
-      console.log(this.restId);
       this.$store.dispatch('restaurantModule/getRestaurant',
         { "restaurantId": this.restId });
     },
