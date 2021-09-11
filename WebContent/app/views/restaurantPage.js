@@ -60,10 +60,12 @@ Vue.component('restaurant-page', {
       korpa: [],
       restaurant: [],
       activeCartId: -1,
-      isManagerOfRestaurant: false
+      isManagerOfRestaurant: false,
+      cartId:null
     };
   },
   mounted() {
+    this.cartId = this.$store.getters['userModule/user'].cartId;
     this.getRestaurant();
     let style = document.createElement('link');
     style.type = "text/css";
@@ -158,7 +160,7 @@ Vue.component('restaurant-page', {
       if (this.activeCartId === parseInt(this.$route.params.id) ) {
         this.dodajUKorpu();
         setTimeout(() => {
-             this.$router.push('/Cart/1');
+             this.$router.push('/Cart/'+this.cartId);
         }, 500);
         //this.$router.push('/Cart/1');
       }
@@ -166,14 +168,14 @@ Vue.component('restaurant-page', {
         this.$store.commit('cartModule/setActiveCart', this.$route.params.id);
         this.dodajUKorpu();
        setTimeout(() => {
-             this.$router.push('/Cart/1');
+             this.$router.push('/Cart/'+this.cartId);
         }, 500);
       }
       else {
         // greska
         var r = confirm("Oslobodite aktivnu korpu da bi ste narucili iz novog restorana");
         if (r == true) {
-           this.$router.push('/Cart/1');
+           this.$router.push('/Cart/'+this.cartId);
           }
       }
       },

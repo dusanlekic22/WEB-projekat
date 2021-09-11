@@ -60,7 +60,7 @@ Vue.component("the-header", {
                 >Dodaj Artikal</router-link
               >
             </li>
-            </li>
+            
                  <li v-if="canSeeOrders">
               <router-link
                 class="nav-link"
@@ -68,7 +68,15 @@ Vue.component("the-header", {
                 >Moje Porudzbine</router-link
               >
             </li>
+            <li v-if="isCustomer && cartIdComp" >
+    
+              <router-link
+                class="nav-link"
+                :to="{ name: 'Cart', params: { id: this.cartId }}"
+                >Kolica</router-link>
+           
             </li>
+                 
                  <li v-if="isLogged" >
     
               <router-link
@@ -90,6 +98,7 @@ Vue.component("the-header", {
   data() {
     return {
       productPage: false,
+      cartId:null
     };
   },
   methods: {
@@ -104,6 +113,7 @@ Vue.component("the-header", {
     }
   },
     mounted() {
+        this.cartId = this.$store.getters['userModule/user'].cartId;
         let style = document.createElement('link');
         style.type = "text/css";
         style.rel = "stylesheet";
@@ -122,9 +132,15 @@ Vue.component("the-header", {
      isManager() {
       return this.$store.getters['userModule/isManager'];
     },
+     isCustomer() {
+      return this.$store.getters['userModule/isCustomer'];
+    },
     canSeeOrders() {
       return this.$store.getters['userModule/canSeeOrders'];
     },
+    cartIdComp(){
+      return this.cartId = this.$store.getters['userModule/user'].cartId;;
+    }
     }
 
 

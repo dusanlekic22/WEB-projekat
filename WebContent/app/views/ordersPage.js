@@ -23,6 +23,11 @@ Vue.component('orders-page', {
                    <label for="max">Max cena:</label>
                       <input type="number" id="max" v-model="maxPrice" placeholder="Max cena"/> 
                    </div>
+                   <div v-if="checkRestaurants">
+                   <select v-model="restType" >
+                   <option v-for="r in restaurants">{{r.type}}</option>
+                 </select> 
+                 </div>
                    <div id="articleSearch">
                       <input type="search" v-model="searchBar" placeholder="Restoran"/> 
                    </div>
@@ -59,10 +64,13 @@ Vue.component('orders-page', {
          sortDirection: 'desc',
          searchBar: null,
          startDate:null,
-         endDate:null
+         endDate:null,
+         restaurants:[],
+         restType: null
       };
    },
    mounted() {
+      this.getRestaurants;
       let style = document.createElement('link');
       style.type = "text/css";
       style.rel = "stylesheet";
@@ -110,6 +118,7 @@ Vue.component('orders-page', {
       search() {
          let items = [...this.orders];
          console.log("search");
+         if(this.searchBar!== null)
          this.filteredOrders = items.filter(order => {
             return (this.restaurant.name.toLowerCase().includes(this.searchBar.toLowerCase()));
          });
@@ -123,6 +132,11 @@ Vue.component('orders-page', {
                return order.price < this.maxPrice;
             });
          }
+         if (this.restType) {
+            this.filteredOrders = this.filteredOrders.filter(order => {
+              return order.status === this.restType;
+            });
+          }
       },
       sort(s) {
          if (s === this.sortBy) {
@@ -139,11 +153,17 @@ Vue.component('orders-page', {
       isCustomer() {
          return this.$store.getters['userModule/isCustomer'];
       },
+      isDelivery() {
+         return this.$store.getters['userModule/isDelivery'];
+      },
       checkRestaurants() {
-         return this.restaurant = this.$store.getters['restaurantsModule/restaurant'];
+         return this.restaurants = this.$store.getters['restaurantsModule/restaurants'];
       },
       isManager() {
          return this.$store.getters['ordersModule/isManager'];
-      }
+      },
+      getRestaurants() {
+         this.$store.dispatch('restaurantsModule/getRestaurants');
+       },
    }
 });
