@@ -8,6 +8,7 @@ public class Comment {
 	private Integer restaurantId;
 	private String text;
 	private int rating;
+	private int commented;
 	private CommentStatus status;
 	private Integer logicalDeleted;
 

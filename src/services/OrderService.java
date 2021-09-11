@@ -151,6 +151,7 @@ public class OrderService {
 			Integer anyOrderArticleId = order.getArticlesIdsWithQuantity().keySet().stream().findAny().get();
 			order.setRestaurantId(articles.find(anyOrderArticleId).getRestaurantId());
 			order.setDateAndTime(LocalDateTime.now());
+			order.setCommented(0);
 			order.setCustomerName(user.getName());
 			order.setCustomerSurname(user.getSurname());
 			order.setStatus(OrderStatus.PROCESSING);

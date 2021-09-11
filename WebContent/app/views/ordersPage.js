@@ -37,6 +37,32 @@ Vue.component('orders-page', {
              </div>
           </div>
        </div>
+       <base-dialog v-if="showCommentForm">
+       <template v-slot:header>
+           <h5 class="modal-title" id="exampleModalLabel">Ocenjivanje porudzbine </h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeCommentForm">
+           X
+           </button>
+              </template>
+         <template v-slot:body>
+         <keep-alive>
+          <form>
+           <div class="modal-body">
+            <div class="form-group">
+               <textarea v-model="formComment" placeholder="Unesite vas komentar"></textarea>
+             </div>
+               <div class="form-group">
+               <label for="formGrade">Ocena</label>
+               <input type="number" min="0" max="5" class="form-control" id="formGrade" placeholder="" v-model="formGrade">
+               </div>
+           <div class="modal-footer border-top-0 d-flex justify-content-center">
+             <button type="submit" class="btn btn-success" @click.prevent="addComment">Posalji</button>
+             </div>
+           </div>
+         </form>
+         </keep-alive>
+         </template>
+         </base-dialog>
     </div>
     <div v-if= "ordersComp.length!==0" id="restaurantPageArticle">
        <div class="container pt 2">
@@ -44,7 +70,7 @@ Vue.component('orders-page', {
              <div class="col-md-2"> </div>
              <div  class="col-md-8">
                 <base-order v-for="o in filteredOrders" v-if="o.logicalDeleted!== 1" :key="o.id" :order="o" :id="o.id" :restId="o.restaurantId" :status="o.status" :orderDate="getOrderDate(o)"
-                   :price="o.price" :customerName="o.customerName" :customerSurname="o.customerSurname" @update="updateOrder" @sendRestaurant="getRestaurant"></base-order>
+                   :price="o.price" :customerName="o.customerName" :customerSurname="o.customerSurname" @update="updateOrder" @comment="leaveComment @sendRestaurant="getRestaurant"></base-order>
              </div>
           </div>
        </div>
@@ -66,7 +92,11 @@ Vue.component('orders-page', {
          startDate: null,
          endDate: null,
          restaurants: [],
-         restType: null
+         restType: null,
+         formComment: '',
+         formGrade: '',
+         showCommentForm: false,
+         commentOrder: null
       };
    },
    mounted() {
@@ -77,6 +107,7 @@ Vue.component('orders-page', {
       style.href = 'css/restaurantPage.css';
       document.head.appendChild(style);
       this.getOrders();
+      this.user = this.$store.getters['userModule/user'];     
    },
    methods: {
       getOrderDate(order) {
@@ -94,7 +125,9 @@ Vue.component('orders-page', {
          var yyyy = today.getFullYear();
 
          return today = yyyy + '-' + mm + '-' + dd;
-
+      },
+      getUser(){
+         this.user = this.$store.getters['userModule/user'];      
       },
       getOrders() {
          this.$store.dispatch('ordersModule/getOrders');
@@ -186,6 +219,28 @@ Vue.component('orders-page', {
          }
          this.sortBy = s;
       },
+      leaveComment(value){
+         this.showCommentForm = true;
+         this.commentOrder = value.order;
+      },
+      closeCommentForm(){
+         this.showCommentForm = false;
+         this.commentOrder = null;
+      },
+      addComment(){
+         this.commentOrder.commented = 1;
+         this.$store.dispatch('ordersModule/updateOrder',
+            { "orderId": this.commentOrder.id, "order":  this.commentOrder }).then(
+                  axios.post('rest/comments/addComment',
+                  {
+                     "user": this.user,
+                     "restaurantId": this.commentOrder.restaurantId,
+                     "text": this.formComment,
+                     "rating": this.formGrade,
+                     "status": "NOT_APPROVED"
+                  })
+            );
+      }
    },
    computed: {
       ordersComp() {

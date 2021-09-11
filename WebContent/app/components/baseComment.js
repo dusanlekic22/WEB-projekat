@@ -1,28 +1,34 @@
 Vue.component('base-comment', {
 template:
 `
-<div class="col-md-3 comment"> 
+<div class="col-12 comment"> 
  <div class="row">
     <div class="col-6 col-sm-6">
       <div class="comment-header">
-        {{ tekstKomentara }}
+       Komentar:  {{ komentar }}  Korisnika: {{ username }}
       </div
     </div>
-      <div class="col-3 col-sm-3">
+      <div class="col-6 col-sm-3"></div>
       <div class="comment-header">
-        {{ tekstKomentara }}
+      za restoran {{restaurantId}} je nova ocena: {{ ocena }}
       </div
     </div>
-      <div class="col-3 col-sm-3">
-        <slot></slot>
+      <div class="col-6 col-sm-3">
+      <div class="row" v-if="this.noButton">
+        <div class="col-3 col-sm-3">
+        <button @click.prevent="approve">Odobri</button>
+        </div>
+         <div class="col-3 col-sm-3">
+         <button @click.prevent="decline">Ponisti</button>
+        </div>
+      </div>
      </div>
  </div>
 </div>
-
-  
+</div>
   
 `,
-   
+   props:['id', 'komentar', 'ocena', 'username', 'restaurantId' ,"noButton"],
     mounted() {
         let style = document.createElement('link');
         style.type = "text/css";
@@ -32,10 +38,20 @@ template:
     },
     data() {
         return {
-            tekstKomentara: 'Solidna dostava',
-            ocena: null,
         };
     },
     methods: {
+    approve(){
+      this.$emit('approve', {
+        "status": "APPROVED",
+        "id": this.id
+      });
+    },
+    decline(){
+        this.$emit('decline', {
+        "status": "DENIED",
+        "id": this.id
+      });
+    }
     },
 });

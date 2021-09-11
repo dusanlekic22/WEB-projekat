@@ -101,5 +101,16 @@ public class CommentsDAO {
 		}
 		return commentsResult;
 	}
+	
+	
+	public HashMap<Integer, Comment> filterByRestaurantId(Integer restaurantId) {
+		HashMap<Integer, Comment> commentsResult = new HashMap<Integer, Comment>();
+		for (Comment item : getValues().values()) {
+			if (item.getRestaurantId() == restaurantId && item.getStatus().equals(CommentStatus.APPROVED)) {
+				commentsResult.put(item.getId(), item);
+			}
+		}
+		return commentsResult;
+	}
 
 }

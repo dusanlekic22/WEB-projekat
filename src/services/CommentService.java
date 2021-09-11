@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -84,6 +85,38 @@ public class CommentService {
 
 		return Response.status(200).entity(comments.find(id)).build();
 	}
+	
+	
+	@GET
+	@Path("/restaurantComments/{restaurantId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRestaurantComments(@PathParam("restaurantId") Integer restaurantId) {
+		CommentsDAO comments = (CommentsDAO) ctx.getAttribute("commentsDAO");
+		if (comments == null) {
+			return Response.status(400).entity("Artikal nije pronadjen").build();
+		}
+			return Response.status(200).entity(comments.filterByRestaurantId(restaurantId)).build();
+	}
+	
+	
+	@GET
+	@Path("/notApproved")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllCommentsNotApproved() {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+
+		CommentsDAO comments = (CommentsDAO) ctx.getAttribute("commentsDAO");
+		if (comments == null) {
+			return Response.status(400).entity("Lista artikala nije pronadjena").build();
+		}
+		if (users.checkUserRole(request, UserRole.MANAGER)) {
+			return Response.status(200).entity(comments.filterByStatus(CommentStatus.NOT_APPROVED)).build();
+		}
+
+		return Response.status(200).entity(comments.getValues().values()).build();
+	}
+	
+	
 
 	@POST
 	@Path("/addComment")
@@ -112,5 +145,36 @@ public class CommentService {
 		}
 		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
 	}
+	
+	@PUT
+	@Path("/updateComment/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setUpdatedComment(@PathParam("id") Integer id, String status) {
+		UsersDAO users = (UsersDAO) ctx.getAttribute("usersDAO");
+
+		CommentsDAO comments = (CommentsDAO) ctx.getAttribute("commentsDAO");
+		if (comments == null) {
+			return Response.status(400).entity("Lista artikala nije pronadjena").build();
+		}
+		if (users.checkUserRole(request, UserRole.MANAGER)) {
+			Comment comment = comments.find(id);
+			Comment newComment = comment;
+			System.out.println(status);
+			if(status.equals("DENIED")) {
+			newComment.setStatus(CommentStatus.DENIED);}
+			else if(status.equals("APPROVED")) {
+		    newComment.setStatus(CommentStatus.APPROVED);
+			}
+			comments.updateComment(newComment, comment);
+			return Response.status(200).entity(comments.getValues().values()).build();
+		}
+		
+
+		return Response.status(403).type("text/plain").entity("You do not have permission to access!").build();
+	}
+	
+	
+	
+	
 
 }

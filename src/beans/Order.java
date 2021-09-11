@@ -16,6 +16,7 @@ public class Order {
 	private String customerName;
 	private String customerSurname;
 	private String deliveryId;
+	private Integer commented;
 	// TODO:Proveri
 	private OrderStatus status;
 	private Integer logicalDeleted;
@@ -29,7 +30,7 @@ public class Order {
 
 	public Order(String id, HashMap<Integer, Integer> articlesIdsWithQuantity, Integer restaurantId,
 			LocalDateTime dateAndTime, float price, String customerName, String customerSurname, String deliveryId,
-			OrderStatus status, Integer logicalDeleted) {
+			OrderStatus status, Integer logicalDeleted,Integer commented) {
 		super();
 		this.id = id;
 		this.articlesIdsWithQuantity = articlesIdsWithQuantity;
@@ -41,6 +42,19 @@ public class Order {
 		this.deliveryId = deliveryId;
 		this.status = status;
 		this.logicalDeleted = logicalDeleted;
+		this.commented = commented;
+	}
+
+
+
+	public Integer getCommented() {
+		return commented;
+	}
+
+
+
+	public void setCommented(Integer commented) {
+		this.commented = commented;
 	}
 
 

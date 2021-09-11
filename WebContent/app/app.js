@@ -8,6 +8,7 @@ const UpdateArticleComponent = { template: '<update-article></update-article>' }
 const ShowUsersComponent = { template: '<show-users></show-users>' }
 const CartComponent = { template: '<cart-page></cart-page>' }
 const OrdersComponent = { template: '<orders-page></orders-page>' }
+const ManagerCommentsComponent = { template: '<manager-comments></manager-comments>' }
 
 
 const router = new VueRouter({
@@ -65,6 +66,11 @@ const router = new VueRouter({
         path: '/Orders',
         name: 'Orders',
         component: OrdersComponent
+      },
+      {
+        path: '/NotApprovedComments',
+        name: 'NotApprovedComments',
+        component: ManagerCommentsComponent
       }
 	  ]
 });
