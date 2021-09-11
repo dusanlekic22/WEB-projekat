@@ -119,6 +119,7 @@ public class OrdersDAO {
 		if (checkUserRole(user, UserRole.CUSTOMER)) {
 			if(user.getCustomerOrdersIds()!=null)
 			for (String id : user.getCustomerOrdersIds()) {
+				System.out.println("IDOVI "+id);
 				order = find(id);
 				userOrders.put(order.getId(), order);
 			}

@@ -56,7 +56,6 @@ Vue.component('cart-page', {
       style.rel = "stylesheet";
       style.href = 'css/restaurantPage.css';
       document.head.appendChild(style);
-      this.getCart();
       this.getCartArticles();
     },
     computed: {
@@ -174,19 +173,19 @@ Vue.component('cart-page', {
       },
       poruci() {
         this.activeCartId = this.$store.getters['cartModule/activeCart'];
-        if (this.activeCartId !== -1) {
+        console.log("porucio "+ this.activeCartId);
+        if (this.activeCartId !== -1) {  
+          console.log("PORUCIO");
           this.$store.dispatch('ordersModule/addOrder',
             {
               "cartId": this.cartId,
               "cartPrice": this.suma
             })
         }
+        this.art = this.getCartArticles();
       },
       getCartArticles() {
         this.$store.dispatch('cartModule/getCartArticles');
-      },
-      getCart() {
-        this.$store.dispatch('cartModule/getCart');
       },
       changeCart(id, value) {
         console.log("IDDD" + id);

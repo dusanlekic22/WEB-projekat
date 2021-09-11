@@ -43,7 +43,7 @@ Vue.component('orders-page', {
           <div class="row ">
              <div class="col-md-2"> </div>
              <div  class="col-md-8">
-                <base-order v-for="o in filteredOrders" v-if="o.logicalDeleted!== 1" :key="o.id" :order="o" :id="o.id" :restId="o.restaurantId" :status="o.status"
+                <base-order v-for="o in filteredOrders" v-if="o.logicalDeleted!== 1" :key="o.id" :order="o" :id="o.id" :restId="o.restaurantId" :status="o.status" :orderDate="getOrderDate(o)"
                    :price="o.price" :customerName="o.customerName" :customerSurname="o.customerSurname" @update="updateOrder" @sendRestaurant="getRestaurant"></base-order>
              </div>
           </div>
@@ -63,9 +63,9 @@ Vue.component('orders-page', {
          sortBy: 'customerName',
          sortDirection: 'desc',
          searchBar: null,
-         startDate:null,
-         endDate:null,
-         restaurants:[],
+         startDate: null,
+         endDate: null,
+         restaurants: [],
          restType: null
       };
    },
@@ -79,10 +79,18 @@ Vue.component('orders-page', {
       this.getOrders();
    },
    methods: {
+      getOrderDate(order) {
+         if (order.dateAndTime != null) {
+            var dd = String(order.dateAndTime.dayOfMonth);
+            var mm = String(order.dateAndTime.monthValue);
+            var yyyy = String(order.dateAndTime.year);
+            return today = dd + '-' + mm + '-' + yyyy;
+         }
+      },
       getCurrentDate() {
          var today = new Date();
          var dd = String(today.getDate()).padStart(2, '0');
-         var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+         var mm = String(today.getMonth() + 1).padStart(2, '0');
          var yyyy = today.getFullYear();
 
          return today = yyyy + '-' + mm + '-' + dd;
@@ -118,10 +126,10 @@ Vue.component('orders-page', {
       search() {
          let items = [...this.orders];
          console.log("search");
-         if(this.searchBar!== null)
-         this.filteredOrders = items.filter(order => {
-            return (this.restaurant.name.toLowerCase().includes(this.searchBar.toLowerCase()));
-         });
+         if (this.searchBar !== null)
+            this.filteredOrders = items.filter(order => {
+               return (this.restaurant.name.toLowerCase().includes(this.searchBar.toLowerCase()));
+            });
          if (this.minPrice !== null) {
             this.filteredOrders = this.filteredOrders.filter(order => {
                return order.price > this.minPrice;
@@ -134,9 +142,43 @@ Vue.component('orders-page', {
          }
          if (this.restType) {
             this.filteredOrders = this.filteredOrders.filter(order => {
-              return order.status === this.restType;
+               return this.restaurnt.name === this.restType;
             });
-          }
+         }
+         if (this.startDate !== null) {
+            let dateEntered = new Date(this.startDate);
+            this.filteredOrders = this.filteredOrders.filter(order => {
+               if (order.dateAndTime != null) {
+                  if (order.dateAndTime.year < dateEntered.getFullYear()) {
+                     return false;
+                  } else if (order.dateAndTime.monthValue < dateEntered.getMonth()) {
+                     return false;
+                  } else if (order.dateAndTime.dayOfMonth < dateEntered.getDay()) {
+                     return false;
+                  } else {
+                     return true;
+                  }
+               }
+               else return true;
+            });
+         }
+         if (this.endDate !== null) {
+            let dateEntered = new Date(this.endDate);
+            this.filteredOrders = this.filteredOrders.filter(order => {
+               if (order.dateAndTime != null) {
+                  if (order.dateAndTime.year > dateEntered.getFullYear()) {
+                     return false;
+                  } else if (order.dateAndTime.monthValue > dateEntered.getMonth()) {
+                     return false;
+                  } else if (order.dateAndTime.dayOfMonth > dateEntered.getDay()) {
+                     return false;
+                  } else {
+                     return true;
+                  }
+               }
+               else return true;
+            });
+         }
       },
       sort(s) {
          if (s === this.sortBy) {
@@ -164,6 +206,6 @@ Vue.component('orders-page', {
       },
       getRestaurants() {
          this.$store.dispatch('restaurantsModule/getRestaurants');
-       },
+      },
    }
 });

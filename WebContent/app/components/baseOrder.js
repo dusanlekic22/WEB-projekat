@@ -8,6 +8,11 @@ Vue.component('base-order', {
         {{ id }}
       </div>
     </div>
+    <div class="col-6 col-sm-6">
+    <div class="comment-header">
+      {{ orderDate }}
+    </div>
+  </div>
       <div v-if="restaurantComp" class="col-6 col-sm-6">
       <div class="comment-header">
         {{ restaurant.name }}
@@ -131,6 +136,6 @@ Vue.component('base-order', {
         { "restaurantId": this.restId });
     },
   },
-  props: ['id', 'restId', 'price', 'status', 'order','customerName','customerSurname'],
+  props: ['id', 'restId', 'price', 'status', 'order','customerName','customerSurname','orderDate'],
   
 });
