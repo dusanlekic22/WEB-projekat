@@ -70,7 +70,7 @@ Vue.component('orders-page', {
              <div class="col-md-2"> </div>
              <div  class="col-md-8">
                 <base-order v-for="o in filteredOrders" v-if="o.logicalDeleted!== 1" :key="o.id" :order="o" :id="o.id" :restId="o.restaurantId" :status="o.status" :orderDate="getOrderDate(o)"
-                   :price="o.price" :customerName="o.customerName" :customerSurname="o.customerSurname" @update="updateOrder" @comment="leaveComment @sendRestaurant="getRestaurant"></base-order>
+                   :price="o.price" :customerName="o.customerName" :customerSurname="o.customerSurname" @update="updateOrder" @comment="leaveComment" @sendRestaurant="getRestaurant"></base-order>
              </div>
           </div>
        </div>
