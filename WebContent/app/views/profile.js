@@ -92,6 +92,8 @@ Vue.component('profile', {
           dateOfBirth: this.dateofbirth,
           role: this.role
         }
+      ).then(
+        this.$router.push('/')
       );
     }
   },

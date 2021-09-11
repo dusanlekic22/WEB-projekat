@@ -54,6 +54,9 @@ Vue.component('base-order', {
     <div v-if="canSetDelivered" class="col-3 col-sm-3">
      <button  @click="updateOrder('DELIVERED')">Porudzbina je dostavljena</button>
     </div>
+    <div v-if="canComment" class="col-3 col-sm-3">
+     <button  @click="leaveComment()">Ostavi komentar i ocenu</button>
+    </div>
  </div>
 </div>
 `,
@@ -101,6 +104,9 @@ Vue.component('base-order', {
     canSetDelivered() {
       return this.isDelivery && this.status === 'TRANSPORTING';
     },
+    canComment() {
+      return this.isCustomer && this.status === 'DELIVERED' && this.order.commented !== 1;
+    },
     restaurantComp() {
       return this.restaurant = this.$store.getters['restaurantModule/restaurant'];
     }
@@ -114,6 +120,11 @@ Vue.component('base-order', {
     updateOrder(status) {
       this.$emit('update', {
         "status": status,
+        "order": this.order
+      });
+    },
+    leaveComment(){
+      this.$emit('comment', {
         "order": this.order
       });
     },
